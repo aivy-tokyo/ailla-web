@@ -1,5 +1,9 @@
 import { VRMExpression, VRMExpressionPresetName } from "@pixiv/three-vrm";
-import { KoeiroParam } from "../constants/koeiroParam";
+
+export type KoeiroParam = {
+  speakerX: number;
+  speakerY: number;
+};
 
 // ChatGPT API
 export type Message = {
