@@ -45,7 +45,7 @@ export default function VrmViewer() {
   );
 
   return (
-    <div className={`absolute ${isDeskTop ? 'top-0 h-[100vh]' : ' top-[100px] h-[calc(100vh-100px)]' } left-0 w-screen  overflow-hidden -z-10`}>
+    <div className={`absolute ${isDeskTop ? 'top-0 h-[100vh]' : ' top-[100px] h-[calc(100vh-100px)]' } left-0 w-screen  overflow-hidden`}>
       <canvas ref={canvasRef} className={"h-full w-full"}></canvas>
     </div>
   );
