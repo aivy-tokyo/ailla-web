@@ -51,7 +51,7 @@ export const UiContainer = () => {
 
   const speechTextArea = () => {
     return  dummyUsersData.map((userData,id) => (
-      <div className="flex">
+      <div className="flex" key={id}>
         <img src={userData.iconSrc} alt="" className="h-14"/>
         <div>
           <p className="text-xl font-bold">{userData.userName}</p>
