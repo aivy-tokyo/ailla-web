@@ -1,0 +1,74 @@
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import EndTalkButton from "./EndTalkButton";
+import TranslateToggleSwitch from "./TranslateToggleSwitch";
+
+interface Props {
+  showHint: boolean;
+  handleShowHint: () => void;
+  handleSelectLanguage: (e: ChangeEvent<HTMLSelectElement>) => void;
+}
+
+const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage}: Props)=>{
+  const [showProfile, setShowProfile] = useState<boolean>(false);
+  return (
+    <>
+        {/* 上部左側のプロフィールボタンとログアウトボタン */}
+        <div className="pt-2 pl-3 fixed ">
+          {
+            showProfile ?
+            <div className="fixed text-black bg-stone-300 w-[240px]  rounded-2xl p-5 pt-3 z-20 cursor-pointer">
+              <p className="font-bold  cursor-pointer mb-3" onClick={() => setShowProfile(false)}>プロフィール確認</p>
+              <div className="flex mb-3">
+                <img src="myIcon.png" alt="" className="h-14 -ml-1"/>
+                <div>
+                  <p>Taro</p>
+                  <p>サンプル株式会社</p>
+                </div>
+              </div>
+              <p>sample@sample.com</p>
+              <p>090-0000-9999</p>
+              <p>東京都港区愛宕2-5-1</p>
+              <p>1991年1月1日</p>
+              <p>男性</p>
+            </div>
+             :
+             <>
+              {/* プロフィールボタン */}
+              <div className=' bg-stone-200 w-12 h-12 rounded-md flex justify-center items-center mb-3 cursor-pointer z-20' onClick={() => setShowProfile(true)}>
+                <img src="settingBlack.png" alt="" className="w-[80%]"/>
+              </div>
+              {/* ログアウトボタン */}
+              <div className=' bg-stone-200 w-12 h-12 rounded-md flex justify-center items-center'>
+                <img src="logout.png" alt="" className="w-[80%]"/>
+              </div>
+            </>
+          }
+        </div>
+
+      {/* 上部右側のUI群 */}
+      <div className="flex bg-emerald-300 fixed w-[500px] h-10 top-0 right-0 text-black justify-between">
+        <div className="flex cursor-pointer items-center pl-3" onClick={handleShowHint}>
+          {
+            showHint ? <img src="arrow.png" alt="" className="h-5"/> : <img src="downArrow.png" alt="" className="h-5"/> 
+          }
+          <p className="self-center">ヒント</p>
+        </div>
+        <div className="flex h-[80%] self-center pr-3">
+          <EndTalkButton/>
+          {/* 言語選択 */}
+          <select className="max-w-xs bg-gray-400 h-full w-32 rounded-md px-2" onChange={handleSelectLanguage}>
+            {/* <option disabled selected>Pick your favorite Simpson</option> */}
+            <option>English</option>
+            <option>中文</option>
+          </select>
+          <div className="text-white flex items-center ml-3">
+            <span className='text-xs text-black font-bold'>翻訳</span>
+            <TranslateToggleSwitch/>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default UiForDesktop;
