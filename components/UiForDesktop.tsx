@@ -68,27 +68,43 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage}: Props)=>
         }
       </div>
 
-      {/* 上部右側のUI群 */}
-      <div className="flex bg-emerald-300 fixed w-[500px] h-10 top-0 right-0 text-black justify-between">
-        <div className="flex cursor-pointer items-center pl-3" onClick={handleShowHint}>
-          {
-            showHint ? <img src="arrow.png" alt="" className="h-5"/> : <img src="downArrow.png" alt="" className="h-5"/> 
-          }
-          <p className="self-center">ヒント</p>
-        </div>
-        <div className="flex h-[80%] self-center pr-3">
-          <EndTalkButton/>
-          {/* 言語選択 */}
-          <select className="max-w-xs bg-gray-400 h-full w-32 rounded-md px-2" onChange={handleSelectLanguage}>
-            {/* <option disabled selected>Pick your favorite Simpson</option> */}
-            <option>English</option>
-            <option>中文</option>
-          </select>
-          <div className="text-white flex items-center ml-3">
-            <span className='text-xs text-black font-bold'>翻訳</span>
-            <TranslateToggleSwitch/>
+      <div className="relative bg-red-500">
+        {/* 上部右側のUI群 */}
+        <div className="flex bg-emerald-300 fixed w-[500px] h-10 top-0 right-0 text-black justify-between">
+          <div className="flex cursor-pointer items-center pl-3" onClick={handleShowHint}>
+            {
+              showHint ? <img src="arrow.png" alt="" className="h-5"/> : <img src="downArrow.png" alt="" className="h-5"/> 
+            }
+            <p className="self-center">ヒント</p>
+          </div>
+          <div className="flex h-[80%] self-center pr-3">
+            <EndTalkButton/>
+            {/* 言語選択 */}
+            <select className="max-w-xs bg-gray-400 h-full w-32 rounded-md px-2" onChange={handleSelectLanguage}>
+              {/* <option disabled selected>Pick your favorite Simpson</option> */}
+              <option>English</option>
+              <option>中文</option>
+            </select>
+            <div className="text-white flex items-center ml-3">
+              <span className='text-xs text-black font-bold'>翻訳</span>
+              <TranslateToggleSwitch/>
+            </div>
           </div>
         </div>
+        {
+          showHint && (
+            <div className="w-[500px] h-[200px] absolute right-0 top-10 bg-white text-black">
+              <p>
+                伝え方がわからない場合は、以下のフレーズを参考にしてみてください。
+              </p>
+              <p>
+                1. May I have your name?<br/>
+                2. Where are you from?<br/>
+                3. What is your job?<br/>
+              </p>
+            </div>
+          )
+        }
       </div>
 
       {/* 右下のチャットログ領域 */}
@@ -120,6 +136,7 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage}: Props)=>
           <img src="chat.png" alt="" className="h-[50%]"/>
         </div>
       }
+      <div className=""></div>
     </>
   );
 };
