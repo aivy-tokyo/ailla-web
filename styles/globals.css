@@ -25,3 +25,23 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.speech-bubble-triangle-for-ailla{
+  width: 0px;
+  height: 0px;
+  border: solid;
+  border-width: 15px;
+  border-right-width: 40px;
+  /* border-color: transparent transparent darkturquoise transparent; */
+  border-color: transparent #36d854 transparent transparent;
+}
+
+.speech-bubble-triangle-for-user{
+  width: 0px;
+  height: 0px;
+  border: solid;
+  border-width: 15px;
+  border-left-width: 40px;
+  /* border-color: transparent transparent transparent white; */
+  border-color: transparent transparent transparent white;
+}
