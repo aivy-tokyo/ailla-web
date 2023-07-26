@@ -52,3 +52,5 @@ export const userLevelAtom = atomWithStorage<number | string>('userLevel', 0);
 
 
 export const backgroundImageAtom = atom<string>("/uraraBackground.gif");
+
+export const isTranslatedAtom = atom<boolean>(false);
