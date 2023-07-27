@@ -7,9 +7,12 @@ interface Props {
   showHint: boolean;
   handleShowHint: () => void;
   handleSelectLanguage: (e: ChangeEvent<HTMLSelectElement>) => void;
+  handleClickMicButton: () => void;
+  userMessage: string;
+  handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage}: Props)=>{
+const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage, handleClickMicButton, userMessage, handleChangeUserMessage}: Props)=>{
   const [showProfile, setShowProfile] = useState<boolean>(false);
   const [showChat, setShowChat] = useState<boolean>(false);
 
@@ -127,7 +130,7 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage}: Props)=>
             </div>
               <div className="absolute bottom-3 flex h-10 w-full items-center justify-between">
                 <div className="flex h-full items-center w-[90%] ">
-                  <input type="text" placeholder="コメントする" className=" border border-black border-solid h-full rounded-full ml-8 w-[70%] px-5 bg-white"/>
+                  <input type="text" placeholder="コメントする" className=" border border-black border-solid h-full rounded-full ml-8 w-[70%] px-5 bg-white" value={userMessage} onChange={handleChangeUserMessage}/>
                   <img src="sendBlack.png" alt="" className="h-[50%] ml-2"/>
                 </div>
                 <img src="arrowDouble.png" alt="" className="h-[50%] mr-3 cursor-pointer" onClick={() => setShowChat(false)}/>
@@ -141,7 +144,7 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage}: Props)=>
       }
       {/* マイクボタン */}
       <div className="fixed bottom-1 w-screen flex justify-center">
-        <div className="w-20 h-20 bg-red-300 rounded-full border-4 border-red-600 flex justify-center items-center cursor-pointer">
+        <div className="w-20 h-20 bg-red-300 rounded-full border-4 border-red-600 flex justify-center items-center cursor-pointer" onClick={() => handleClickMicButton()}>
           <img src="mic.png" alt="" className="w-[80%]"/>
         </div>
       </div>

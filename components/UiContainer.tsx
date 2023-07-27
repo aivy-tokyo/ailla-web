@@ -15,7 +15,10 @@ export const UiContainer = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<SelectedLanguageType>('English');
   //MEMO: ハイドレーションエラーを回避するための状態管理
   const [isClient, setIsClient] = useState<boolean>(false);
-
+  const [isMicRecording, setIsMicRecording] = useState<boolean>(false);
+  const [userMessage, setUserMessage] = useState<string>('');
+  const [speechRecognition, setSpeechRecognition] = useState<SpeechRecognition>();
+  const [chatProcessing, setChatProcessing] = useState<boolean>(false);
 
   //MEMO: ハイドレーションエラーを回避するための状態管理
   useEffect(()=>{
@@ -30,15 +33,75 @@ export const UiContainer = () => {
     setSelectedLanguage(e.target.value as SelectedLanguageType);
   };
 
+  // 音声認識の結果を処理する
+  const handleRecognitionResult = useCallback(
+    (event: SpeechRecognitionEvent) => {
+      const text = event.results[0][0].transcript;
+      setUserMessage(text);
 
-  
+      // 発言の終了時
+      if (event.results[0].isFinal) {
+        setUserMessage(text);
+        // 返答文の生成を開始
+        // handleSendChat(text);
+        console.log(text);
+      }
+    },
+    []
+  );
+
+  // 無音が続いた場合も終了する
+  const handleRecognitionEnd = useCallback(() => {
+    setIsMicRecording(false);
+    console.log('録音終了！');
+  }, []);
+
+  useEffect(() => {
+    const SpeechRecognition =
+      window.webkitSpeechRecognition || window.SpeechRecognition;
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "ja-JP";
+    recognition.interimResults = true; // 認識の途中結果を返す
+    recognition.continuous = false; // 発言の終了時に認識を終了する
+
+    recognition.addEventListener("result", handleRecognitionResult);
+    recognition.addEventListener("end", handleRecognitionEnd);
+
+    setSpeechRecognition(recognition);
+  }, [handleRecognitionResult, handleRecognitionEnd]);
+
+  const handleClickMicButton = useCallback(() => {
+    // if(chatProcessing)return;
+    if (isMicRecording) {
+      speechRecognition?.abort();
+      setIsMicRecording(false);
+
+      return;
+    }
+
+    speechRecognition?.start();
+    setIsMicRecording(true);
+  }, [isMicRecording, speechRecognition,chatProcessing]);
+
+  const handleChangeUserMessage = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserMessage(e.target.value);
+    console.log(e.target.value);
+  };
 
   
   if(!isClient)return<></>; //MEMO: ハイドレーションエラーを回避するための状態管理
   return (
     <>
       {isDeskTop ? 
-        <UiForDesktop showHint={showHint} handleSelectLanguage={handleSelectLanguage} handleShowHint={handleShowHint}/>
+        <UiForDesktop 
+          showHint={showHint} 
+          handleSelectLanguage={handleSelectLanguage} 
+          handleShowHint={handleShowHint} 
+          handleClickMicButton={handleClickMicButton} 
+          userMessage={userMessage}
+          handleChangeUserMessage={handleChangeUserMessage}
+        />
         : 
         <UiForSp/>
       }
