@@ -54,7 +54,7 @@ const UiForSp = ({
 
   const speechTextArea = () => {
     return  dummyUsersData.map((userData,id) => (
-      <div className="flex" key={id}>
+      <div className="flex text-white" key={id}>
         <img src={userData.iconSrc} alt="" className="h-14"/>
         <div>
           <p className="text-xl font-bold">{userData.userName}</p>
