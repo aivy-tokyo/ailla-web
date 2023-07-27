@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 
@@ -25,7 +25,23 @@ const dummyUsersData = [
   },
 ]
 
-const UiForSp = () => {
+interface Props {
+  showHint: boolean;
+  handleShowHint: () => void;
+  handleSelectLanguage: (e: ChangeEvent<HTMLSelectElement>) => void;
+  handleClickMicButton: () => void;
+  userMessage: string;
+  handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const UiForSp = ({
+  showHint, 
+  handleShowHint, 
+  handleSelectLanguage, 
+  handleClickMicButton, 
+  userMessage, 
+  handleChangeUserMessage
+}: Props) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
 
   const speechTextArea = () => {
@@ -59,11 +75,11 @@ const UiForSp = () => {
         <div className="flex w-full h-16 bg-black  justify-between py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)]">
         {/* <div className="flex w-full h-16 bg-black  justify-between py-3 m-auto "> */}
           <div className="flex">
-            <img src="/mic.png" alt="" className=""/>
-            <input type="text" className=" px-4 bg-black text-white border border-white rounded-full" placeholder="コメントする"/>
+            <img src="/mic.png" alt="" className="" onClick={handleClickMicButton}/>
+            <input type="text" className=" px-4 bg-black text-white border border-white rounded-full" placeholder="コメントする" value={userMessage} onChange={handleChangeUserMessage}/>
             <img src="/send.png" alt="" className='h-[70%] ml-2 self-center'/>
           </div>
-          <img src="/hint.png" alt="" className="h-[90%] self-center pr-2"/>
+          <img src="/hint.png" alt="" className="h-[90%] self-center pr-2" onClick={handleShowHint}/>
         </div>
       </div>
     </div>

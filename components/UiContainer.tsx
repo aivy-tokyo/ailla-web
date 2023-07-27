@@ -61,7 +61,7 @@ export const UiContainer = () => {
       window.webkitSpeechRecognition || window.SpeechRecognition;
 
     const recognition = new SpeechRecognition();
-    recognition.lang = "ja-JP";
+    recognition.lang = "en-US";
     recognition.interimResults = true; // 認識の途中結果を返す
     recognition.continuous = false; // 発言の終了時に認識を終了する
 
@@ -103,7 +103,14 @@ export const UiContainer = () => {
           handleChangeUserMessage={handleChangeUserMessage}
         />
         : 
-        <UiForSp/>
+        <UiForSp
+          showHint={showHint} 
+          handleSelectLanguage={handleSelectLanguage} 
+          handleShowHint={handleShowHint} 
+          handleClickMicButton={handleClickMicButton} 
+          userMessage={userMessage}
+          handleChangeUserMessage={handleChangeUserMessage}
+        />
       }
     </>
   ); 
