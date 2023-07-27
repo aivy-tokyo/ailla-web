@@ -1,7 +1,7 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
-import { div } from "three/examples/jsm/nodes/Nodes.js";
+import Profile from "./Profile";
 
 interface Props {
   showHint: boolean;
@@ -47,7 +47,7 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage, handleCli
           showProfile ?
           <div className="fixed text-black bg-stone-300 w-[240px]  rounded-2xl p-5 pt-3 z-20 cursor-pointer">
             <p className="font-bold  cursor-pointer mb-3" onClick={() => setShowProfile(false)}>プロフィール確認</p>
-            <div className="flex mb-3">
+            {/* <div className="flex mb-3">
               <img src="myIcon.png" alt="" className="h-14 -ml-1"/>
               <div>
                 <p>Taro</p>
@@ -58,7 +58,8 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage, handleCli
             <p>090-0000-9999</p>
             <p>東京都港区愛宕2-5-1</p>
             <p>1991年1月1日</p>
-            <p>男性</p>
+            <p>男性</p> */}
+            <Profile/>
           </div>
            :
            <>

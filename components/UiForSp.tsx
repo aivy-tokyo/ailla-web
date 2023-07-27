@@ -1,7 +1,8 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
-import { div } from "three/examples/jsm/nodes/Nodes.js";
+import { SelectedLanguageType } from "@/utils/types";
+import Profile from "./Profile";
 
 const dummyUsersData = [
   {
@@ -29,21 +30,25 @@ const dummyUsersData = [
 interface Props {
   showHint: boolean;
   handleShowHint: () => void;
-  handleSelectLanguage: (e: ChangeEvent<HTMLSelectElement>) => void;
+  // handleSelectLanguage: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleClickMicButton: () => void;
   userMessage: string;
   handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
   isMicRecording: boolean;
+  selectedLanguage: SelectedLanguageType;
+  setSelectedLanguage: Dispatch<SetStateAction<SelectedLanguageType>>
 }
 
 const UiForSp = ({
   showHint, 
   handleShowHint, 
-  handleSelectLanguage, 
+  // handleSelectLanguage, 
   handleClickMicButton, 
   userMessage, 
   handleChangeUserMessage,
   isMicRecording,
+  selectedLanguage,
+  setSelectedLanguage,
 }: Props) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
 
@@ -59,14 +64,20 @@ const UiForSp = ({
     ));        
   };
 
+  const handleClickSettingButton = () => {
+    console.log(showSetting);
+    setShowSetting(prev => !prev);
+  };
+
+  console.log(selectedLanguage);
   return(
     <div className="">
       {/* SP版:上部のUI群 */}
       <div className="flex h-12 justify-between m-2 pt-2">
         <TranslateToggleSwitch/>
-        <div className="flex">
+        <div className="flex z-10">
           <EndTalkButton/>
-          <img src="/setting.png" alt="" className="w-auto"/>
+          <img src="/setting.png" alt="" className="w-auto cursor-pointer" onClick={() => handleClickSettingButton()}/>
         </div>
       </div>
 
@@ -83,6 +94,30 @@ const UiForSp = ({
               これはヒントです。これはヒントです。これはヒントです。これはヒントです。
               これはヒントです。これはヒントです。これはヒントです。これはヒントです。
               これはヒントです。
+            </div>
+          </div>
+      }
+
+      {
+        //セッティングモーダル
+        showSetting && 
+          <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed">
+            <div className="flex justify-end py-4 pr-2">
+              <img src="close.png" alt="" className="w-10 h-10" onClick={() => handleClickSettingButton()}/>
+            </div>
+            <div className="setting-container px-10">
+              <div className="mb-10">
+                <h2 className="mb-3">Language</h2>
+                <div className="flex items-center">
+                  <button className={`${selectedLanguage === 'English' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 mr-5 text-center rounded-md`} onClick={() => setSelectedLanguage('English')}>English</button>
+                  <button className={`${selectedLanguage === '中文' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 text-center rounded-md`} onClick={() => setSelectedLanguage('中文')}>中文</button>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="mb-3">Profile</h2>
+                <Profile/>
+              </div>
             </div>
           </div>
       }

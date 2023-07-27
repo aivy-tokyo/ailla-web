@@ -5,9 +5,8 @@ import { useAtom } from "jotai";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import UiForDesktop from "./UiForDesktop";
+import { SelectedLanguageType } from "@/utils/types";
 
-
-type SelectedLanguageType = 'English' | '中文';
 
 export const UiContainer = () => {
   const [showHint, setShowHint] = useState<boolean>(false);
@@ -105,12 +104,14 @@ export const UiContainer = () => {
         : 
         <UiForSp
           showHint={showHint} 
-          handleSelectLanguage={handleSelectLanguage} 
+          // handleSelectLanguage={handleSelectLanguage} 
           handleShowHint={handleShowHint} 
           handleClickMicButton={handleClickMicButton} 
           userMessage={userMessage}
           handleChangeUserMessage={handleChangeUserMessage}
           isMicRecording={isMicRecording}
+          selectedLanguage={selectedLanguage}
+          setSelectedLanguage={setSelectedLanguage}
         />
       }
     </>
