@@ -110,6 +110,7 @@ export const UiContainer = () => {
           handleClickMicButton={handleClickMicButton} 
           userMessage={userMessage}
           handleChangeUserMessage={handleChangeUserMessage}
+          isMicRecording={isMicRecording}
         />
       }
     </>

@@ -32,6 +32,7 @@ interface Props {
   handleClickMicButton: () => void;
   userMessage: string;
   handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
+  isMicRecording: boolean;
 }
 
 const UiForSp = ({
@@ -40,7 +41,8 @@ const UiForSp = ({
   handleSelectLanguage, 
   handleClickMicButton, 
   userMessage, 
-  handleChangeUserMessage
+  handleChangeUserMessage,
+  isMicRecording,
 }: Props) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
 
@@ -73,9 +75,9 @@ const UiForSp = ({
           {speechTextArea()}
         </div>
         <div className="flex w-full h-16 bg-black  justify-between py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)]">
-        {/* <div className="flex w-full h-16 bg-black  justify-between py-3 m-auto "> */}
           <div className="flex">
-            <img src="/mic.png" alt="" className="" onClick={handleClickMicButton}/>
+            
+            <img src={isMicRecording ? 'micRed.png' : 'mic.png'} alt="" className="" onClick={handleClickMicButton}/>
             <input type="text" className=" px-4 bg-black text-white border border-white rounded-full" placeholder="コメントする" value={userMessage} onChange={handleChangeUserMessage}/>
             <img src="/send.png" alt="" className='h-[70%] ml-2 self-center'/>
           </div>
