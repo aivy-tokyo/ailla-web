@@ -56,19 +56,10 @@ const UiForDesktop = ({
         {
           showProfile ?
           <div className="fixed text-black bg-stone-300 w-[240px]  rounded-2xl p-5 pt-3 z-20 cursor-pointer">
-            <p className="font-bold  cursor-pointer mb-3" onClick={() => setShowProfile(false)}>プロフィール確認</p>
-            {/* <div className="flex mb-3">
-              <img src="myIcon.png" alt="" className="h-14 -ml-1"/>
-              <div>
-                <p>Taro</p>
-                <p>サンプル株式会社</p>
-              </div>
+            <div className="flex h-6" onClick={() => setShowProfile(false)}>
+              <img src="arrowDoubleLeft.png" alt="" />
+              <p className="font-bold  cursor-pointer mb-3">プロフィール確認</p>
             </div>
-            <p>sample@sample.com</p>
-            <p>090-0000-9999</p>
-            <p>東京都港区愛宕2-5-1</p>
-            <p>1991年1月1日</p>
-            <p>男性</p> */}
             <Profile/>
           </div>
            :
