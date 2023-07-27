@@ -29,7 +29,10 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage}: Props)=>
           <div className="speech-bubble-triangle-for-user absolute top-3 -right-10 "></div>
           <p>{text}</p>
         </div>
-        <img src="myIcon.png" alt="" className="h-14 relative -right-14"/>
+        <div className="relative -right-14 flex flex-col items-center">
+          <img src="myIcon.png" alt="" className="h-14 relative"/>
+          <p>Taro</p>
+        </div>
       </div>
     );
   };
