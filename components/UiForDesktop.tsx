@@ -111,7 +111,7 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage}: Props)=>
       {
         showChat ? 
         (
-          <div className="w-[500px] h-[500px] bg-stone-200 opacity-90 absolute bottom-[5px] right-[5px] rounded-3xl pt-5 text-black ">
+          <div className="w-[500px] h-[500px] bg-stone-200 opacity-90 absolute bottom-[5px] right-[5px] rounded-3xl pt-5 text-black z-10">
             <div className="overflow-y-scroll h-[88%]">
               {speechBubbleForAilla('Hello!! Hello!! Hello!! Hello!! Hello!! Hello!! ')}
               {speechBubbleForUser('Hello, AILLA! Hello, AILLA! Hello, AILLA! Hello, AILLA! Hello, AILLA! Hello, AILLA! ')}
@@ -132,11 +132,16 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage}: Props)=>
           </div>
         )
         :
-        <div className="h-[80px] w-[80px] bg-stone-200 fixed bottom-1 right-1 rounded-full flex justify-center items-center border-2 border-black cursor-pointer" onClick={() => setShowChat(true)}>
+        <div className="h-[80px] w-[80px] bg-stone-200 fixed bottom-1 right-1 rounded-full flex justify-center items-center border-2 border-black cursor-pointer z-10" onClick={() => setShowChat(true)}>
           <img src="chat.png" alt="" className="h-[50%]"/>
         </div>
       }
-      <div className=""></div>
+      {/* マイクボタン */}
+      <div className="fixed bottom-1 w-screen flex justify-center">
+        <div className="w-20 h-20 bg-red-300 rounded-full border-4 border-red-600 flex justify-center items-center cursor-pointer">
+          <img src="mic.png" alt="" className="w-[80%]"/>
+        </div>
+      </div>
     </>
   );
 };
