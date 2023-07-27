@@ -100,7 +100,7 @@ const UiForSp = ({
         //セッティングモーダル
         showSetting && 
           <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white">
-            <div className="flex justify-end py-2 pr-2">
+            <div className="flex justify-end py-3 pr-2">
               <img src="close.png" alt="" className="w-10 h-10" onClick={() => handleClickSettingButton()}/>
             </div>
             <div className="setting-container px-10">
