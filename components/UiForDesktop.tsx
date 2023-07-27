@@ -2,6 +2,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import Profile from "./Profile";
+import { SelectedLanguageType } from "@/utils/types";
 
 interface Props {
   showHint: boolean;
@@ -10,9 +11,18 @@ interface Props {
   handleClickMicButton: () => void;
   userMessage: string;
   handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
+  selectedLanguage: SelectedLanguageType;
 }
 
-const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage, handleClickMicButton, userMessage, handleChangeUserMessage}: Props)=>{
+const UiForDesktop = ({
+  showHint, 
+  handleShowHint, 
+  handleSelectLanguage, 
+  handleClickMicButton, 
+  userMessage, 
+  handleChangeUserMessage,
+  selectedLanguage,
+}: Props)=>{
   const [showProfile, setShowProfile] = useState<boolean>(false);
   const [showChat, setShowChat] = useState<boolean>(false);
 
@@ -75,7 +85,7 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage, handleCli
         }
       </div>
 
-      <div className="relative bg-red-500">
+      <div className="relative">
         {/* 上部右側のUI群 */}
         <div className="flex bg-emerald-300 fixed w-[500px] h-10 top-0 right-0 text-black justify-between">
           <div className="flex cursor-pointer items-center pl-3" onClick={handleShowHint}>
@@ -87,7 +97,7 @@ const UiForDesktop = ({showHint, handleShowHint, handleSelectLanguage, handleCli
           <div className="flex h-[80%] self-center pr-3">
             <EndTalkButton/>
             {/* 言語選択 */}
-            <select className="max-w-xs bg-gray-400 h-full w-32 rounded-md px-2" onChange={handleSelectLanguage}>
+            <select className="max-w-xs bg-gray-400 h-full w-32 rounded-md px-2" value={selectedLanguage} onChange={handleSelectLanguage}>
               {/* <option disabled selected>Pick your favorite Simpson</option> */}
               <option>English</option>
               <option>中文</option>

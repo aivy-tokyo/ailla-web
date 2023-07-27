@@ -100,6 +100,7 @@ export const UiContainer = () => {
           handleClickMicButton={handleClickMicButton} 
           userMessage={userMessage}
           handleChangeUserMessage={handleChangeUserMessage}
+          selectedLanguage={selectedLanguage}
         />
         : 
         <UiForSp
