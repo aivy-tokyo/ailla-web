@@ -65,11 +65,9 @@ const UiForSp = ({
   };
 
   const handleClickSettingButton = () => {
-    console.log(showSetting);
     setShowSetting(prev => !prev);
   };
 
-  console.log(selectedLanguage);
   return(
     <div className="">
       {/* SP版:上部のUI群 */}
