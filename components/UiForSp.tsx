@@ -82,16 +82,24 @@ const UiForSp = ({
       {
         // ヒント表示領域
         showHint && 
-          <div className="hint-container opacity-80 w-screen h-screen -z-0 top-12 flex items-center fixed">{/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
-            <div className="w-[95%] h-[180px] bg-black opacity-75 text-white rounded-3xl m-auto relative -top-12 px-5 py-3 overflow-y-scroll">
-              これはヒントです。これはヒントです。これはヒントです。これはヒントです。
-              これはヒントです。これはヒントです。これはヒントです。これはヒントです。
-              これはヒントです。これはヒントです。これはヒントです。これはヒントです。
-              これはヒントです。
-              これはヒントです。これはヒントです。これはヒントです。これはヒントです。
-              これはヒントです。これはヒントです。これはヒントです。これはヒントです。
-              これはヒントです。これはヒントです。これはヒントです。これはヒントです。
-              これはヒントです。
+          <div className="hint-container opacity-80 w-screen h-screen -z-0 top-12 flex items-center fixed ">{/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
+            <div className="w-full">
+              <div className="w-[95%] h-[180px] bg-black opacity-75 text-white rounded-3xl m-auto relative -top-16 px-5 py-3 overflow-y-scroll">
+                これはヒントです。これはヒントです。これはヒントです。これはヒントです。
+                これはヒントです。これはヒントです。これはヒントです。これはヒントです。
+                これはヒントです。これはヒントです。これはヒントです。これはヒントです。
+                これはヒントです。
+                これはヒントです。これはヒントです。これはヒントです。これはヒントです。
+                これはヒントです。これはヒントです。これはヒントです。これはヒントです。
+                これはヒントです。これはヒントです。これはヒントです。これはヒントです。
+                これはヒントです。
+              </div>
+              <div className="grid grid-cols-2 w-[95%] m-auto relative -top-10">
+                <div className="bg-black opacity-75 mr-3 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン1ボタン1ボタン1ボタン</div>
+                <div className="bg-black opacity-75 mr-3 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン2ボタン2ボタン2ボタン</div>
+                <div className="bg-black opacity-75 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン3ボタン3ボタン3ボタン</div>
+                <div className="bg-black opacity-75 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン4ボタン4ボタン4ボタン</div>
+              </div>
             </div>
           </div>
       }
@@ -122,8 +130,10 @@ const UiForSp = ({
 
       {/* 下部のUI群 */}
       <div className="fixed bottom-0 flex flex-col  justify-between w-full  ">
-        <div className="z-10 px-2 h-44 overflow-scroll">
-          {speechTextArea()}
+        <div className="z-10 px-2 h-44 mask-top-fadeout relative">
+          <div className="overflow-y-scroll absolute top-0 h-full fadeout-contents">
+            {speechTextArea()}
+          </div>
         </div>
         <div className="flex w-full h-16 bg-black  justify-between py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)]">
           <div className="flex">
