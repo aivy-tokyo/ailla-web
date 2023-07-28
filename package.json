@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@pixiv/three-vrm": "^2.0.1",
     "@types/dom-speech-recognition": "0.0.1",
     "@types/node": "20.4.4",

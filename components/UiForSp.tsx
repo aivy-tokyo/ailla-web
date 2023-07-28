@@ -75,16 +75,16 @@ const UiForSp = ({
         <TranslateToggleSwitch/>
         <div className="flex z-10">
           <EndTalkButton/>
-          <img src="/setting.png" alt="" className="w-auto cursor-pointer" onClick={() => handleClickSettingButton()}/>
+          <img src="/setting.png" alt="" className="w-10 cursor-pointer" onClick={() => handleClickSettingButton()}/>
         </div>
       </div>
 
       {
         // ヒント表示領域
         showHint && 
-          <div className="hint-container opacity-80 w-screen h-screen -z-0 top-12 flex items-center fixed ">{/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
+          <div className="hint-container opacity-80 w-screen h-screen -z-0 top-12 flex fixed ">{/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
             <div className="w-full">
-              <div className="w-[95%] h-[180px] bg-black opacity-75 text-white rounded-3xl m-auto relative -top-16 px-5 py-3 overflow-y-scroll">
+              <div className="w-[95%] h-[120px] bg-black opacity-75 text-white rounded-3xl m-auto relative top-10  px-5 py-3 overflow-y-scroll">
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
@@ -94,7 +94,7 @@ const UiForSp = ({
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
                 これはヒントです。
               </div>
-              <div className="grid grid-cols-2 w-[95%] m-auto relative -top-10">
+              <div className="grid grid-cols-2 w-[95%] m-auto relative top-14">
                 <div className="bg-black opacity-75 mr-3 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン1ボタン1ボタン1ボタン</div>
                 <div className="bg-black opacity-75 mr-3 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン2ボタン2ボタン2ボタン</div>
                 <div className="bg-black opacity-75 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン3ボタン3ボタン3ボタン</div>
@@ -137,7 +137,7 @@ const UiForSp = ({
         </div>
         <div className="flex w-full h-16 bg-black  justify-between py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)]">
           <div className="flex">
-            <img src={isMicRecording ? 'micRed.png' : 'mic.png'} alt="" className="" onClick={handleClickMicButton}/>
+            <img src={isMicRecording ? 'micRed.png' : 'mic.png'} alt="" className="w-10" onClick={handleClickMicButton}/>
             <input type="text" className=" px-4 bg-black text-white border border-white rounded-full" placeholder="コメントする" value={userMessage} onChange={handleChangeUserMessage}/>
             <img src="/send.png" alt="" className='h-[70%] ml-2 self-center'/>
           </div>
