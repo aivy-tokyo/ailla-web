@@ -3,6 +3,7 @@ import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SelectedLanguageType } from "@/utils/types";
 import Profile from "./Profile";
+import {FaMicrophone, FaRegPaperPlane, FaRegQuestionCircle, FaRegSun, FaRegTimesCircle, FaRegUserCircle} from 'react-icons/fa';
 
 const dummyUsersData = [
   {
@@ -55,8 +56,8 @@ const UiForSp = ({
   const speechTextArea = () => {
     return  dummyUsersData.map((userData,id) => (
       <div className="flex text-white" key={id}>
-        <img src={userData.iconSrc} alt="" className="h-14"/>
-        <div>
+        <FaRegUserCircle className="text-[66px] w-22 relative -top-3 text-white self-start"/>
+        <div className=" border-1 mb-2 px-2">
           <p className="text-xl font-bold">{userData.userName}</p>
           <p>{userData.text}</p>
         </div>
@@ -75,7 +76,7 @@ const UiForSp = ({
         <TranslateToggleSwitch/>
         <div className="flex z-10">
           <EndTalkButton/>
-          <img src="/setting.png" alt="" className="w-10 cursor-pointer" onClick={() => handleClickSettingButton()}/>
+          <FaRegSun className="text-white text-[34px] self-center" onClick={handleClickSettingButton}/>
         </div>
       </div>
 
@@ -109,7 +110,8 @@ const UiForSp = ({
         showSetting && 
           <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white">
             <div className="flex justify-end py-3 pr-2">
-              <img src="close.png" alt="" className="w-10 h-10" onClick={() => handleClickSettingButton()}/>
+              {/* <img src="close.png" alt="" className="w-10 h-10" onClick={() => handleClickSettingButton()}/> */}
+              <FaRegTimesCircle className="text-white text-[34px] mt-2 cursor-pointer" onClick={handleClickSettingButton}/>
             </div>
             <div className="setting-container px-10">
               <div className="mb-10">
@@ -136,12 +138,12 @@ const UiForSp = ({
           </div>
         </div>
         <div className="flex w-full h-16 bg-black  justify-between py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)]">
-          <div className="flex">
-            <img src={isMicRecording ? 'micRed.png' : 'mic.png'} alt="" className="w-10" onClick={handleClickMicButton}/>
-            <input type="text" className=" px-4 bg-black text-white border border-white rounded-full" placeholder="コメントする" value={userMessage} onChange={handleChangeUserMessage}/>
-            <img src="/send.png" alt="" className='h-[70%] ml-2 self-center'/>
+          <div className="flex items-center">
+            <FaMicrophone className={`${isMicRecording ? ' text-red-500' : 'text-white'} text-[30px] mr-1`} onClick={handleClickMicButton}/>
+            <input type="text" className="h-[34px] px-4 bg-black text-white border border-white rounded-full" placeholder="コメントする" value={userMessage} onChange={handleChangeUserMessage}/>
+            <FaRegPaperPlane className="text-white text-[30px] ml-2"/>
           </div>
-          <img src="/hint.png" alt="" className="h-[90%] self-center pr-2" onClick={handleShowHint}/>
+            <FaRegQuestionCircle className="text-white text-[35px] mr-1 self-center" onClick={handleShowHint}/>
         </div>
       </div>
     </div>

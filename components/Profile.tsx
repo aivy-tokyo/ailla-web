@@ -1,8 +1,12 @@
+import { FaRegUserCircle } from "react-icons/fa";
+import { useResponsive } from "@/hooks/useResponsive";
+
 const Profile = () => {
+  const { isDeskTop } = useResponsive()
   return (
     <>
       <div className="flex mb-3">
-        <img src="myIcon.png" alt="" className="h-14 -ml-1 mr-5"/>
+        <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 ${isDeskTop ? 'text-black' : 'text-white'} self-start `}/>
         <div>
           <p>Taro</p>
           <p>サンプル株式会社</p>
