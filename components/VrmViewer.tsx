@@ -11,7 +11,8 @@ export default function VrmViewer() {
     (canvas: HTMLCanvasElement) => {
       if (canvas) {
         viewer.setup(canvas);
-        viewer.loadVrm(buildUrl("/AvatarSample_A2.vrm"));
+        // viewer.loadVrm(buildUrl("/AvatarSample_A2.vrm"));
+        viewer.loadVrm("/AvatarSample_A2.vrm");
 
         // Drag and DropでVRMを差し替え
         canvas.addEventListener("dragover", function (event) {
@@ -44,7 +45,8 @@ export default function VrmViewer() {
   );
 
   return (
-    <div className={`absolute ${isDeskTop ? 'top-0 h-[100vh]' : ' top-[100px] h-[calc(100vh-100px)]' } left-0 w-screen  overflow-hidden -z-10`}>
+    // <div className={`absolute ${isDeskTop ? 'top-0 h-[100vh]' : ' top-[100px] h-[calc(100vh-100px)]' } left-0 w-screen  overflow-hidden`}>
+    <div className={`fixed h-screen left-0 top-0 w-full`}>
       <canvas ref={canvasRef} className={"h-full w-full"}></canvas>
     </div>
   );

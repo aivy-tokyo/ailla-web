@@ -56,7 +56,8 @@ export class Viewer {
 
       this._scene.add(this.model.vrm.scene);
 
-      const vrma = await loadVRMAnimation(buildUrl("/idle_loop.vrma"));
+      // const vrma = await loadVRMAnimation(buildUrl("/idle_loop.vrma"));
+      const vrma = await loadVRMAnimation("/idle_loop.vrma");
       if (vrma) this.model.loadAnimation(vrma);
 
       // HACK: アニメーションの原点がずれているので再生後にカメラ位置を調整する
@@ -92,8 +93,9 @@ export class Viewer {
 
     // camera
     this._camera = new THREE.PerspectiveCamera(20.0, width / height, 0.1, 20.0);
-    this._camera.position.set(0, 5.0, 1.5);
-    this._cameraControls?.target.set(0, 1.3, 0);
+    // this._camera.position.set(0, 5.0, 1.5);
+    this._camera.position.set(0, 10.0, 1.8);
+    this._cameraControls?.target.set(0, 3.3, 0);
     this._cameraControls?.update();
     // camera controls
     this._cameraControls = new OrbitControls(
@@ -140,8 +142,10 @@ export class Viewer {
     if (headNode) {
       const headWPos = headNode.getWorldPosition(new THREE.Vector3());
       const xOffset = 0;
+      // const yOffset = 0;
       const yOffset = 0;
-      const zOffset = 0.6;
+      // const zOffset = 0.6;
+      const zOffset = 1.6;
       this._camera?.position.set(
         this._camera.position.x + xOffset,
         headWPos.y + yOffset,

@@ -1,18 +1,18 @@
-import { DEFAULT_PARAM, KoeiroParam } from "@/features/constants/koeiroParam";
-import { SYSTEM_PROMPT } from "@/features/constants/systemPromptConstants";
+// import { DEFAULT_PARAM, KoeiroParam } from "@/features/constants/koeiroParam";
+// import { SYSTEM_PROMPT } from "@/features/constants/systemPromptConstants";
 import { Message } from "@/features/messages/messages";
 import exp from "constants";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { FortuneTellingLabel, FortuneTellingType, UserStatusType } from "./types";
-import { Prompt } from "@prisma/client";
-import { User } from "@line/bot-sdk";
+// import { Prompt } from "@prisma/client";
+// import { User } from "@line/bot-sdk";
 
 export const isYoutubeModeAtom = atomWithStorage<boolean>('isYoutubeMode',false);
-export const systemPromptAtom = atom<string>(SYSTEM_PROMPT);
+// export const systemPromptAtom = atom<string>(SYSTEM_PROMPT);
 export const chatProcessingAtom = atom<boolean>(false);
 
-export const koeiroParamAtom = atom<KoeiroParam>(DEFAULT_PARAM);
+// export const koeiroParamAtom = atom<KoeiroParam>(DEFAULT_PARAM);
 export const chatLogAtom = atom<Message[]>([]);
 export const assistantMessageAtom = atom<string>("");
 
@@ -42,8 +42,8 @@ export const isAiTalkingAtom = atom<boolean>(false);
 export const commentOwnerAtom = atom<string>("");
 export const commentOwnerIconUrlAtom = atom<string>('');
 
-export const promptsAtom = atom<Prompt[]>([]);
-export const targetPromptAtom = atom<Prompt | undefined>(undefined);
+// export const promptsAtom = atom<Prompt[]>([]);
+// export const targetPromptAtom = atom<Prompt | undefined>(undefined);
 
 export const userStatusAtom = atomWithStorage<UserStatusType>('userStatus','free');
 export const userNameAtom = atomWithStorage<string>('userName','');
@@ -52,3 +52,5 @@ export const userLevelAtom = atomWithStorage<number | string>('userLevel', 0);
 
 
 export const backgroundImageAtom = atom<string>("/uraraBackground.gif");
+
+export const isTranslatedAtom = atom<boolean>(false);
