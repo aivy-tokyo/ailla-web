@@ -16,7 +16,7 @@
   }
 }
 
-body {
+/* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -24,4 +24,34 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+} */
+
+.speech-bubble-triangle-for-ailla{
+  width: 0px;
+  height: 0px;
+  border: solid;
+  border-width: 15px;
+  border-right-width: 40px;
+  /* border-color: transparent transparent darkturquoise transparent; */
+  border-color: transparent #36d854 transparent transparent;
+}
+
+.speech-bubble-triangle-for-user{
+  width: 0px;
+  height: 0px;
+  border: solid;
+  border-width: 15px;
+  border-left-width: 40px;
+  /* border-color: transparent transparent transparent white; */
+  border-color: transparent transparent transparent white;
+}
+
+.mask-top-fadeout {
+  mask-image: linear-gradient(to bottom, transparent 0, #FFF 30%, #FFF 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #FFF 10%, #FFF 70%, transparent 100%);
+}
+
+.fadeout-contents{
+  position: absolute;
+  overflow: scroll;
 }
