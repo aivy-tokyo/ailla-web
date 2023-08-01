@@ -56,7 +56,7 @@ const UiForSp = ({
 
   const speechTextArea = () => {
     return  dummyUsersData.map((userData,id) => (
-      <div className="flex text-white max-w-[900px] justify-center" key={id}>
+      <div className="flex text-white max-w-[900px] justify-center pl-1" key={id}>
         <FaRegUserCircle className="text-[66px] w-10 relative -top-3 text-white self-start"/>
         <div className=" border-1 mb-2 px-2 w-[90%]">
           <p className="text-xl font-bold">{userData.userName}</p>
@@ -98,7 +98,7 @@ const UiForSp = ({
 
   const bottomUiDefault = () => {
     return (
-      <div className="flex max-w-[900px] h-[60px] justify-between items-center mx-auto px-5">
+      <div className="flex max-w-[250px] h-[60px] justify-between items-center mx-auto px-5">
         {questionIcon()}
         {micIcon()}
         {chatIcon()}
