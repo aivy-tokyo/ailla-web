@@ -84,10 +84,10 @@ const Profile = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="flex items-center mb-5">
-          <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 text-white self-start `}/>
+          <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 text-white self-center`}/>
           <div>
             <label htmlFor="">名前：</label>
-            <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} className="rounded-md p-2"/>
+            <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} className="rounded-md p-2 w-full"/>
           </div>
         </div>
 
@@ -114,36 +114,36 @@ const Profile = () => {
           </select>
         </div>
         <div className="flex justify-between">
-          <div className='bg-stone-300 w-24 text-black text-center rounded-md' onClick={() => setIsEditMode(false)}>キャンセル</div>
+          <div className='bg-stone-300 w-24 text-black text-center rounded-md cursor-pointer' onClick={() => setIsEditMode(false)}>キャンセル</div>
           <button type="submit" className='bg-stone-300 w-24 text-black text-center rounded-md'>更新する</button>
         </div>
 
       </form>
     </div>
     :
-    <>
+    <div className="w-full">
       <div className="flex flex-col mb-5">
         <div className="flex mb-5 items-center">
           <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 ${isDeskTop ? 'text-black' : 'text-white'} self-start `}/>
           <p className="text-2xl">{userName}</p>
         </div>
 
-        <div className="mb-5">
-          都道府県：
-          <p>{userPrefecture}</p>
-        </div>
-        <div className="mb-5">
-          誕生日：
-          <p>{userBirthday}</p>
-        </div>
+          <div className="mb-5">
+            都道府県：
+            <p>{userPrefecture}</p>
+          </div>
+          <div className="mb-5">
+            誕生日：
+            <p>{userBirthday}</p>
+          </div>
 
-        <div className="mb-5">
-          性別：
-          <p>{userGender}</p>
-        </div>
+          <div className="mb-5">
+            性別：
+            <p>{userGender}</p>
+          </div>
       </div>
       <div className='bg-stone-300 w-20 text-black text-center rounded-md' onClick={() => setIsEditMode(true)}>編集する</div>
-    </>
+    </div>
   );
 };
 

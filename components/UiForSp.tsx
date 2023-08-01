@@ -113,7 +113,7 @@ const UiForSp = ({
               <FaRegTimesCircle className="text-white text-[34px] mt-2 cursor-pointer" onClick={handleClickSettingButton}/>
             </div>
             <div className="flex justify-center">
-              <div className="flex flex-col items-center w-fit">
+              <div className="flex flex-col items-center w-[300px]">
                 <div className="mb-10 w-full">
                   <h2 className="mb-3">Language</h2>
                   <div className="flex justify-between">
@@ -122,7 +122,8 @@ const UiForSp = ({
                   </div>
                 </div>
 
-                <div className="w-fit">
+                {/* <div className="w-fit"> */}
+                <div className="w-full">
                   <h2 className="mb-3">Profile</h2>
                   <Profile/>
                 </div>
