@@ -3,7 +3,7 @@ import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SelectedLanguageType } from "@/utils/types";
 import Profile from "./Profile";
-import {FaMicrophone, FaRegPaperPlane, FaRegQuestionCircle, FaRegSun, FaRegTimesCircle, FaRegUserCircle} from 'react-icons/fa';
+import { FaMicrophone, FaQuestion, FaRegComments, FaRegPaperPlane, FaRegSun, FaRegTimesCircle, FaRegUserCircle} from 'react-icons/fa';
 
 const dummyUsersData = [
   {
@@ -52,6 +52,7 @@ const UiForSp = ({
   setSelectedLanguage,
 }: Props) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
+  const [chatIconSelected, setChatIconSelected] = useState<boolean>(false);
 
   const speechTextArea = () => {
     return  dummyUsersData.map((userData,id) => (
@@ -69,6 +70,58 @@ const UiForSp = ({
     setShowSetting(prev => !prev);
   };
 
+  const handleSendMessage = () => {
+    alert(`userMessage: ${userMessage} が送信されました`)
+  };
+
+  const questionIcon = () => {
+    return (
+      <div className="h-[35px] w-[35px] rounded-full self-center bg-black border-2 border-white flex justify-center items-center cursor-pointer">
+        <FaQuestion className="text-white text-[20px] " onClick={handleShowHint}/>
+      </div>
+    );
+  };
+  const micIcon = () => {
+    return (
+      <div className={`${chatIconSelected ? 'w-[35px] h-[35px] ': 'w-[60px] h-[60px]'} rounded-full  bg-black border-2 border-white flex justify-center items-center cursor-pointer`} onClick={handleClickMicButton}>
+        <FaMicrophone className={`${isMicRecording ? ' text-red-500' : 'text-white'} ${chatIconSelected ? 'text-[23px]' : 'text-[30px]'}`} />
+      </div>
+    );
+  };
+  const chatIcon = () => {
+    return (
+      <div className="h-[35px] w-[35px] rounded-full self-center bg-black border-2  border-white flex justify-center items-center cursor-pointer" onClick={() => setChatIconSelected(true)}>
+        <FaRegComments className="text-white text-[20px] self-center"/>
+      </div>
+    );
+  };
+
+  const bottomUiDefault = () => {
+    return (
+      <div className="flex max-w-[900px] h-[60px] justify-between items-center mx-auto px-5">
+        {questionIcon()}
+        {micIcon()}
+        {chatIcon()}
+      </div>
+    );
+  };
+
+  const bottomUiChatIconSelected = () => {
+    return (
+      <div className="flex max-w-[900px] h-[60px] items-center mx-auto justify-between px-5">
+        {questionIcon()}
+        <input type="text" placeholder="文字を入力する" value={userMessage} className="w-[70%] rounded-full px-4 h-10 text-white" onChange={handleChangeUserMessage}/>
+        {userMessage.length > 0 ? 
+          <div className="w-[35px] h-[35px] rounded-full bg-black border-2 border-white flex justify-center items-center pr-1" onClick={()=> handleSendMessage()}>
+            <FaRegPaperPlane className="text-white text-[20px]"/>
+          </div> 
+          : 
+          micIcon()
+        }
+      </div>
+    );
+  };
+
   return(
     <div className="">
       {/* SP版:上部のUI群 */}
@@ -83,9 +136,10 @@ const UiForSp = ({
       {
         // ヒント表示領域
         showHint && 
-          <div className="hint-container opacity-80 w-screen h-screen -z-0 top-12 flex fixed ">{/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
-            <div className="w-full">
-              <div className="w-[95%] h-[120px] bg-black opacity-75 text-white rounded-3xl m-auto relative top-10  px-5 py-3 overflow-y-scroll">
+          <div className="hint-container opacity-80 w-screen h-screen -z-0 top-12 flex fixed">{/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
+            <div className="w-full flex items-center max-w-[900px] justify-center m-auto">
+              {/* ヒントかボタンのどちらかを表示 */}
+              <div className="w-[95%] h-[120px] bg-black opacity-75 text-white rounded-3xl m-auto relative -top-8  px-5 py-3 overflow-y-scroll">
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
@@ -95,12 +149,12 @@ const UiForSp = ({
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
                 これはヒントです。
               </div>
-              <div className="grid grid-cols-2 w-[95%] m-auto relative top-14">
-                <div className="bg-black opacity-75 mr-3 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン1ボタン1ボタン1ボタン</div>
-                <div className="bg-black opacity-75 mr-3 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン2ボタン2ボタン2ボタン</div>
-                <div className="bg-black opacity-75 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン3ボタン3ボタン3ボタン</div>
-                <div className="bg-black opacity-75 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン4ボタン4ボタン4ボタン</div>
-              </div>
+              {/* <div className="grid grid-cols-2 w-[95%] m-auto relative -top-8">
+                <div className="bg-black opacity-75 cursor-pointer rounded-md w-[95%] h-10 m-auto  my-3 px-2 text-center flex items-center justify-center">ボタン1ボタン1ボタン1ボタン</div>
+                <div className="bg-black opacity-75 cursor-pointer rounded-md w-[95%] h-10 m-auto  my-3 px-2 text-center flex items-center justify-center">ボタン2ボタン2ボタン2ボタン</div>
+                <div className="bg-black opacity-75 cursor-pointer rounded-md  w-[95%] px-2 h-10 m-auto my-3 text-center flex items-center justify-center">ボタン3ボタン3ボタン3ボタン</div>
+                <div className="bg-black opacity-75 cursor-pointer rounded-md  w-[95%] px-2 h-10 m-auto my-3 text-center flex items-center justify-center">ボタン4ボタン4ボタン4ボタン</div>
+              </div> */}
             </div>
           </div>
       }
@@ -139,13 +193,12 @@ const UiForSp = ({
             {speechTextArea()}
           </div>
         </div>
-        <div className="flex w-full h-16 bg-black  justify-between py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)]">
-          <div className="flex items-center">
-            <FaMicrophone className={`${isMicRecording ? ' text-red-500' : 'text-white'} text-[30px] mr-1`} onClick={handleClickMicButton}/>
-            <input type="text" className="h-[34px] px-4 bg-black text-white border border-white rounded-full" placeholder="コメントする" value={userMessage} onChange={handleChangeUserMessage}/>
-            <FaRegPaperPlane className="text-white text-[30px] ml-2"/>
-          </div>
-            <FaRegQuestionCircle className="text-white text-[35px] mr-1 self-center" onClick={handleShowHint}/>
+        <div className=" w-full h-18 bg-black    py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)] ">
+          {chatIconSelected ? 
+            bottomUiChatIconSelected()
+            : 
+            bottomUiDefault()
+          }
         </div>
       </div>
     </div>

@@ -124,7 +124,7 @@ const Profile = () => {
     <div className="w-full">
       <div className="flex flex-col mb-5">
         <div className="flex mb-5 items-center">
-          <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 ${isDeskTop ? 'text-black' : 'text-white'} self-start `}/>
+          <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 text-white self-start `}/>
           <p className="text-2xl">{userName}</p>
         </div>
 
@@ -142,7 +142,7 @@ const Profile = () => {
             <p>{userGender}</p>
           </div>
       </div>
-      <div className='bg-stone-300 w-20 text-black text-center rounded-md' onClick={() => setIsEditMode(true)}>編集する</div>
+      <div className='bg-stone-300 w-20 text-black text-center rounded-md cursor-pointer' onClick={() => setIsEditMode(true)}>編集する</div>
     </div>
   );
 };
