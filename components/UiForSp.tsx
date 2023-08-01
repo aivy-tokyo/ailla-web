@@ -9,7 +9,7 @@ const dummyUsersData = [
   {
     iconSrc: 'myIcon.png',
     userName: 'Taro',
-    text: 'This is sample text. This is sample text.This is sample text.This is sample text.This is sample text.',
+    text: 'This is sample text. This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.',
   },
   {
     iconSrc: 'myIcon.png',
@@ -55,9 +55,9 @@ const UiForSp = ({
 
   const speechTextArea = () => {
     return  dummyUsersData.map((userData,id) => (
-      <div className="flex text-white" key={id}>
-        <FaRegUserCircle className="text-[66px] w-22 relative -top-3 text-white self-start"/>
-        <div className=" border-1 mb-2 px-2">
+      <div className="flex text-white max-w-[900px] justify-center" key={id}>
+        <FaRegUserCircle className="text-[66px] w-10 relative -top-3 text-white self-start"/>
+        <div className=" border-1 mb-2 px-2 w-[90%]">
           <p className="text-xl font-bold">{userData.userName}</p>
           <p>{userData.text}</p>
         </div>
@@ -134,8 +134,8 @@ const UiForSp = ({
 
       {/* 下部のUI群 */}
       <div className="fixed bottom-0 flex flex-col  justify-between w-full  ">
-        <div className="z-10 px-2 h-44 mask-top-fadeout relative">
-          <div className="overflow-y-scroll absolute top-0 h-full fadeout-contents">
+        <div className="z-10 px-2 h-44 mask-top-fadeout relative flex justify-center">
+          <div className="overflow-y-scroll absolute top-0 py-5 h-full fadeout-contents">
             {speechTextArea()}
           </div>
         </div>
