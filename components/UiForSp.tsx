@@ -110,21 +110,22 @@ const UiForSp = ({
         showSetting && 
           <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white">
             <div className="flex justify-end py-3 pr-2">
-              {/* <img src="close.png" alt="" className="w-10 h-10" onClick={() => handleClickSettingButton()}/> */}
               <FaRegTimesCircle className="text-white text-[34px] mt-2 cursor-pointer" onClick={handleClickSettingButton}/>
             </div>
-            <div className="setting-container px-10">
-              <div className="mb-10">
-                <h2 className="mb-3">Language</h2>
-                <div className="flex items-center">
-                  <button className={`${selectedLanguage === 'English' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 mr-5 text-center rounded-md`} onClick={() => setSelectedLanguage('English')}>English</button>
-                  <button className={`${selectedLanguage === '中文' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 text-center rounded-md`} onClick={() => setSelectedLanguage('中文')}>中文</button>
+            <div className="flex justify-center">
+              <div className="flex flex-col items-center w-fit">
+                <div className="mb-10 w-full">
+                  <h2 className="mb-3">Language</h2>
+                  <div className="flex justify-between">
+                    <button className={`${selectedLanguage === 'English' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 mr-5 text-center rounded-md`} onClick={() => setSelectedLanguage('English')}>English</button>
+                    <button className={`${selectedLanguage === '中文' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 text-center rounded-md`} onClick={() => setSelectedLanguage('中文')}>中文</button>
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <h2 className="mb-3">Profile</h2>
-                <Profile/>
+                <div className="w-fit">
+                  <h2 className="mb-3">Profile</h2>
+                  <Profile/>
+                </div>
               </div>
             </div>
           </div>

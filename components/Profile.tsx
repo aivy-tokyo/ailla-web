@@ -50,7 +50,7 @@ const Profile = () => {
   };
   useEffect(()=>{
     fetchUserInfo();
-  },[]);
+  },[isEditMode]);
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
@@ -84,7 +84,7 @@ const Profile = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="flex items-center mb-5">
-          <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 ${isDeskTop ? 'text-black' : 'text-white'} self-start `}/>
+          <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 text-white self-start `}/>
           <div>
             <label htmlFor="">名前：</label>
             <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} className="rounded-md p-2"/>
@@ -113,7 +113,11 @@ const Profile = () => {
             <option value="選択しない">選択しない</option>
           </select>
         </div>
-        <button type="submit" className='bg-stone-300 w-20 text-black text-center rounded-md'>更新する</button>
+        <div className="flex justify-between">
+          <div className='bg-stone-300 w-24 text-black text-center rounded-md' onClick={() => setIsEditMode(false)}>キャンセル</div>
+          <button type="submit" className='bg-stone-300 w-24 text-black text-center rounded-md'>更新する</button>
+        </div>
+
       </form>
     </div>
     :
@@ -123,9 +127,20 @@ const Profile = () => {
           <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 ${isDeskTop ? 'text-black' : 'text-white'} self-start `}/>
           <p className="text-2xl">{userName}</p>
         </div>
-        <p>{userPrefecture}</p>
-        <p>{userBirthday}</p>
-        <p>{userGender}</p>
+
+        <div className="mb-5">
+          都道府県：
+          <p>{userPrefecture}</p>
+        </div>
+        <div className="mb-5">
+          誕生日：
+          <p>{userBirthday}</p>
+        </div>
+
+        <div className="mb-5">
+          性別：
+          <p>{userGender}</p>
+        </div>
       </div>
       <div className='bg-stone-300 w-20 text-black text-center rounded-md' onClick={() => setIsEditMode(true)}>編集する</div>
     </>
