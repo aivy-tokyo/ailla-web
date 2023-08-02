@@ -1,9 +1,12 @@
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SelectedLanguageType } from "@/utils/types";
 import Profile from "./Profile";
 import { FaMicrophone, FaQuestion, FaRegComments, FaRegPaperPlane, FaRegSun, FaRegTimesCircle, FaRegUserCircle} from 'react-icons/fa';
+import { avatarPathAtom } from "@/utils/atoms";
+import { useAtom } from "jotai";
+import { avatars } from "@/utils/constants";
 
 const dummyUsersData = [
   {
@@ -26,7 +29,7 @@ const dummyUsersData = [
     userName: 'Taro2',
     text: 'Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! ',
   },
-]
+];
 
 type Props = {
   showHint: boolean;
@@ -53,6 +56,7 @@ const UiForSp = ({
 }: Props) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
   const [chatIconSelected, setChatIconSelected] = useState<boolean>(false);
+  const [avatarPath,setAvatarPath] = useAtom(avatarPathAtom);
 
   const speechTextArea = () => {
     return  dummyUsersData.map((userData,id) => (
@@ -122,6 +126,50 @@ const UiForSp = ({
     );
   };
 
+  const handleChangeAvatar = (e: ChangeEvent<HTMLSelectElement>) => {
+    setAvatarPath(e.target.value);
+  };
+
+  const settingContainer = () => {
+    return (
+      <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white">
+        <div className="flex justify-end py-3 pr-2">
+          <FaRegTimesCircle className="text-white text-[34px] mt-2 cursor-pointer" onClick={handleClickSettingButton}/>
+        </div>
+        <div className="flex justify-center">
+          <div className="flex flex-col items-center w-[300px]">
+            {/*  言語選択UI */}
+            <div className="mb-10 w-full">
+              <h2 className="mb-3 font-bold">言語を選ぶ</h2>
+              <div className="flex justify-between">
+                <button className={`${selectedLanguage === 'English' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 mr-5 text-center rounded-md`} onClick={() => setSelectedLanguage('English')}>English</button>
+                <button className={`${selectedLanguage === '中文' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 text-center rounded-md`} onClick={() => setSelectedLanguage('中文')}>中文</button>
+              </div>
+            </div>
+            {/* プロフィール表示・更新UI */}
+            <div className="w-full">
+              <Profile/>
+            </div>
+            {/* アバター・背景の変更UI */}
+            <div className="w-full">
+              <h2 className="font-bold mb-5">アバターを選ぶ</h2>
+              <select className="rounded-md p-2 mb-5" placeholder="選択する" onChange={(e)=> handleChangeAvatar(e)}>
+                <option value="" disabled selected>選択してください</option>
+                {
+                  avatars.map((avatar,index)=> {
+                    return (
+                      <option key={index} value={avatar.path}>{avatar.label}</option>
+                    );
+                  })
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  };
+
   return(
     <div className="">
       {/* SP版:上部のUI群 */}
@@ -164,28 +212,7 @@ const UiForSp = ({
       {
         //セッティングモーダル
         showSetting ? 
-          <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white">
-            <div className="flex justify-end py-3 pr-2">
-              <FaRegTimesCircle className="text-white text-[34px] mt-2 cursor-pointer" onClick={handleClickSettingButton}/>
-            </div>
-            <div className="flex justify-center">
-              <div className="flex flex-col items-center w-[300px]">
-                <div className="mb-10 w-full">
-                  <h2 className="mb-3">Language</h2>
-                  <div className="flex justify-between">
-                    <button className={`${selectedLanguage === 'English' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 mr-5 text-center rounded-md`} onClick={() => setSelectedLanguage('English')}>English</button>
-                    <button className={`${selectedLanguage === '中文' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 text-center rounded-md`} onClick={() => setSelectedLanguage('中文')}>中文</button>
-                  </div>
-                </div>
-
-                {/* <div className="w-fit"> */}
-                <div className="w-full">
-                  <h2 className="mb-3">Profile</h2>
-                  <Profile/>
-                </div>
-              </div>
-            </div>
-          </div>
+          settingContainer()
           :
           <></>
       }

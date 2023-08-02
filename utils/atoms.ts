@@ -5,6 +5,7 @@ import exp from "constants";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { FortuneTellingLabel, FortuneTellingType, UserStatusType } from "./types";
+import { avatars } from "./constants";
 // import { Prompt } from "@prisma/client";
 // import { User } from "@line/bot-sdk";
 
@@ -54,3 +55,5 @@ export const userLevelAtom = atomWithStorage<number | string>('userLevel', 0);
 export const backgroundImageAtom = atom<string>("/uraraBackground.gif");
 
 export const isTranslatedAtom = atom<boolean>(false);
+
+export const avatarPathAtom = atomWithStorage<string>('avatar',avatars[0].path);
