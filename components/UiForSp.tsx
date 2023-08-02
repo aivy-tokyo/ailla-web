@@ -28,7 +28,7 @@ const dummyUsersData = [
   },
 ]
 
-interface Props {
+type Props = {
   showHint: boolean;
   handleShowHint: () => void;
   // handleSelectLanguage: (e: ChangeEvent<HTMLSelectElement>) => void;
@@ -135,7 +135,7 @@ const UiForSp = ({
 
       {
         // ヒント表示領域
-        showHint && 
+        showHint ? 
           <div className="hint-container opacity-80 w-screen h-screen -z-0 top-12 flex fixed">{/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
             <div className="w-full flex items-center max-w-[900px] justify-center m-auto">
               {/* ヒントかボタンのどちらかを表示 */}
@@ -157,11 +157,13 @@ const UiForSp = ({
               </div> */}
             </div>
           </div>
+          :
+          <></>
       }
 
       {
         //セッティングモーダル
-        showSetting && 
+        showSetting ? 
           <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white">
             <div className="flex justify-end py-3 pr-2">
               <FaRegTimesCircle className="text-white text-[34px] mt-2 cursor-pointer" onClick={handleClickSettingButton}/>
@@ -184,6 +186,8 @@ const UiForSp = ({
               </div>
             </div>
           </div>
+          :
+          <></>
       }
 
       {/* 下部のUI群 */}
