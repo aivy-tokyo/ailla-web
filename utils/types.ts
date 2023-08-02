@@ -37,3 +37,10 @@ export type Prefecture =
     label: string,
     path: string,
   };
+
+  export interface BackgroundImage {
+    label: string,
+    path: string,
+  };
+
+

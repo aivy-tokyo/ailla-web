@@ -4,9 +4,9 @@ import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SelectedLanguageType } from "@/utils/types";
 import Profile from "./Profile";
 import { FaMicrophone, FaQuestion, FaRegComments, FaRegPaperPlane, FaRegSun, FaRegTimesCircle, FaRegUserCircle} from 'react-icons/fa';
-import { avatarPathAtom } from "@/utils/atoms";
+import { avatarPathAtom, backgroundImagePathAtom } from "@/utils/atoms";
 import { useAtom } from "jotai";
-import { avatars } from "@/utils/constants";
+import { avatars, backgroundImages } from "@/utils/constants";
 
 const dummyUsersData = [
   {
@@ -57,6 +57,7 @@ const UiForSp = ({
   const [showSetting, setShowSetting] = useState<boolean>(false);
   const [chatIconSelected, setChatIconSelected] = useState<boolean>(false);
   const [avatarPath,setAvatarPath] = useAtom(avatarPathAtom);
+  const [backgroundImagePath, setBackgroundImagePath] = useAtom(backgroundImagePathAtom);
 
   const speechTextArea = () => {
     return  dummyUsersData.map((userData,id) => (
@@ -130,6 +131,10 @@ const UiForSp = ({
     setAvatarPath(e.target.value);
   };
 
+  const handleChangeBackgroundImage = (e: ChangeEvent<HTMLSelectElement>) => {
+    setBackgroundImagePath(e.target.value);
+  };
+
   const settingContainer = () => {
     return (
       <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white">
@@ -150,7 +155,7 @@ const UiForSp = ({
             <div className="w-full">
               <Profile/>
             </div>
-            {/* アバター・背景の変更UI */}
+            {/* アバターの変更UI */}
             <div className="w-full">
               <h2 className="font-bold mb-5">アバターを選ぶ</h2>
               <select className="rounded-md p-2 mb-5" placeholder="選択する" onChange={(e)=> handleChangeAvatar(e)}>
@@ -159,6 +164,20 @@ const UiForSp = ({
                   avatars.map((avatar,index)=> {
                     return (
                       <option key={index} value={avatar.path}>{avatar.label}</option>
+                    );
+                  })
+                }
+              </select>
+            </div>
+            {/* 背景の変更UI */}
+            <div className="w-full">
+              <h2 className="font-bold mb-5">背景を選ぶ</h2>
+              <select className="rounded-md p-2 mb-5" placeholder="選択する" onChange={(e)=> handleChangeBackgroundImage(e)}>
+                <option value="" disabled selected>選択してください</option>
+                {
+                  backgroundImages.map((image,index)=> {
+                    return (
+                      <option key={index} value={image.path}>{image.label}</option>
                     );
                   })
                 }
