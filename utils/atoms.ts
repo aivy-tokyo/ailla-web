@@ -52,3 +52,5 @@ export const isTranslatedAtom = atom<boolean>(false);
 
 export const avatarPathAtom = atomWithStorage<string>('avatar',avatars[0].path);
 export const backgroundImagePathAtom = atomWithStorage<string> ('backgroundImagePath',backgroundImages[0].path);
+
+export const userIdAtom = atomWithStorage<string>('userId', '');

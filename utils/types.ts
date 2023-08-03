@@ -33,14 +33,22 @@ export type Prefecture =
   | '宮崎県' | '鹿児島県' | '沖縄県';
 
 
-  export interface Avatar {
-    label: string,
-    path: string,
-  };
+export interface Avatar {
+  label: string,
+  path: string,
+};
+export interface BackgroundImage {
+  label: string,
+  path: string,
+};
 
-  export interface BackgroundImage {
-    label: string,
-    path: string,
-  };
+export type UserGenderType = '男性' | '女性' | '選択しない'
+export interface UserProfile  {
+  id: {S: string},
+  userName: {S: string};
+  userPrefecture: {S: Prefecture};
+  userBirthday: {S: string};
+  userGender: {S: UserGenderType};
+}
 
 

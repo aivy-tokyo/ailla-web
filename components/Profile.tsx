@@ -2,31 +2,10 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { useResponsive } from "@/hooks/useResponsive";
 import { useEffect, useState } from "react";
 import { label } from "three/examples/jsm/nodes/Nodes.js";
-import { Prefecture } from "@/utils/types";
-
-type UserGenderType = '男性' | '女性' | '選択しない'
-interface UserProfile  {
-  userName: {S: string};
-  userPrefecture: {S: Prefecture};
-  userBirthday: {S: string};
-  userGender: {S: UserGenderType};
-}
-
-const prefectures: Prefecture[] = [
-  '北海道', '青森県', '岩手県', '宮城県', 
-  '秋田県', '山形県', '福島県', '茨城県', 
-  '栃木県', '群馬県', '埼玉県', '千葉県', 
-  '東京都', '神奈川県', '新潟県', '富山県', 
-  '石川県', '福井県', '山梨県', '長野県', 
-  '岐阜県', '静岡県', '愛知県', '三重県', 
-  '滋賀県', '京都府', '大阪府', '兵庫県', 
-  '奈良県', '和歌山県', '鳥取県', '島根県', 
-  '岡山県', '広島県', '山口県', '徳島県', 
-  '香川県', '愛媛県', '高知県', '福岡県', 
-  '佐賀県', '長崎県', '熊本県', '大分県', 
-  '宮崎県', '鹿児島県', '沖縄県'
-];
-
+import { Prefecture, UserGenderType, UserProfile } from "@/utils/types";
+import { prefectures } from "@/utils/constants";
+import { useAtomValue } from "jotai";
+import { userIdAtom } from "@/utils/atoms";
 
 const Profile = () => {
   const { isDeskTop } = useResponsive()
@@ -35,13 +14,16 @@ const Profile = () => {
   const [userPrefecture, setUserPrefecture] = useState<Prefecture>();
   const [userBirthday, setUserBirthday] = useState<string>('');
   const [userGender, setUserGender] = useState<UserGenderType>('選択しない');
-  const [userId, setUserId] = useState<string>('97004af5-b779-48c3-be71-44d8983a675d');
+  // const [userId, setUserId] = useState<string>('97004af5-b779-48c3-be71-44d8983a675d');
+  const userId = useAtomValue(userIdAtom);
 
 
   const fetchUserInfo = async () => {
+    if(!userId)return;
     const res = await fetch(`/api/user?id=${userId}`)
 
     const userProfile : UserProfile = await res.json();
+    console.log('userProfile->',userProfile)
 
     setUserName(userProfile.userName.S);
     setUserPrefecture(userProfile.userPrefecture.S);
@@ -50,10 +32,11 @@ const Profile = () => {
   };
   useEffect(()=>{
     fetchUserInfo();
-  },[isEditMode]);
+  },[isEditMode,userId]);
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
+    if(!userId)return;
     
     fetch(`/api/user?id`, {
       method: 'POST',
