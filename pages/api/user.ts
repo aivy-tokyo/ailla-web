@@ -17,7 +17,10 @@ export default async function handler(
   if (req.method === 'PUT') {
     const Item = {
       id: { S: uuid.v4() },
-      content: { S: req.body.content }
+      userName: { S: req.body.userName },
+      userPrefecture: { S: req.body.userPrefecture },
+      userBirthday: { S: req.body.userBirthday },
+      userGender: { S: req.body.userGender },
     };
     await client.send(
       new PutItemCommand({
@@ -34,7 +37,7 @@ export default async function handler(
       new GetItemCommand({
         TableName: process.env.TABLE_NAME,
         Key: {
-          id: { S: req.query.id }
+          id: { S: req.query.id as string}
         }
       })
     );
@@ -49,9 +52,12 @@ export default async function handler(
         Key: {
           id: { S: req.body.id }
         },
-        UpdateExpression: 'set content = :c',
+        UpdateExpression: 'set userName = :n, userPrefecture = :p, userBirthday = :b ,userGender = :g',
         ExpressionAttributeValues: {
-          ':c': { S: req.body.content }
+          ':n': { S: req.body.userName },
+          ':p': { S: req.body.userPrefecture },
+          ':b': { S: req.body.userBirthday },
+          ':g': { S: req.body.userGender },
         },
         ReturnValues: 'ALL_NEW'
       })

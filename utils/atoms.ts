@@ -5,6 +5,7 @@ import exp from "constants";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { FortuneTellingLabel, FortuneTellingType, UserStatusType } from "./types";
+import { avatars, backgroundImages } from "./constants";
 // import { Prompt } from "@prisma/client";
 // import { User } from "@line/bot-sdk";
 
@@ -42,15 +43,12 @@ export const isAiTalkingAtom = atom<boolean>(false);
 export const commentOwnerAtom = atom<string>("");
 export const commentOwnerIconUrlAtom = atom<string>('');
 
-// export const promptsAtom = atom<Prompt[]>([]);
-// export const targetPromptAtom = atom<Prompt | undefined>(undefined);
-
 export const userStatusAtom = atomWithStorage<UserStatusType>('userStatus','free');
 export const userNameAtom = atomWithStorage<string>('userName','');
 
 export const userLevelAtom = atomWithStorage<number | string>('userLevel', 0);
 
-
-export const backgroundImageAtom = atom<string>("/uraraBackground.gif");
-
 export const isTranslatedAtom = atom<boolean>(false);
+
+export const avatarPathAtom = atomWithStorage<string>('avatar',avatars[0].path);
+export const backgroundImagePathAtom = atomWithStorage<string> ('backgroundImagePath',backgroundImages[0].path);

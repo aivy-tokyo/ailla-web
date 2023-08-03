@@ -91,30 +91,17 @@ export const UiContainer = () => {
   
   if(!isClient)return<></>; //MEMO: ハイドレーションエラーを回避するための状態管理
   return (
-    <>
-      {isDeskTop ? 
-        <UiForDesktop 
-          showHint={showHint} 
-          handleSelectLanguage={handleSelectLanguage} 
-          handleShowHint={handleShowHint} 
-          handleClickMicButton={handleClickMicButton} 
-          userMessage={userMessage}
-          handleChangeUserMessage={handleChangeUserMessage}
-          selectedLanguage={selectedLanguage}
-        />
-        : 
-        <UiForSp
-          showHint={showHint} 
-          // handleSelectLanguage={handleSelectLanguage} 
-          handleShowHint={handleShowHint} 
-          handleClickMicButton={handleClickMicButton} 
-          userMessage={userMessage}
-          handleChangeUserMessage={handleChangeUserMessage}
-          isMicRecording={isMicRecording}
-          selectedLanguage={selectedLanguage}
-          setSelectedLanguage={setSelectedLanguage}
-        />
-      }
-    </>
+    <UiForSp
+      showHint={showHint} 
+      // handleSelectLanguage={handleSelectLanguage} 
+      handleShowHint={handleShowHint} 
+      handleClickMicButton={handleClickMicButton} 
+      userMessage={userMessage}
+      handleChangeUserMessage={handleChangeUserMessage}
+      isMicRecording={isMicRecording}
+      selectedLanguage={selectedLanguage}
+      setSelectedLanguage={setSelectedLanguage}
+    />
+  
   ); 
 }
