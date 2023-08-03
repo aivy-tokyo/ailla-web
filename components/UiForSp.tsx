@@ -1,15 +1,18 @@
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SelectedLanguageType } from "@/utils/types";
 import Profile from "./Profile";
-import {FaMicrophone, FaRegPaperPlane, FaRegQuestionCircle, FaRegSun, FaRegTimesCircle, FaRegUserCircle} from 'react-icons/fa';
+import { FaMicrophone, FaQuestion, FaRegComments, FaRegPaperPlane, FaRegSun, FaRegTimesCircle, FaRegUserCircle} from 'react-icons/fa';
+import { avatarPathAtom, backgroundImagePathAtom } from "@/utils/atoms";
+import { useAtom } from "jotai";
+import { avatars, backgroundImages } from "@/utils/constants";
 
 const dummyUsersData = [
   {
     iconSrc: 'myIcon.png',
     userName: 'Taro',
-    text: 'This is sample text. This is sample text.This is sample text.This is sample text.This is sample text.',
+    text: 'This is sample text. This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.',
   },
   {
     iconSrc: 'myIcon.png',
@@ -26,9 +29,9 @@ const dummyUsersData = [
     userName: 'Taro2',
     text: 'Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! ',
   },
-]
+];
 
-interface Props {
+type Props = {
   showHint: boolean;
   handleShowHint: () => void;
   // handleSelectLanguage: (e: ChangeEvent<HTMLSelectElement>) => void;
@@ -52,12 +55,15 @@ const UiForSp = ({
   setSelectedLanguage,
 }: Props) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
+  const [chatIconSelected, setChatIconSelected] = useState<boolean>(false);
+  const [avatarPath,setAvatarPath] = useAtom(avatarPathAtom);
+  const [backgroundImagePath, setBackgroundImagePath] = useAtom(backgroundImagePathAtom);
 
   const speechTextArea = () => {
     return  dummyUsersData.map((userData,id) => (
-      <div className="flex text-white" key={id}>
-        <FaRegUserCircle className="text-[66px] w-22 relative -top-3 text-white self-start"/>
-        <div className=" border-1 mb-2 px-2">
+      <div className="flex text-white max-w-[900px] justify-center pl-1" key={id}>
+        <FaRegUserCircle className="text-[66px] w-10 relative -top-3 text-white self-start"/>
+        <div className=" border-1 mb-2 px-2 w-[90%]">
           <p className="text-xl font-bold">{userData.userName}</p>
           <p>{userData.text}</p>
         </div>
@@ -67,6 +73,120 @@ const UiForSp = ({
 
   const handleClickSettingButton = () => {
     setShowSetting(prev => !prev);
+  };
+
+  const handleSendMessage = () => {
+    alert(`userMessage: ${userMessage} が送信されました`)
+  };
+
+  const questionIcon = () => {
+    return (
+      <div className="h-[35px] w-[35px] rounded-full self-center bg-black border-2 border-white flex justify-center items-center cursor-pointer">
+        <FaQuestion className="text-white text-[20px] " onClick={handleShowHint}/>
+      </div>
+    );
+  };
+  const micIcon = () => {
+    return (
+      <div className={`${chatIconSelected ? 'w-[35px] h-[35px] ': 'w-[60px] h-[60px]'} rounded-full  bg-black border-2 border-white flex justify-center items-center cursor-pointer`} onClick={handleClickMicButton}>
+        <FaMicrophone className={`${isMicRecording ? ' text-red-500' : 'text-white'} ${chatIconSelected ? 'text-[23px]' : 'text-[30px]'}`} />
+      </div>
+    );
+  };
+  const chatIcon = () => {
+    return (
+      <div className="h-[35px] w-[35px] rounded-full self-center bg-black border-2  border-white flex justify-center items-center cursor-pointer" onClick={() => setChatIconSelected(true)}>
+        <FaRegComments className="text-white text-[20px] self-center"/>
+      </div>
+    );
+  };
+
+  const bottomUiDefault = () => {
+    return (
+      <div className="flex max-w-[250px] h-[60px] justify-between items-center mx-auto px-5">
+        {questionIcon()}
+        {micIcon()}
+        {chatIcon()}
+      </div>
+    );
+  };
+
+  const bottomUiChatIconSelected = () => {
+    return (
+      <div className="flex max-w-[900px] h-[60px] items-center mx-auto justify-between px-5">
+        {questionIcon()}
+        <input type="text" placeholder="文字を入力する" value={userMessage} className="w-[70%] rounded-full px-4 h-10 text-white" onChange={handleChangeUserMessage}/>
+        {userMessage.length > 0 ? 
+          <div className="w-[35px] h-[35px] rounded-full bg-black border-2 border-white flex justify-center items-center pr-1" onClick={()=> handleSendMessage()}>
+            <FaRegPaperPlane className="text-white text-[20px]"/>
+          </div> 
+          : 
+          micIcon()
+        }
+      </div>
+    );
+  };
+
+  const handleChangeAvatar = (e: ChangeEvent<HTMLSelectElement>) => {
+    setAvatarPath(e.target.value);
+  };
+
+  const handleChangeBackgroundImage = (e: ChangeEvent<HTMLSelectElement>) => {
+    setBackgroundImagePath(e.target.value);
+  };
+
+  const settingContainer = () => {
+    return (
+      <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white">
+        <div className="flex justify-end py-3 pr-2">
+          <FaRegTimesCircle className="text-white text-[34px] mt-2 cursor-pointer" onClick={handleClickSettingButton}/>
+        </div>
+        <div className="flex justify-center">
+          <div className="flex flex-col items-center w-[300px]">
+            {/*  言語選択UI */}
+            <div className="mb-10 w-full">
+              <h2 className="mb-3 font-bold">言語を選ぶ</h2>
+              <div className="flex justify-between">
+                <button className={`${selectedLanguage === 'English' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 mr-5 text-center rounded-md`} onClick={() => setSelectedLanguage('English')}>English</button>
+                <button className={`${selectedLanguage === '中文' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 text-center rounded-md`} onClick={() => setSelectedLanguage('中文')}>中文</button>
+              </div>
+            </div>
+            {/* プロフィール表示・更新UI */}
+            <div className="w-full">
+              <Profile/>
+            </div>
+            {/* アバターの変更UI */}
+            <div className="w-full">
+              <h2 className="font-bold mb-5">アバターを選ぶ</h2>
+              <select className="rounded-md p-2 mb-5" placeholder="選択する" onChange={(e)=> handleChangeAvatar(e)}>
+                <option value="" disabled selected>選択してください</option>
+                {
+                  avatars.map((avatar,index)=> {
+                    return (
+                      <option key={index} value={avatar.path}>{avatar.label}</option>
+                    );
+                  })
+                }
+              </select>
+            </div>
+            {/* 背景の変更UI */}
+            <div className="w-full">
+              <h2 className="font-bold mb-5">背景を選ぶ</h2>
+              <select className="rounded-md p-2 mb-5" placeholder="選択する" onChange={(e)=> handleChangeBackgroundImage(e)}>
+                <option value="" disabled selected>選択してください</option>
+                {
+                  backgroundImages.map((image,index)=> {
+                    return (
+                      <option key={index} value={image.path}>{image.label}</option>
+                    );
+                  })
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   };
 
   return(
@@ -82,10 +202,11 @@ const UiForSp = ({
 
       {
         // ヒント表示領域
-        showHint && 
-          <div className="hint-container opacity-80 w-screen h-screen -z-0 top-12 flex fixed ">{/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
-            <div className="w-full">
-              <div className="w-[95%] h-[120px] bg-black opacity-75 text-white rounded-3xl m-auto relative top-10  px-5 py-3 overflow-y-scroll">
+        showHint ? 
+          <div className="hint-container opacity-80 w-screen h-screen -z-0 top-12 flex fixed">{/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
+            <div className="w-full flex items-center max-w-[900px] justify-center m-auto">
+              {/* ヒントかボタンのどちらかを表示 */}
+              <div className="w-[95%] h-[120px] bg-black opacity-75 text-white rounded-3xl m-auto relative -top-8  px-5 py-3 overflow-y-scroll">
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
@@ -95,55 +216,39 @@ const UiForSp = ({
                 これはヒントです。これはヒントです。これはヒントです。これはヒントです。
                 これはヒントです。
               </div>
-              <div className="grid grid-cols-2 w-[95%] m-auto relative top-14">
-                <div className="bg-black opacity-75 mr-3 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン1ボタン1ボタン1ボタン</div>
-                <div className="bg-black opacity-75 mr-3 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン2ボタン2ボタン2ボタン</div>
-                <div className="bg-black opacity-75 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン3ボタン3ボタン3ボタン</div>
-                <div className="bg-black opacity-75 rounded-md mb-2 w-[45vw] px-2 text-center">ボタン4ボタン4ボタン4ボタン</div>
-              </div>
+              {/* <div className="grid grid-cols-2 w-[95%] m-auto relative -top-8">
+                <div className="bg-black opacity-75 cursor-pointer rounded-md w-[95%] h-10 m-auto  my-3 px-2 text-center flex items-center justify-center">ボタン1ボタン1ボタン1ボタン</div>
+                <div className="bg-black opacity-75 cursor-pointer rounded-md w-[95%] h-10 m-auto  my-3 px-2 text-center flex items-center justify-center">ボタン2ボタン2ボタン2ボタン</div>
+                <div className="bg-black opacity-75 cursor-pointer rounded-md  w-[95%] px-2 h-10 m-auto my-3 text-center flex items-center justify-center">ボタン3ボタン3ボタン3ボタン</div>
+                <div className="bg-black opacity-75 cursor-pointer rounded-md  w-[95%] px-2 h-10 m-auto my-3 text-center flex items-center justify-center">ボタン4ボタン4ボタン4ボタン</div>
+              </div> */}
             </div>
           </div>
+          :
+          <></>
       }
 
       {
         //セッティングモーダル
-        showSetting && 
-          <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white">
-            <div className="flex justify-end py-3 pr-2">
-              {/* <img src="close.png" alt="" className="w-10 h-10" onClick={() => handleClickSettingButton()}/> */}
-              <FaRegTimesCircle className="text-white text-[34px] mt-2 cursor-pointer" onClick={handleClickSettingButton}/>
-            </div>
-            <div className="setting-container px-10">
-              <div className="mb-10">
-                <h2 className="mb-3">Language</h2>
-                <div className="flex items-center">
-                  <button className={`${selectedLanguage === 'English' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 mr-5 text-center rounded-md`} onClick={() => setSelectedLanguage('English')}>English</button>
-                  <button className={`${selectedLanguage === '中文' ? 'bg-blue-400' : 'bg-stone-400'}  w-[120px] px-5 py-1 text-center rounded-md`} onClick={() => setSelectedLanguage('中文')}>中文</button>
-                </div>
-              </div>
-
-              <div>
-                <h2 className="mb-3">Profile</h2>
-                <Profile/>
-              </div>
-            </div>
-          </div>
+        showSetting ? 
+          settingContainer()
+          :
+          <></>
       }
 
       {/* 下部のUI群 */}
       <div className="fixed bottom-0 flex flex-col  justify-between w-full  ">
-        <div className="z-10 px-2 h-44 mask-top-fadeout relative">
-          <div className="overflow-y-scroll absolute top-0 h-full fadeout-contents">
+        <div className="z-10 px-2 h-44 mask-top-fadeout relative flex justify-center">
+          <div className="overflow-y-scroll absolute top-0 py-5 h-full fadeout-contents">
             {speechTextArea()}
           </div>
         </div>
-        <div className="flex w-full h-16 bg-black  justify-between py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)]">
-          <div className="flex items-center">
-            <FaMicrophone className={`${isMicRecording ? ' text-red-500' : 'text-white'} text-[30px] mr-1`} onClick={handleClickMicButton}/>
-            <input type="text" className="h-[34px] px-4 bg-black text-white border border-white rounded-full" placeholder="コメントする" value={userMessage} onChange={handleChangeUserMessage}/>
-            <FaRegPaperPlane className="text-white text-[30px] ml-2"/>
-          </div>
-            <FaRegQuestionCircle className="text-white text-[35px] mr-1 self-center" onClick={handleShowHint}/>
+        <div className=" w-full h-18 bg-black    py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)] ">
+          {chatIconSelected ? 
+            bottomUiChatIconSelected()
+            : 
+            bottomUiDefault()
+          }
         </div>
       </div>
     </div>
