@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { chat } from "../../features/chat";
-import { SYSTEM_PROMPT } from "../../features/prompts";
+import { SituationEnglishConversation } from "../../features/prompts/situationEnglishConversation";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,9 +8,11 @@ export default async function handler(
 ) {
   try {
     const { messages } = req.body;
-    const responseData = await chat({ 
-      messages,
-      systemPrompt: SYSTEM_PROMPT,
+    const responseData = await chat({
+      messages: [
+        { role: "system", content: SituationEnglishConversation },
+        ...messages,
+      ] 
     });
     console.log(responseData);
     res.status(200).json({
