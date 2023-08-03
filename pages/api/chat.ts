@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   try {
-    const { messages } = req.body;
+    const messages = req.body.messages ?? [];
     const responseData = await chat({
       messages: [
         { role: "system", content: SituationEnglishConversation },
