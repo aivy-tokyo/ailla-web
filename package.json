@@ -19,6 +19,7 @@
     "@types/uuid": "^9.0.2",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
+    "bcryptjs": "^2.4.3",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
     "jotai": "^2.2.2",
@@ -35,6 +36,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/three": "^0.154.0",
     "daisyui": "^3.4.0"
   }

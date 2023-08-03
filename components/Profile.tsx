@@ -12,13 +12,15 @@ const Profile = () => {
   const [userPrefecture, setUserPrefecture] = useState<Prefecture>();
   const [userBirthday, setUserBirthday] = useState<string>('');
   const [userGender, setUserGender] = useState<UserGenderType>('選択しない');
-  const [userId, setUserId] = useState<string>('97004af5-b779-48c3-be71-44d8983a675d');
+  // const [userId, setUserId] = useState<string>('97004af5-b779-48c3-be71-44d8983a675d');
+  const [userId, setUserId] = useState<string>('ef20c6c7-ee48-427b-9d34-8fd60d4629ca');
 
 
   const fetchUserInfo = async () => {
     const res = await fetch(`/api/user?id=${userId}`)
 
     const userProfile : UserProfile = await res.json();
+    console.log('userProfile->',userProfile)
 
     setUserName(userProfile.userName.S);
     setUserPrefecture(userProfile.userPrefecture.S);
