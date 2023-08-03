@@ -3,6 +3,10 @@ import { getToken } from "next-auth/jwt"
 
 import type { NextApiRequest, NextApiResponse } from "next"
 
+/* 
+これは、APIルートからJSON Web Tokenを読み取る方法の例です。
+*/
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

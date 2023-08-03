@@ -4,6 +4,10 @@ import { authOptions } from "../auth/[...nextauth]"
 
 import type { NextApiRequest, NextApiResponse } from "next"
 
+/*
+これは、APIルートを保護する方法の例です。
+*/
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

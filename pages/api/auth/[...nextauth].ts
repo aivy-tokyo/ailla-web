@@ -7,12 +7,14 @@ export const authOptions: NextAuthOptions = {
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
     LineProvider({
-      clientId: process.env.LINE_CLIENT_ID,
-      clientSecret: process.env.LINE_CLIENT_SECRET,
+      clientId: process.env.LINE_CLIENT_ID || '',
+      clientSecret: process.env.LINE_CLIENT_SECRET || '',
     }),
   ],
   callbacks: {
-    session({ session, token, user }) {
+    session({ session, token }) {
+      // LINEのuser idをDBにほぞんする
+      // user.lineId = token.sub
       return session // The return type will match the one returned in `useSession()`
     },
   },
