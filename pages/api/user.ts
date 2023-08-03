@@ -7,7 +7,6 @@ import {
   DeleteItemCommand
 } from '@aws-sdk/client-dynamodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import bcrypt from 'bcryptjs';
 
 const client = new DynamoDBClient({});
 
@@ -16,15 +15,12 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   if (req.method === 'PUT') {
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
     const Item = {
       id: { S: uuid.v4() },
       userName: { S: req.body.userName },
       userPrefecture: { S: req.body.userPrefecture },
       userBirthday: { S: req.body.userBirthday },
       userGender: { S: req.body.userGender },
-      password: {S: hashedPassword },
     };
     await client.send(
       new PutItemCommand({
@@ -32,8 +28,6 @@ export default async function handler(
         Item,
       })
     );
-    console.log('hashedPassword->',hashedPassword)
-    console.log('uuid->', Item.id.S)
 
     return res.status(201).json(Item);
   }

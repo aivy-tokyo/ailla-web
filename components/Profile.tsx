@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { label } from "three/examples/jsm/nodes/Nodes.js";
 import { Prefecture, UserGenderType, UserProfile } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
+import { useAtomValue } from "jotai";
+import { userIdAtom } from "@/utils/atoms";
 
 const Profile = () => {
   const { isDeskTop } = useResponsive()
@@ -13,10 +15,11 @@ const Profile = () => {
   const [userBirthday, setUserBirthday] = useState<string>('');
   const [userGender, setUserGender] = useState<UserGenderType>('選択しない');
   // const [userId, setUserId] = useState<string>('97004af5-b779-48c3-be71-44d8983a675d');
-  const [userId, setUserId] = useState<string>('ef20c6c7-ee48-427b-9d34-8fd60d4629ca');
+  const userId = useAtomValue(userIdAtom);
 
 
   const fetchUserInfo = async () => {
+    if(!userId)return;
     const res = await fetch(`/api/user?id=${userId}`)
 
     const userProfile : UserProfile = await res.json();
@@ -29,10 +32,11 @@ const Profile = () => {
   };
   useEffect(()=>{
     fetchUserInfo();
-  },[isEditMode]);
+  },[isEditMode,userId]);
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
+    if(!userId)return;
     
     fetch(`/api/user?id`, {
       method: 'POST',

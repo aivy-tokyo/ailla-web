@@ -3,6 +3,8 @@ import { Prefecture, UserGenderType, UserProfile } from "@/utils/types";
 import { ChangeEvent, FormEvent, SetStateAction, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useRouter } from "next/router";
+import { useAtom } from "jotai";
+import { userIdAtom } from "@/utils/atoms";
 
 
 export default function Register(){
@@ -14,6 +16,7 @@ export default function Register(){
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
   const router = useRouter();
+  const [userId,setUserId] = useAtom(userIdAtom);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement> ) => {
     event.preventDefault();
@@ -29,7 +32,6 @@ export default function Register(){
       alert('パスワードと確認用パスワードの文字が一致しません');
       return;
     };
-    // alert('新規登録しました');
     fetch('/api/user',{
       method: 'PUT',
       headers: {
@@ -40,7 +42,6 @@ export default function Register(){
         userPrefecture: userPrefecture,
         userBirthday: userBirthday,
         userGender: userGender,
-        password: password,
       }),
     })
     .then(response => {
@@ -49,6 +50,7 @@ export default function Register(){
     })
     .then((data: UserProfile) => {
       console.log('data', data);
+      setUserId(data.id.S);
       setUserName(data.userName.S);
       setUserPrefecture(data.userPrefecture.S);
       setUserBirthday(data.userBirthday.S);
@@ -57,31 +59,6 @@ export default function Register(){
       router.push('/')
     })
     .catch((error) => console.error('Error:', error));
-  };
-  const handleSetPassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    console.log(e.target.value);
-  };
-  const handleSetPasswordConfirm = (e: ChangeEvent<HTMLInputElement>) => {
-    setPasswordConfirm(e.target.value);
-    console.log(e.target.value);
-  };
-
-  const passwordInput = (
-    value: string, 
-    setValue: (e: ChangeEvent<HTMLInputElement>) => void,
-    setIsShowValue: (boolean:SetStateAction<boolean>) => void
-  ) => {
-    return (
-      <div className="relative flex justify-end items-center mb-5">
-        <input type={isShowPassword ? 'text' : 'password'} className="text-white rounded-md p-2 w-full" value={value} onChange={(e) => setValue(e)}/>
-        {isShowPassword ? 
-          <FaRegEyeSlash className="absolute  text-white text-[1.8rem] right-2" onClick={() => setIsShowValue(false)}/>
-          :
-          <FaRegEye className="absolute  text-white text-[1.8rem] right-2" onClick={() => setIsShowValue(true)}/>
-        }
-      </div>
-    );
   };
 
   return (
@@ -116,11 +93,6 @@ export default function Register(){
               <option value="女性">女性</option>
               <option value="選択しない">選択しない</option>
             </select>
-
-            <label>パスワード：</label>
-            {passwordInput(password, handleSetPassword, setIsShowPassword)}
-            <label>パスワード(確認用)：</label>
-            {passwordInput(passwordConfirm, handleSetPasswordConfirm, setIsShowPassword)}
           </div>
 
           <button type="submit" className="bg-sky-500 border border-sky-600 rounded-full text-white font-bold py-3 px-5">登録してはじめる</button>
