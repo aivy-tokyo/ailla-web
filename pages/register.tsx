@@ -12,26 +12,20 @@ export default function Register(){
   const [userPrefecture, setUserPrefecture] = useState<Prefecture>();
   const [userBirthday, setUserBirthday] = useState<string>('');
   const [userGender, setUserGender] = useState<UserGenderType>('選択しない');
-  const [password, setPassword] = useState<string>('');
-  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-  const [passwordConfirm, setPasswordConfirm] = useState<string>('');
+
   const router = useRouter();
   const [userId,setUserId] = useAtom(userIdAtom);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement> ) => {
     event.preventDefault();
-    if(!userName || !userPrefecture || !userBirthday || !userGender || !password){
+    if(!userName || !userPrefecture || !userBirthday || !userGender){
       console.log('userName',userName);
       console.log('userPrefecture',userPrefecture);
       console.log('userBirthday',userBirthday);
-      console.log('password',password);
       alert('値のどれかが未入力です');
       return;
     };
-    if(password !== passwordConfirm){
-      alert('パスワードと確認用パスワードの文字が一致しません');
-      return;
-    };
+
     fetch('/api/user',{
       method: 'PUT',
       headers: {
@@ -45,11 +39,9 @@ export default function Register(){
       }),
     })
     .then(response => {
-      console.log('response->',response);
       return response.json()
     })
     .then((data: UserProfile) => {
-      console.log('data', data);
       setUserId(data.id.S);
       setUserName(data.userName.S);
       setUserPrefecture(data.userPrefecture.S);
