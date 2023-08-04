@@ -1,12 +1,11 @@
-import { fetchPrompt, getChatResponseStream } from "@/features/chat/openAiChat";
+import { getChatResponseStream } from "@/features/chat/openAiChat";
 import { Message, Screenplay, textsToScreenplay } from "@/features/messages/messages";
 import { speakCharacter } from "@/features/messages/speakCharacter";
 import { ViewerContext } from "@/features/vrmViewer/viewerContext";
 
-import { aiResponseTextAtom, assistantMessageAtom, chatLogAtom, chatProcessingAtom, commentIndexAtom, isAiTalkingAtom, isThinkingAtom, isYoutubeModeAtom, koeiroParamAtom, liveChatIdAtom, nextPageTokenAtom, ngwordsAtom, responsedLiveCommentsAtom, systemPromptAtom, userMessageAtom, youtubeVideoIdAtom } from "@/utils/atoms";
+import { aiResponseTextAtom, assistantMessageAtom, chatLogAtom, chatProcessingAtom, commentIndexAtom, isAiTalkingAtom, isThinkingAtom, isYoutubeModeAtom, koeiroParamAtom, liveChatIdAtom, nextPageTokenAtom, ngwordsAtom, responsedLiveCommentsAtom, userMessageAtom, youtubeVideoIdAtom } from "@/utils/atoms";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useContext, useState } from "react";
-import { useYoutube } from "./useYoutube";
 import { SYSTEM_PROMPT } from "@/features/constants/systemPromptConstants";
 
 
@@ -73,21 +72,18 @@ export const useChat = () => {
       if (newMessage == null) return;
 
       setChatProcessing(true);
-      // 間投詞をランダムに追加(間を埋めるため)
-  		handleSpeakAi(textsToScreenplay([getRandomInterjection()],koeiroParam)[0]);
+
       // ユーザーの発言を追加して表示
       const messageLog: Message[] = [
         ...chatLog,
         { role: "user", content: newMessage },
       ];
       setChatLog(messageLog);
-      // const promptForChat = await fetchPrompt('CHAT').then(res => res.text);
 
       // Chat GPTへ
       const messages: Message[] = [
         {
           role: "system",
-          // content: promptForChat || SYSTEM_PROMPT,
           content: SYSTEM_PROMPT,
         },
         ...messageLog,
@@ -146,24 +142,30 @@ export const useChat = () => {
             }
 
             setAiResponseText((prev)=> prev + sentence);
+            // ↑ここまでは、ttsAPIの種類に関わらず必要な処理かなと推測
             const aiText = `${tag} ${sentence}`;
             const aiTalks = textsToScreenplay([aiText], koeiroParam);
             aiTextLog += aiText;
 
-            if(isYoutubeMode){
-              // 文ごとに音声を生成 & 再生、返答を表示
-              const speakPromise = handleSpeakAi(aiTalks[0],
-                () => {
-                  setIsThinking(false)
-                  setIsAiTalking(true);
-                },
-                () => {});
-              speakPromises.push(speakPromise);
-            }else{
-              // 文ごとに音声を生成 & 再生、返答を表示
-              const speakPromise = handleSpeakAi(aiTalks[0]);
-              speakPromises.push(speakPromise);
-            }
+            // 文ごとに音声を生成 & 再生、返答を表示
+            const speakPromise = handleSpeakAi(aiTalks[0]);
+            speakPromises.push(speakPromise)
+
+            // voiceVox用処理
+            // const context = new AudioContext;
+
+            // context.outStream = new Speaker({
+            //   channels: context.format.numberOfChannels,
+            //   bitDepth: context.format.bitDepth,
+            //   sampleRate: context.sampleRate,
+            // });
+
+            // context.decodeAudioData(createAudio(sentence, 1), (audioBuffer: Buffer) => {
+            //   const bufferNode = context.createBufferSource();
+            //   bufferNode.connect(context.destination);
+            //   bufferNode.buffer = audioBuffer;
+            //   bufferNode.start(0);
+            // })
           }
         }
       } catch (e) {

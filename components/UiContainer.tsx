@@ -6,6 +6,7 @@ import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import UiForDesktop from "./UiForDesktop";
 import { SelectedLanguageType } from "@/utils/types";
+import { useChat } from "@/hooks/useChat";
 
 
 export const UiContainer = () => {
@@ -18,6 +19,7 @@ export const UiContainer = () => {
   const [userMessage, setUserMessage] = useState<string>('');
   const [speechRecognition, setSpeechRecognition] = useState<SpeechRecognition>();
   const [chatProcessing, setChatProcessing] = useState<boolean>(false);
+  const {handleSendChat} = useChat();
 
   //MEMO: ハイドレーションエラーを回避するための状態管理
   useEffect(()=>{
@@ -42,8 +44,8 @@ export const UiContainer = () => {
       if (event.results[0].isFinal) {
         setUserMessage(text);
         // 返答文の生成を開始
-        // handleSendChat(text);
-        console.log(text);
+        handleSendChat(text);
+        // console.log(text);
       }
     },
     []
