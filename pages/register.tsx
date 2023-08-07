@@ -14,7 +14,7 @@ export default function Register(){
   const [userGender, setUserGender] = useState<UserGenderType>('選択しない');
 
   const router = useRouter();
-  const [userId,setUserId] = useAtom(userIdAtom);
+  const [userId, setUserId] = useAtom(userIdAtom);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement> ) => {
     event.preventDefault();
@@ -32,6 +32,7 @@ export default function Register(){
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        id: userId,
         userName: userName,
         userPrefecture: userPrefecture,
         userBirthday: userBirthday,
