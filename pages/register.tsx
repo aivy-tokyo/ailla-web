@@ -8,6 +8,7 @@ import {
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { userIdAtom } from "@/utils/atoms";
+import axios from "axios";
 
 export default function Register() {
   const [userName, setUserName] = useState("");
@@ -30,23 +31,13 @@ export default function Register() {
       }
 
       try {
-        const response = await fetch("/api/user", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: userId,
-            userName,
-            userPrefecture,
-            userBirthday,
-            userGender,
-          }),
+        const response = await axios.put('/api/user', {
+          id: userId,
+          userName,
+          userPrefecture,
+          userBirthday,
+          userGender,
         });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
 
         const data: UserProfile = await response.json();
         setUserId(data.id.S);
