@@ -39,7 +39,7 @@ export default function Register() {
           userGender,
         });
 
-        const data: UserProfile = await response.json();
+        const data: UserProfile = await response.data;
         setUserId(data.id.S);
         setUserName(data.userName.S);
         setUserPrefecture(data.userPrefecture.S);
