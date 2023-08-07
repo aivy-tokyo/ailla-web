@@ -1,4 +1,3 @@
-import { userIdAtom } from "@/utils/atoms";
 import axios from "axios";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import LineProvider from "next-auth/providers/line";
@@ -35,9 +34,10 @@ export const authOptions: NextAuthOptions = {
             "/api/user",
             {
               id: token.sub,
-              name: "",
-              email: "",
-              image: "",
+              userName: "",
+              userPrefecture: "",
+              userBirthday: "",
+              userGender: "",
               createdAt: new Date(),
               updatedAt: new Date(),
             },
