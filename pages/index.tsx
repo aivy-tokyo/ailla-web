@@ -32,6 +32,9 @@ export default function Home() {
         console.log("response", response.data);
         // userNameが空の場合はregister.tsxへリダイレクト
         if (!response.data.userName) {
+          // ユーザーIDを新しくしてしまっているのでそれをやめる
+          // 上記対応になっている？
+          setUserId(userId);
           router.push("/register");
         }
       })

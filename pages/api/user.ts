@@ -16,7 +16,7 @@ export default async function handler(
 ) {
   if (req.method === 'PUT') {
     const Item = {
-      id: { S: uuid.v4() },
+      id: { S: req.body.id },
       userName: { S: req.body.userName },
       userPrefecture: { S: req.body.userPrefecture },
       userBirthday: { S: req.body.userBirthday },
