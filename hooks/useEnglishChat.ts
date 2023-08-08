@@ -1,4 +1,4 @@
-import { fetchPrompt, getChatResponseStream } from "@/features/chat/openAiChat";
+import { getChatResponseStream } from "@/features/chat/openAiChat";
 import {
   Message,
   Screenplay,
@@ -21,7 +21,6 @@ import {
   nextPageTokenAtom,
   ngwordsAtom,
   responsedLiveCommentsAtom,
-  systemPromptAtom,
   userMessageAtom,
   youtubeVideoIdAtom,
 } from "@/utils/atoms";

@@ -7,12 +7,13 @@ import { aiResponseTextAtom, assistantMessageAtom, chatLogAtom, chatProcessingAt
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useContext, useState } from "react";
 import { SYSTEM_PROMPT } from "@/features/constants/systemPromptConstants";
+import { TextToSpeechApiType } from "@/utils/types";
 
 
 export const useChat = () => {
 	const { viewer } = useContext(ViewerContext);
 	const [assistantMessage, setAssistantMessage] = useAtom(assistantMessageAtom);
-	const [openAiKey, setOpenAiKey] = useState(process.env.NEXT_PUBLIC_OPEN_AI_API_KEY || "");  
+	const [openAiKey, setOpenAiKey] = useState(process.env.NEXT_PUBLIC_OPENAI_API_KEY || "");  
 	// const [chatProcessing, setChatProcessing] = useState(false);
 	const setChatProcessing = useSetAtom(chatProcessingAtom);
 	const [chatLog, setChatLog] = useAtom(chatLogAtom);
@@ -49,9 +50,10 @@ export const useChat = () => {
     async (
       screenplay: Screenplay,
       onStart?: () => void,
-      onEnd?: () => void
+      onEnd?: () => void,
+      textToSpeechApiType?: TextToSpeechApiType,
     ): Promise<void> => {
-      return speakCharacter(screenplay, viewer, onStart, onEnd);
+      return speakCharacter(screenplay, viewer, onStart, onEnd, textToSpeechApiType);
     },
     [viewer]
   );
@@ -62,11 +64,12 @@ export const useChat = () => {
    */
 	const handleSendChat = useCallback(
     async (text: string, birthday?: string) => {
+      console.log('openAiKey->',openAiKey);
       if (!openAiKey) {
+        console.log('handleSendChat')
         setAssistantMessage("APIキーが入力されていません");
         return;
       }
-
       const newMessage = text;
 
       if (newMessage == null) return;
@@ -142,13 +145,14 @@ export const useChat = () => {
             }
 
             setAiResponseText((prev)=> prev + sentence);
+            console.log(sentence);
             // ↑ここまでは、ttsAPIの種類に関わらず必要な処理かなと推測
             const aiText = `${tag} ${sentence}`;
             const aiTalks = textsToScreenplay([aiText], koeiroParam);
             aiTextLog += aiText;
 
             // 文ごとに音声を生成 & 再生、返答を表示
-            const speakPromise = handleSpeakAi(aiTalks[0]);
+            const speakPromise = handleSpeakAi(aiTalks[0],undefined,undefined,'voiceVox');
             speakPromises.push(speakPromise)
 
             // voiceVox用処理

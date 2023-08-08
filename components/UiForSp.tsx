@@ -7,6 +7,7 @@ import { FaMicrophone, FaQuestion, FaRegComments, FaRegPaperPlane, FaRegSun, FaR
 import { avatarPathAtom, backgroundImagePathAtom } from "@/utils/atoms";
 import { useAtom } from "jotai";
 import { avatars, backgroundImages } from "@/utils/constants";
+import { useEnglishChat } from "@/hooks/useEnglishChat";
 
 const dummyUsersData = [
   {
@@ -58,6 +59,7 @@ const UiForSp = ({
   const [chatIconSelected, setChatIconSelected] = useState<boolean>(false);
   const [avatarPath,setAvatarPath] = useAtom(avatarPathAtom);
   const [backgroundImagePath, setBackgroundImagePath] = useAtom(backgroundImagePathAtom);
+  const {handleSendChat} = useEnglishChat();
 
   const speechTextArea = () => {
     return  dummyUsersData.map((userData,id) => (
@@ -117,7 +119,8 @@ const UiForSp = ({
         {questionIcon()}
         <input type="text" placeholder="文字を入力する" value={userMessage} className="w-[70%] rounded-full px-4 h-10 text-white" onChange={handleChangeUserMessage}/>
         {userMessage.length > 0 ? 
-          <div className="w-[35px] h-[35px] rounded-full bg-black border-2 border-white flex justify-center items-center pr-1" onClick={()=> handleSendMessage()}>
+          <div className="w-[35px] h-[35px] rounded-full bg-black border-2 border-white flex justify-center items-center pr-1" onClick={()=> handleSendChat(userMessage)}>
+          {/* // <div className="w-[35px] h-[35px] rounded-full bg-black border-2 border-white flex justify-center items-center pr-1" onClick={()=> alert(userMessage)}> */}
             <FaRegPaperPlane className="text-white text-[20px]"/>
           </div> 
           : 
