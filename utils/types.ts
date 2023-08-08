@@ -51,4 +51,6 @@ export interface UserProfile  {
   userGender: {S: UserGenderType};
 }
 
+export type TextToSpeechApiType = 'koeiroMap' | 'voiceVox';
+
 
