@@ -6,7 +6,7 @@ import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import UiForDesktop from "./UiForDesktop";
 import { SelectedLanguageType } from "@/utils/types";
-import { useChat } from "@/hooks/useChat";
+import { useEnglishChat } from "@/hooks/useEnglishChat";
 
 
 export const UiContainer = () => {
@@ -19,7 +19,7 @@ export const UiContainer = () => {
   const [userMessage, setUserMessage] = useState<string>('');
   const [speechRecognition, setSpeechRecognition] = useState<SpeechRecognition>();
   const [chatProcessing, setChatProcessing] = useState<boolean>(false);
-  const {handleSendChat} = useChat();
+  const {handleSendChat} = useEnglishChat()
 
   //MEMO: ハイドレーションエラーを回避するための状態管理
   useEffect(()=>{

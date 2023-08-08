@@ -70,6 +70,7 @@ export const useChat = () => {
         setAssistantMessage("APIキーが入力されていません");
         return;
       }
+      console.log('日本語のhandleSendChatだよーーーーー')
       const newMessage = text;
 
       if (newMessage == null) return;
