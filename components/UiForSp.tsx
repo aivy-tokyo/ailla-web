@@ -4,33 +4,12 @@ import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SelectedLanguageType } from "@/utils/types";
 import Profile from "./Profile";
 import { FaMicrophone, FaQuestion, FaRegComments, FaRegPaperPlane, FaRegSun, FaRegTimesCircle, FaRegUserCircle} from 'react-icons/fa';
-import { avatarPathAtom, backgroundImagePathAtom } from "@/utils/atoms";
-import { useAtom } from "jotai";
+import { avatarPathAtom, backgroundImagePathAtom, chatLogAtom } from "@/utils/atoms";
+import { useAtom, useAtomValue } from "jotai";
 import { avatars, backgroundImages } from "@/utils/constants";
 import { useEnglishChat } from "@/hooks/useEnglishChat";
+import { useProfile } from "@/hooks/useProfile";
 
-const dummyUsersData = [
-  {
-    iconSrc: 'myIcon.png',
-    userName: 'Taro',
-    text: 'This is sample text. This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.This is sample text.',
-  },
-  {
-    iconSrc: 'myIcon.png',
-    userName: 'Taro2',
-    text: 'Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! ',
-  },
-  {
-    iconSrc: 'myIcon.png',
-    userName: 'Taro',
-    text: 'This is sample text. This is sample text.This is sample text.This is sample text.This is sample text.',
-  },
-  {
-    iconSrc: 'myIcon.png',
-    userName: 'Taro2',
-    text: 'Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! Hello! ',
-  },
-];
 
 type Props = {
   showHint: boolean;
@@ -47,7 +26,6 @@ type Props = {
 const UiForSp = ({
   showHint, 
   handleShowHint, 
-  // handleSelectLanguage, 
   handleClickMicButton, 
   userMessage, 
   handleChangeUserMessage,
@@ -60,14 +38,16 @@ const UiForSp = ({
   const [avatarPath,setAvatarPath] = useAtom(avatarPathAtom);
   const [backgroundImagePath, setBackgroundImagePath] = useAtom(backgroundImagePathAtom);
   const {handleSendChat} = useEnglishChat();
+  const {userName} = useProfile();
+  const chatLogs = useAtomValue(chatLogAtom);
 
   const speechTextArea = () => {
-    return  dummyUsersData.map((userData,id) => (
+    return  chatLogs.map((chatLog,id) => (
       <div className="flex text-white max-w-[900px] justify-center pl-1" key={id}>
         <FaRegUserCircle className="text-[66px] w-10 relative -top-3 text-white self-start"/>
         <div className=" border-1 mb-2 px-2 w-[90%]">
-          <p className="text-xl font-bold">{userData.userName}</p>
-          <p>{userData.text}</p>
+          <p className="text-xl font-bold">{chatLog.role === 'user' ? userName : 'AILLA'}</p>
+          <p>{chatLog.content}</p>
         </div>
       </div>
     ));        
@@ -75,10 +55,6 @@ const UiForSp = ({
 
   const handleClickSettingButton = () => {
     setShowSetting(prev => !prev);
-  };
-
-  const handleSendMessage = () => {
-    alert(`userMessage: ${userMessage} が送信されました`)
   };
 
   const questionIcon = () => {

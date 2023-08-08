@@ -1,65 +1,24 @@
 import { FaRegUserCircle } from "react-icons/fa";
-import { useResponsive } from "@/hooks/useResponsive";
-import { useEffect, useState } from "react";
-import { label } from "three/examples/jsm/nodes/Nodes.js";
-import { Prefecture, UserGenderType, UserProfile } from "@/utils/types";
+import { Prefecture, UserGenderType } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
-import { useAtomValue } from "jotai";
-import { userIdAtom } from "@/utils/atoms";
+import { useProfile } from "@/hooks/useProfile";
 
 const Profile = () => {
-  const { isDeskTop } = useResponsive()
-  const [isEditMode,setIsEditMode] = useState<boolean>(false);
-  const [userName, setUserName] = useState<string>('');
-  const [userPrefecture, setUserPrefecture] = useState<Prefecture>();
-  const [userBirthday, setUserBirthday] = useState<string>('');
-  const [userGender, setUserGender] = useState<UserGenderType>('選択しない');
-  // const [userId, setUserId] = useState<string>('97004af5-b779-48c3-be71-44d8983a675d');
-  const userId = useAtomValue(userIdAtom);
+  const {
+    editProfile,
+    
+    userName,setUserName, 
+    userPrefecture,setUserPrefecture, 
+    userBirthday,setUserBirthday, 
+    userGender,setUserGender,
 
+    isEditMode, setIsEditMode,
 
-  const fetchUserInfo = async () => {
-    if(!userId)return;
-    const res = await fetch(`/api/user?id=${userId}`)
-
-    const userProfile : UserProfile = await res.json();
-    console.log('userProfile->',userProfile)
-
-    setUserName(userProfile.userName.S);
-    setUserPrefecture(userProfile.userPrefecture.S);
-    setUserBirthday(userProfile.userBirthday.S);
-    setUserGender(userProfile.userGender.S);
-  };
-  useEffect(()=>{
-    fetchUserInfo();
-  },[isEditMode,userId]);
+  } = useProfile();
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    if(!userId)return;
-    
-    fetch(`/api/user?id`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: userId,
-        userName: userName,
-        userPrefecture: userPrefecture,
-        userBirthday: userBirthday,
-        userGender: userGender,
-      }),
-    })
-    .then(response => response.json())
-    .then((data: UserProfile) => {
-      setIsEditMode(false);
-      setUserName(data.userName.S);
-      setUserPrefecture(data.userPrefecture.S);
-      setUserBirthday(data.userBirthday.S);
-      setUserGender(data.userGender.S);
-    })
-    .catch((error) => console.error('Error:', error));
+    editProfile();
   };
 
   return (
