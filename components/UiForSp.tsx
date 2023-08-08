@@ -96,8 +96,7 @@ const UiForSp = ({
         <input type="text" placeholder="文字を入力する" value={userMessage} className="w-[70%] rounded-full px-4 h-10 text-white" onChange={handleChangeUserMessage}/>
         {userMessage.length > 0 ? 
           <div className="w-[35px] h-[35px] rounded-full bg-black border-2 border-white flex justify-center items-center pr-1" onClick={()=> handleSendChat(userMessage)}>
-          {/* // <div className="w-[35px] h-[35px] rounded-full bg-black border-2 border-white flex justify-center items-center pr-1" onClick={()=> alert(userMessage)}> */}
-            <FaRegPaperPlane className="text-white text-[20px]"/>
+            <FaRegPaperPlane className="text-white text-[20px] cursor-pointer"/>
           </div> 
           : 
           micIcon()
