@@ -45,7 +45,6 @@ export const UiContainer = () => {
         setUserMessage(text);
         // 返答文の生成を開始
         handleSendChat(text);
-        // console.log(text);
       }
     },
     []
@@ -54,7 +53,6 @@ export const UiContainer = () => {
   // 無音が続いた場合も終了する
   const handleRecognitionEnd = useCallback(() => {
     setIsMicRecording(false);
-    console.log('録音終了！');
   }, []);
 
   useEffect(() => {
@@ -87,7 +85,6 @@ export const UiContainer = () => {
 
   const handleChangeUserMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setUserMessage(e.target.value);
-    console.log(e.target.value);
   };
 
   

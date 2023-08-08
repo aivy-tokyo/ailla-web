@@ -113,11 +113,9 @@ export const useEnglishChat = () => {
   const handleSendChat = useCallback(
     async (text: string) => {
       if (!openAiKey) {
-        console.log('openAiKey->',openAiKey);
         console.error("APIキーが入力されていません");
         return;
       }
-      console.log('英語のhandleSendChatだよーーーー')
 
       // Check if the chat limit is exceeded
       const lastChatDate = new Date(localStorage.getItem("lastChatDate") || "");

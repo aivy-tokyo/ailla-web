@@ -64,13 +64,11 @@ export const useChat = () => {
    */
 	const handleSendChat = useCallback(
     async (text: string, birthday?: string) => {
-      console.log('openAiKey->',openAiKey);
       if (!openAiKey) {
         console.log('handleSendChat')
         setAssistantMessage("APIキーが入力されていません");
         return;
       }
-      console.log('日本語のhandleSendChatだよーーーーー')
       const newMessage = text;
 
       if (newMessage == null) return;
