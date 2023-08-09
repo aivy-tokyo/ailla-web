@@ -1,11 +1,11 @@
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SelectedLanguageType } from "@/utils/types";
 import Profile from "./Profile";
 import { FaMicrophone, FaQuestion, FaRegComments, FaRegPaperPlane, FaRegSun, FaRegTimesCircle, FaRegUserCircle} from 'react-icons/fa';
 import { avatarPathAtom, backgroundImagePathAtom, chatLogAtom } from "@/utils/atoms";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { avatars, backgroundImages } from "@/utils/constants";
 import { useEnglishChat } from "@/hooks/useEnglishChat";
 import { useProfile } from "@/hooks/useProfile";
@@ -14,7 +14,6 @@ import { useProfile } from "@/hooks/useProfile";
 type Props = {
   showHint: boolean;
   handleShowHint: () => void;
-  // handleSelectLanguage: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleClickMicButton: () => void;
   userMessage: string;
   handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -35,8 +34,8 @@ const UiForSp = ({
 }: Props) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
   const [chatIconSelected, setChatIconSelected] = useState<boolean>(false);
-  const [avatarPath,setAvatarPath] = useAtom(avatarPathAtom);
-  const [backgroundImagePath, setBackgroundImagePath] = useAtom(backgroundImagePathAtom);
+  const setAvatarPath = useSetAtom(avatarPathAtom);
+  const setBackgroundImagePath = useSetAtom(backgroundImagePathAtom);
   const {handleSendChat} = useEnglishChat();
   const {userName} = useProfile();
   const chatLogs = useAtomValue(chatLogAtom);

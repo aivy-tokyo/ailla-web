@@ -1,10 +1,6 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useResponsive } from "@/hooks/useResponsive";
 import UiForSp from "./UiForSp";
-import { useAtom } from "jotai";
-import EndTalkButton from "./EndTalkButton";
-import TranslateToggleSwitch from "./TranslateToggleSwitch";
-import UiForDesktop from "./UiForDesktop";
 import { SelectedLanguageType } from "@/utils/types";
 import { useEnglishChat } from "@/hooks/useEnglishChat";
 

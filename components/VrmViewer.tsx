@@ -1,20 +1,17 @@
 import { useContext, useCallback } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { buildUrl } from "../utils/buildUrl";
-import { useResponsive } from "../hooks/useResponsive";
 import { avatarPathAtom } from "@/utils/atoms";
 import { useAtomValue } from "jotai";
 
 export default function VrmViewer() {
   const { viewer } = useContext(ViewerContext);
-  const { isDeskTop } = useResponsive();
   const avatarPath = useAtomValue(avatarPathAtom);
 
   const canvasRef = useCallback(
     (canvas: HTMLCanvasElement) => {
       if (canvas) {
         viewer.setup(canvas);
-        // viewer.loadVrm(buildUrl("/AvatarSample_A2.vrm"));
         viewer.loadVrm(avatarPath);
 
         // Drag and DropでVRMを差し替え

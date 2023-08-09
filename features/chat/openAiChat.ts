@@ -1,4 +1,3 @@
-import { Configuration, OpenAIApi } from "openai";
 import { Message } from "../messages/messages";
 import { MAX_TOKENS } from "../constants/systemPromptConstants";
 
@@ -123,17 +122,3 @@ export async function getChatResponseStream(
 
   return stream;
 }
-
-// export const fetchPrompt = async (promptType: Prompt_promptType) => {
-//   const res = await fetch('/api/getPrompt',{
-//     method: 'POST',
-//     headers: {
-//       'Content-Type' : 'application/json',
-//     },
-//     body: JSON.stringify({
-//       promptType: promptType,
-//     })
-//   })
-//   const prompt: Prompt = await res.json();
-//   return prompt;
-// };

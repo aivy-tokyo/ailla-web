@@ -1,10 +1,11 @@
 import { prefectures } from "@/utils/constants";
 import { Prefecture, UserGenderType, UserProfile } from "@/utils/types";
-import { ChangeEvent, FormEvent, SetStateAction, useState } from "react";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { userIdAtom } from "@/utils/atoms";
+import axios from 'axios';
+import { AxiosResponse } from "axios";
 
 
 export default function Register(){
@@ -14,44 +15,43 @@ export default function Register(){
   const [userGender, setUserGender] = useState<UserGenderType>('選択しない');
 
   const router = useRouter();
-  const [userId,setUserId] = useAtom(userIdAtom);
+  const setUserId = useSetAtom(userIdAtom);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement> ) => {
+
+const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(!userName || !userPrefecture || !userBirthday || !userGender){
-      console.log('userName',userName);
-      console.log('userPrefecture',userPrefecture);
-      console.log('userBirthday',userBirthday);
-      alert('値のどれかが未入力です');
-      return;
-    };
 
-    fetch('/api/user',{
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    if (!userName || !userPrefecture || !userBirthday || !userGender) {
+        console.log('userName', userName);
+        console.log('userPrefecture', userPrefecture);
+        console.log('userBirthday', userBirthday);
+        alert('値のどれかが未入力です');
+        return;
+    }
+
+    axios.put('/api/user', {
         userName: userName,
         userPrefecture: userPrefecture,
         userBirthday: userBirthday,
         userGender: userGender,
-      }),
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
     })
-    .then(response => {
-      return response.json()
-    })
-    .then((data: UserProfile) => {
-      setUserId(data.id.S);
-      setUserName(data.userName.S);
-      setUserPrefecture(data.userPrefecture.S);
-      setUserBirthday(data.userBirthday.S);
-      setUserGender(data.userGender.S);
+    .then((response: AxiosResponse<UserProfile>) => {
+        const data: UserProfile = response.data;
+        setUserId(data.id.S);
+        setUserName(data.userName.S);
+        setUserPrefecture(data.userPrefecture.S);
+        setUserBirthday(data.userBirthday.S);
+        setUserGender(data.userGender.S);
 
-      router.push('/')
+        router.push('/');
     })
     .catch((error) => console.error('Error:', error));
-  };
+};
+
 
   return (
     <div className="flex h-full text-black text-center">

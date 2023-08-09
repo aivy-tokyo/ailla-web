@@ -3,9 +3,8 @@ import { synthesizeVoice } from "../koeiromap/koeiromap";
 import { Viewer } from "../vrmViewer/viewer";
 import { Screenplay } from "./messages";
 import { Talk } from "./messages";
-import { useFortuneTelling } from "@/hooks/useFortuneTelling";
-import { useSetAtom } from "jotai";
-import { isFortuneTellingModeAtom, isFortuneTellingProcessingAtom } from "@/utils/atoms";
+import axios from 'axios';
+
 
 const createSpeakCharacter =  () => {
   let lastTime = 0;
@@ -51,18 +50,14 @@ export const speakEnglishCharacter = createSpeakCharacter();
 
 export const fetchAudio = async (talk: Talk): Promise<ArrayBuffer | undefined> => {
   try {
-    const response = await fetch('/api/synthesize', {
-      method: 'POST',
+    const response = await axios.post('/api/synthesize', { text: talk.message }, {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: talk.message }),
+      responseType: "arraybuffer",
     });
-  
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-  
-    return await response.arrayBuffer();  
+    
+    return response.data;
   } catch (error) {
     console.error('Synthesis failed', error);
   }
 };
+

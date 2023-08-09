@@ -2,7 +2,6 @@ import { isTranslatedAtom } from "@/utils/atoms";
 import { useAtom, useAtomValue } from "jotai";
 import { ChangeEvent } from "react";
 
-// }
 const TranslateToggleSwitch = () => {
   const [isTranslated, setIsTranslated] = useAtom(isTranslatedAtom);
   const handleTranslate = (e: ChangeEvent<HTMLInputElement>) => {
