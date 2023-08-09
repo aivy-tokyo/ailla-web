@@ -103,6 +103,7 @@ export const useEnglishChat = () => {
    */
   const handleSendChat = useCallback(
     async (text: string) => {
+      console.log('chatLog->',chatLog);
       if (!openAiKey) {
         console.error("APIキーが入力されていません");
         return;
@@ -112,35 +113,35 @@ export const useEnglishChat = () => {
       const lastChatDate = new Date(localStorage.getItem("lastChatDate") || "");
 
       const chatCount = Number(localStorage.getItem("chatCount"));
-      if (!checkChatLimit(lastChatDate, chatCount)) {
-        const randomIndex = Math.floor(
-          Math.random() * exceededChatLimitMessages.length
-        );
-        const exceededChatLimitMessage = exceededChatLimitMessages[randomIndex];
-        handleSpeakAi(
-          {
-            talk: {
-              message: exceededChatLimitMessage,
-              speakerX: 1,
-              speakerY: 1,
-              style: "talk",
-            },
-            expression: "neutral",
-          },
-          () => {
-            setAssistantMessage(exceededChatLimitMessage);
-          }
-        );
-        setChatLog((prev) => [
-          ...prev,
-          { role: "assistant", content: exceededChatLimitMessage },
-        ]);
-        return;
-      } else {
-        // If the chat limit is not exceeded, update the chat count and chat date
-        localStorage.setItem("chatCount", String(isToday(lastChatDate) ? chatCount + 1 : 1));
-        localStorage.setItem("lastChatDate", String(new Date()));
-      }
+      // if (!checkChatLimit(lastChatDate, chatCount)) {
+      //   const randomIndex = Math.floor(
+      //     Math.random() * exceededChatLimitMessages.length
+      //   );
+      //   const exceededChatLimitMessage = exceededChatLimitMessages[randomIndex];
+      //   handleSpeakAi(
+      //     {
+      //       talk: {
+      //         message: exceededChatLimitMessage,
+      //         speakerX: 1,
+      //         speakerY: 1,
+      //         style: "talk",
+      //       },
+      //       expression: "neutral",
+      //     },
+      //     () => {
+      //       setAssistantMessage(exceededChatLimitMessage);
+      //     }
+      //   );
+      //   setChatLog((prev) => [
+      //     ...prev,
+      //     { role: "assistant", content: exceededChatLimitMessage },
+      //   ]);
+      //   return;
+      // } else {
+      //   // If the chat limit is not exceeded, update the chat count and chat date
+      //   localStorage.setItem("chatCount", String(isToday(lastChatDate) ? chatCount + 1 : 1));
+      //   localStorage.setItem("lastChatDate", String(new Date()));
+      // }
 
       const newMessage = text;
 
@@ -287,6 +288,7 @@ export const useEnglishChat = () => {
     },
     [
       chatLog,
+      setChatLog,
       handleSpeakAi,
       setCommentIndex,
       setTimeout,

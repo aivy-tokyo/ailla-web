@@ -4,6 +4,7 @@ import { Viewer } from "../vrmViewer/viewer";
 import { Screenplay } from "./messages";
 import { Talk } from "./messages";
 import axios from 'axios';
+import { TextToSpeechApiType } from "@/utils/types";
 
 
 const createSpeakCharacter =  () => {
@@ -15,7 +16,8 @@ const createSpeakCharacter =  () => {
     screenplay: Screenplay,
     viewer: Viewer,
     onStart?: () => void,
-    onComplete?: () => void
+    onComplete?: () => void,
+    textToSpeechApiType?: TextToSpeechApiType,
   ): Promise<void> => {  // <-- Return a Promise
     return new Promise((resolve, reject) => {  // <-- Create a new Promise
       const fetchPromise = prevFetchPromise.then(async () => {
