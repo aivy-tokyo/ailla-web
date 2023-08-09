@@ -1,17 +1,11 @@
-// import { DEFAULT_PARAM, KoeiroParam } from "@/features/constants/koeiroParam";
-// import { SYSTEM_PROMPT } from "@/features/constants/systemPromptConstants";
 import { Message } from "@/features/messages/messages";
-import exp from "constants";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { FortuneTellingLabel, FortuneTellingType, UserStatusType } from "./types";
 import { avatars, backgroundImages } from "./constants";
 import { DEFAULT_PARAM, KoeiroParam } from "@/features/constants/koeiroParam";
-// import { Prompt } from "@prisma/client";
-// import { User } from "@line/bot-sdk";
 
 export const isYoutubeModeAtom = atomWithStorage<boolean>('isYoutubeMode',false);
-// export const systemPromptAtom = atom<string>(SYSTEM_PROMPT);
 export const chatProcessingAtom = atom<boolean>(false);
 
 export const koeiroParamAtom = atom<KoeiroParam>(DEFAULT_PARAM);
