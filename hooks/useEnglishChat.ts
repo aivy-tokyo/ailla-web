@@ -14,6 +14,7 @@ import {
   isAiTalkingAtom,
   isThinkingAtom,
   koeiroParamAtom,
+  textToSpeechApiTypeAtom,
 } from "@/utils/atoms";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useContext, useState } from "react";
@@ -21,6 +22,7 @@ import {
   SYSTEM_PROMPT_FOR_ENGLISH_CONVERSATION,
 } from "@/features/constants/systemPromptConstants";
 import { speakEnglishCharacter } from "@/features/messages/speakEnglishCharacter";
+import { TextToSpeechApiType } from "@/utils/types";
 
 
 const exceededChatLimitMessages = [
@@ -66,6 +68,8 @@ export const useEnglishChat = () => {
   const [, setIsThinking] = useAtom(isThinkingAtom);
   const [isAiTalking, setIsAiTalking] = useAtom(isAiTalkingAtom);
 
+  const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
+
   const interjections = [
     "Let's see,",
     "Well,",
@@ -87,10 +91,11 @@ export const useEnglishChat = () => {
   const handleSpeakAi = useCallback(
     async (
       screenplay: Screenplay,
+      textToSpeechApiType: TextToSpeechApiType,
       onStart?: () => void,
-      onEnd?: () => void
+      onEnd?: () => void,
     ): Promise<void> => {
-      return speakEnglishCharacter(screenplay, viewer, onStart, onEnd);
+      return speakEnglishCharacter(screenplay, viewer, textToSpeechApiType,onStart, onEnd);
     },
     [viewer]
   );
@@ -126,6 +131,7 @@ export const useEnglishChat = () => {
             },
             expression: "neutral",
           },
+          textToSpeechApiType,
           () => {
             setAssistantMessage(exceededChatLimitMessage);
           }
@@ -252,9 +258,10 @@ export const useEnglishChat = () => {
             },
             expression: "neutral",
           },
+          textToSpeechApiType,
           () => {
             setAssistantMessage(receivedMessage);
-          }
+          },
         );
         localStorage.setItem(
           "chatCount",
@@ -293,6 +300,7 @@ export const useEnglishChat = () => {
       isAiTalking,
       setIsAiTalking,
       setIsThinking,
+      textToSpeechApiType,
     ]
   );
 

@@ -38,9 +38,10 @@ export const UiContainer = () => {
 
       // 発言の終了時
       if (event.results[0].isFinal) {
-        setUserMessage(text);
         // 返答文の生成を開始
         handleSendChat(text);
+        
+        setUserMessage('');
       }
     },
     []
@@ -92,6 +93,7 @@ export const UiContainer = () => {
       handleShowHint={handleShowHint} 
       handleClickMicButton={handleClickMicButton} 
       userMessage={userMessage}
+      setUserMessage={setUserMessage}
       handleChangeUserMessage={handleChangeUserMessage}
       isMicRecording={isMicRecording}
       selectedLanguage={selectedLanguage}

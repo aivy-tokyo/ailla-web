@@ -1,7 +1,7 @@
 import { Message } from "@/features/messages/messages";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { FortuneTellingLabel, FortuneTellingType, UserStatusType } from "./types";
+import { FortuneTellingLabel, FortuneTellingType, TextToSpeechApiType, UserStatusType } from "./types";
 import { avatars, backgroundImages } from "./constants";
 import { DEFAULT_PARAM, KoeiroParam } from "@/features/constants/koeiroParam";
 
@@ -47,5 +47,6 @@ export const isTranslatedAtom = atom<boolean>(false);
 
 export const avatarPathAtom = atomWithStorage<string>('avatar',avatars[0].path);
 export const backgroundImagePathAtom = atomWithStorage<string> ('backgroundImagePath',backgroundImages[0].path);
+export const textToSpeechApiTypeAtom = atomWithStorage<TextToSpeechApiType>('textToSpeechApiType','googleTextToSpeech')
 
 export const userIdAtom = atomWithStorage<string>('userId', '');
