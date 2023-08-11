@@ -7,6 +7,7 @@ import { FaMicrophone, FaQuestion, FaRegComments, FaRegPaperPlane, FaRegSun, FaR
 import { avatarPathAtom, backgroundImagePathAtom, chatLogAtom } from "@/utils/atoms";
 import { useAtom, useAtomValue } from "jotai";
 import { avatars, backgroundImages } from "@/utils/constants";
+import { signOut } from "next-auth/react";
 import { useEnglishChat } from "@/hooks/useEnglishChat";
 import { useProfile } from "@/hooks/useProfile";
 
