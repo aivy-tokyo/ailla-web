@@ -1,4 +1,4 @@
-import { fetchPrompt, getChatResponseStream } from "@/features/chat/openAiChat";
+import { getChatResponseStream } from "@/features/chat/openAiChat";
 import {
   Message,
   Screenplay,
@@ -21,19 +21,17 @@ import {
   nextPageTokenAtom,
   ngwordsAtom,
   responsedLiveCommentsAtom,
-  systemPromptAtom,
   userMessageAtom,
   youtubeVideoIdAtom,
 } from "@/utils/atoms";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useState } from "react";
 import {
   SYSTEM_PROMPT,
   SYSTEM_PROMPT_FOR_ENGLISH_CONVERSATION,
 } from "@/features/constants/systemPromptConstants";
 import { speakEnglishCharacter } from "@/features/messages/speakEnglishCharacter";
 
-const openAiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
 const exceededChatLimitMessages = [
   "In this demo, you can chat up to 10 times a day! Don't forget to come back and see me tomorrow, okay?",
@@ -74,6 +72,7 @@ export const useEnglishChat = () => {
   const [commentIndex, setCommentIndex] = useAtom(commentIndexAtom);
   const setAiResponseText = useSetAtom(aiResponseTextAtom);
   const isYoutubeMode = useAtomValue(isYoutubeModeAtom);
+  const [openAiKey, setOpenAiKey] = useState(process.env.NEXT_PUBLIC_OPENAI_API_KEY);
 
   const [, setIsThinking] = useAtom(isThinkingAtom);
   const [isAiTalking, setIsAiTalking] = useAtom(isAiTalkingAtom);
