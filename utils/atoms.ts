@@ -6,6 +6,7 @@ import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { FortuneTellingLabel, FortuneTellingType, UserStatusType } from "./types";
 import { avatars, backgroundImages } from "./constants";
+import { DEFAULT_PARAM, KoeiroParam } from "@/features/constants/koeiroParam";
 // import { Prompt } from "@prisma/client";
 // import { User } from "@line/bot-sdk";
 
@@ -13,7 +14,7 @@ export const isYoutubeModeAtom = atomWithStorage<boolean>('isYoutubeMode',false)
 // export const systemPromptAtom = atom<string>(SYSTEM_PROMPT);
 export const chatProcessingAtom = atom<boolean>(false);
 
-// export const koeiroParamAtom = atom<KoeiroParam>(DEFAULT_PARAM);
+export const koeiroParamAtom = atom<KoeiroParam>(DEFAULT_PARAM);
 export const chatLogAtom = atom<Message[]>([]);
 export const assistantMessageAtom = atom<string>("");
 
@@ -52,3 +53,5 @@ export const isTranslatedAtom = atom<boolean>(false);
 
 export const avatarPathAtom = atomWithStorage<string>('avatar',avatars[0].path);
 export const backgroundImagePathAtom = atomWithStorage<string> ('backgroundImagePath',backgroundImages[0].path);
+
+export const userIdAtom = atomWithStorage<string>('userId', '');

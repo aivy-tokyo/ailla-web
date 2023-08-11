@@ -3,9 +3,8 @@ import { synthesizeVoice } from "../koeiromap/koeiromap";
 import { Viewer } from "../vrmViewer/viewer";
 import { Screenplay } from "./messages";
 import { Talk } from "./messages";
-import { useFortuneTelling } from "@/hooks/useFortuneTelling";
-import { useSetAtom } from "jotai";
-import { isFortuneTellingModeAtom, isFortuneTellingProcessingAtom } from "@/utils/atoms";
+import { TextToSpeechApiType } from "@/utils/types";
+import { createAudio } from "../voiceVox";
 
 const createSpeakCharacter =  () => {
   let lastTime = 0;
@@ -16,7 +15,8 @@ const createSpeakCharacter =  () => {
     screenplay: Screenplay,
     viewer: Viewer,
     onStart?: () => void,
-    onComplete?: () => void
+    onComplete?: () => void,
+    textToSpeechApiType?: TextToSpeechApiType,
   ): Promise<void> => {  // <-- Return a Promise
     return new Promise((resolve, reject) => {  // <-- Create a new Promise
       const fetchPromise = prevFetchPromise.then(async () => {
