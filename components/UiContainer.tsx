@@ -57,7 +57,8 @@ export const UiContainer = () => {
       window.webkitSpeechRecognition || window.SpeechRecognition;
 
     const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
+    // recognition.lang = "en-US";
+    recognition.lang = "JP";
     recognition.interimResults = true; // 認識の途中結果を返す
     recognition.continuous = false; // 発言の終了時に認識を終了する
 

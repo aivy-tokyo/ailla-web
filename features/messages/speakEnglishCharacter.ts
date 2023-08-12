@@ -66,8 +66,9 @@ export const fetchAudio = async (talk: Talk, textToSpeechApiType: TextToSpeechAp
     try{
       const response = await axios.post('api/clovaVoice',
         {
-        // speaker: 'dara-danna',
-        speaker: 'dsinu-matt',
+        speaker: 'danna',
+        // speaker: 'dsinu-matt',　//男性声(英語)
+        // speaker: 'dnaomi_joyful',//日本語女性
         text: talk.message,
         format: 'mp3',
         },
