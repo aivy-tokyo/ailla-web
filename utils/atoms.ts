@@ -7,6 +7,7 @@ import { atomWithStorage } from "jotai/utils";
 import { FortuneTellingLabel, FortuneTellingType, UserStatusType } from "./types";
 import { avatars, backgroundImages } from "./constants";
 import { DEFAULT_PARAM, KoeiroParam } from "@/features/constants/koeiroParam";
+import { UserInfo } from "../entities/UserInfo";
 // import { Prompt } from "@prisma/client";
 // import { User } from "@line/bot-sdk";
 
@@ -55,3 +56,5 @@ export const avatarPathAtom = atomWithStorage<string>('avatar',avatars[0].path);
 export const backgroundImagePathAtom = atomWithStorage<string> ('backgroundImagePath',backgroundImages[0].path);
 
 export const userIdAtom = atomWithStorage<string>('userId', '');
+
+export const userInfoAtom = atom<UserInfo | null>(null);

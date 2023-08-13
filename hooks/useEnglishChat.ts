@@ -2,9 +2,7 @@ import { getChatResponseStream } from "@/features/chat/openAiChat";
 import {
   Message,
   Screenplay,
-  textsToScreenplay,
 } from "@/features/messages/messages";
-import { speakCharacter } from "@/features/messages/speakCharacter";
 import { ViewerContext } from "@/features/vrmViewer/viewerContext";
 
 import {
@@ -17,17 +15,10 @@ import {
   isThinkingAtom,
   isYoutubeModeAtom,
   koeiroParamAtom,
-  liveChatIdAtom,
-  nextPageTokenAtom,
-  ngwordsAtom,
-  responsedLiveCommentsAtom,
-  userMessageAtom,
-  youtubeVideoIdAtom,
 } from "@/utils/atoms";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useContext, useState } from "react";
 import {
-  SYSTEM_PROMPT,
   SYSTEM_PROMPT_FOR_ENGLISH_CONVERSATION,
 } from "@/features/constants/systemPromptConstants";
 import { speakEnglishCharacter } from "@/features/messages/speakEnglishCharacter";

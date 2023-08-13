@@ -31,6 +31,9 @@ export const chat = async ({
     createChatCompletionRequest['function_call'] = 'auto';
     createChatCompletionRequest['functions'] = functions;
   }
+  if (userId) {
+    createChatCompletionRequest['user'] = userId;
+  }
 
   const response = await openai.createChatCompletion(createChatCompletionRequest);
 

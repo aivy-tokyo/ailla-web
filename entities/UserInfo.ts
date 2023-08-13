@@ -3,4 +3,5 @@ export interface UserInfo {
   prefecture: string;
   birthdate: string;
   gender: number;
+  hasExplainedFirstApp: boolean;
 }
