@@ -2,9 +2,7 @@ import { getChatResponseStream } from "@/features/chat/openAiChat";
 import {
   Message,
   Screenplay,
-  textsToScreenplay,
 } from "@/features/messages/messages";
-import { speakCharacter } from "@/features/messages/speakCharacter";
 import { ViewerContext } from "@/features/vrmViewer/viewerContext";
 
 import {
@@ -15,22 +13,16 @@ import {
   commentIndexAtom,
   isAiTalkingAtom,
   isThinkingAtom,
-  isYoutubeModeAtom,
   koeiroParamAtom,
-  liveChatIdAtom,
-  nextPageTokenAtom,
-  ngwordsAtom,
-  responsedLiveCommentsAtom,
-  userMessageAtom,
-  youtubeVideoIdAtom,
+  textToSpeechApiTypeAtom,
 } from "@/utils/atoms";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useContext, useState } from "react";
 import {
-  SYSTEM_PROMPT,
   SYSTEM_PROMPT_FOR_ENGLISH_CONVERSATION,
 } from "@/features/constants/systemPromptConstants";
 import { speakEnglishCharacter } from "@/features/messages/speakEnglishCharacter";
+import { TextToSpeechApiType } from "@/utils/types";
 
 
 const exceededChatLimitMessages = [
@@ -71,11 +63,12 @@ export const useEnglishChat = () => {
   const koeiroParam = useAtomValue(koeiroParamAtom);
   const [commentIndex, setCommentIndex] = useAtom(commentIndexAtom);
   const setAiResponseText = useSetAtom(aiResponseTextAtom);
-  const isYoutubeMode = useAtomValue(isYoutubeModeAtom);
   const [openAiKey, setOpenAiKey] = useState(process.env.NEXT_PUBLIC_OPENAI_API_KEY);
 
   const [, setIsThinking] = useAtom(isThinkingAtom);
   const [isAiTalking, setIsAiTalking] = useAtom(isAiTalkingAtom);
+
+  const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
 
   const interjections = [
     "Let's see,",
@@ -98,10 +91,11 @@ export const useEnglishChat = () => {
   const handleSpeakAi = useCallback(
     async (
       screenplay: Screenplay,
+      textToSpeechApiType: TextToSpeechApiType,
       onStart?: () => void,
-      onEnd?: () => void
+      onEnd?: () => void,
     ): Promise<void> => {
-      return speakEnglishCharacter(screenplay, viewer, onStart, onEnd);
+      return speakEnglishCharacter(screenplay, viewer, textToSpeechApiType,onStart, onEnd);
     },
     [viewer]
   );
@@ -112,6 +106,7 @@ export const useEnglishChat = () => {
    */
   const handleSendChat = useCallback(
     async (text: string) => {
+      console.log('chatLog->',chatLog);
       if (!openAiKey) {
         console.error("APIキーが入力されていません");
         return;
@@ -119,6 +114,7 @@ export const useEnglishChat = () => {
 
       // Check if the chat limit is exceeded
       const lastChatDate = new Date(localStorage.getItem("lastChatDate") || "");
+
       const chatCount = Number(localStorage.getItem("chatCount"));
       if (!checkChatLimit(lastChatDate, chatCount)) {
         const randomIndex = Math.floor(
@@ -135,6 +131,7 @@ export const useEnglishChat = () => {
             },
             expression: "neutral",
           },
+          textToSpeechApiType,
           () => {
             setAssistantMessage(exceededChatLimitMessage);
           }
@@ -164,8 +161,6 @@ export const useEnglishChat = () => {
         { role: "user", content: newMessage },
       ];
       setChatLog(messageLog);
-      // いったんDBなしで動作させるためにコメントアウト
-      // const promptForChat = await fetchPrompt('CHAT').then(res => res.text);
 
       // Chat GPTへ
       const messages: Message[] = [
@@ -263,9 +258,10 @@ export const useEnglishChat = () => {
             },
             expression: "neutral",
           },
+          textToSpeechApiType,
           () => {
             setAssistantMessage(receivedMessage);
-          }
+          },
         );
         localStorage.setItem(
           "chatCount",
@@ -299,13 +295,12 @@ export const useEnglishChat = () => {
       chatLog,
       handleSpeakAi,
       setCommentIndex,
-      setTimeout,
       openAiKey,
       koeiroParam,
       isAiTalking,
       setIsAiTalking,
       setIsThinking,
-      isYoutubeMode,
+      textToSpeechApiType,
     ]
   );
 

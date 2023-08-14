@@ -1,12 +1,12 @@
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
-import { SelectedLanguageType } from "@/utils/types";
+import { SelectedLanguageType, TextToSpeechApiType } from "@/utils/types";
 import Profile from "./Profile";
 import { FaMicrophone, FaQuestion, FaRegComments, FaRegPaperPlane, FaRegSun, FaRegTimesCircle, FaRegUserCircle} from 'react-icons/fa';
-import { avatarPathAtom, backgroundImagePathAtom, chatLogAtom } from "@/utils/atoms";
-import { useAtom, useAtomValue } from "jotai";
-import { avatars, backgroundImages } from "@/utils/constants";
+import { avatarPathAtom, backgroundImagePathAtom, chatLogAtom, textToSpeechApiTypeAtom } from "@/utils/atoms";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { avatars, backgroundImages, textToSpeechApiTypeList } from "@/utils/constants";
 import { signOut } from "next-auth/react";
 import { useEnglishChat } from "@/hooks/useEnglishChat";
 import { useProfile } from "@/hooks/useProfile";
@@ -15,8 +15,8 @@ import { useProfile } from "@/hooks/useProfile";
 type Props = {
   showHint: boolean;
   handleShowHint: () => void;
-  // handleSelectLanguage: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleClickMicButton: () => void;
+  setUserMessage: Dispatch<SetStateAction<string>>;
   userMessage: string;
   handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
   isMicRecording: boolean;
@@ -29,6 +29,7 @@ const UiForSp = ({
   handleShowHint, 
   handleClickMicButton, 
   userMessage, 
+  setUserMessage,
   handleChangeUserMessage,
   isMicRecording,
   selectedLanguage,
@@ -36,11 +37,12 @@ const UiForSp = ({
 }: Props) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
   const [chatIconSelected, setChatIconSelected] = useState<boolean>(false);
-  const [avatarPath,setAvatarPath] = useAtom(avatarPathAtom);
-  const [backgroundImagePath, setBackgroundImagePath] = useAtom(backgroundImagePathAtom);
+  const setAvatarPath = useSetAtom(avatarPathAtom);
+  const setBackgroundImagePath = useSetAtom(backgroundImagePathAtom);
   const {handleSendChat} = useEnglishChat();
   const {userName} = useProfile();
   const chatLogs = useAtomValue(chatLogAtom);
+  const [textToSpeechApiType,setTextToSpeechApiType] = useAtom(textToSpeechApiTypeAtom) 
 
   const speechTextArea = () => {
     return  chatLogs.map((chatLog,id) => (
@@ -52,6 +54,11 @@ const UiForSp = ({
         </div>
       </div>
     ));        
+  };
+
+  const sendChat = () => {
+    handleSendChat(userMessage);
+    setUserMessage('');
   };
 
   const handleClickSettingButton = () => {
@@ -96,7 +103,7 @@ const UiForSp = ({
         {questionIcon()}
         <input type="text" placeholder="文字を入力する" value={userMessage} className="w-[70%] rounded-full px-4 h-10 text-white" onChange={handleChangeUserMessage}/>
         {userMessage.length > 0 ? 
-          <div className="w-[35px] h-[35px] rounded-full bg-black border-2 border-white flex justify-center items-center pr-1" onClick={()=> handleSendChat(userMessage)}>
+          <div className="w-[35px] h-[35px] rounded-full bg-black border-2 border-white flex justify-center items-center pr-1" onClick={()=> sendChat()}>
             <FaRegPaperPlane className="text-white text-[20px] cursor-pointer"/>
           </div> 
           : 
@@ -114,20 +121,25 @@ const UiForSp = ({
     setBackgroundImagePath(e.target.value);
   };
 
+  const handleChangeVoiceApi = (e: ChangeEvent<HTMLSelectElement>) => {
+    setTextToSpeechApiType(e.target.value as TextToSpeechApiType);
+  };
+
   // useCallback: サインアウト
   const signout = useCallback(() => {
     signOut();
     console.log('サインアウト');
   } ,[]);
 
+
   const settingContainer = () => {
     return (
-      <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white">
-        <div className="flex justify-end py-3 pr-2">
-          <FaRegTimesCircle className="text-white text-[34px] mt-2 cursor-pointer" onClick={handleClickSettingButton}/>
+      <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white overflow-y-scroll">
+        <div className="flex justify-end  fixed top-0 right-0 mt-2 cursor-pointer">
+          <FaRegTimesCircle className="text-white text-[34px] " onClick={handleClickSettingButton}/>
         </div>
         <div className="flex justify-center">
-          <div className="flex flex-col items-center w-[300px]">
+          <div className="flex flex-col items-center w-[300px] py-10">
             {/*  言語選択UI */}
             <div className="mb-10 w-full">
               <h2 className="mb-3 font-bold">言語を選ぶ</h2>
@@ -163,6 +175,20 @@ const UiForSp = ({
                   backgroundImages.map((image,index)=> {
                     return (
                       <option key={index} value={image.path}>{image.label}</option>
+                    );
+                  })
+                }
+              </select>
+            </div>
+            {/* 背景の変更UI */}
+            <div className="w-full">
+              <h2 className="font-bold mb-5">合成音声の種類を選ぶ</h2>
+              <select className="rounded-md p-2 mb-5" placeholder="選択する" onChange={(e)=> handleChangeVoiceApi(e)}>
+                <option value="" disabled selected>選択してください</option>
+                {
+                  textToSpeechApiTypeList.map((textToSpeechApi,index)=> {
+                    return (
+                      <option key={index} value={textToSpeechApi.value}>{textToSpeechApi.label}</option>
                     );
                   })
                 }

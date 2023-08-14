@@ -6,9 +6,10 @@ import {
   useState,
 } from "react";
 import { useRouter } from "next/router";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { userIdAtom } from "@/utils/atoms";
-import axios from "axios";
+import axios from 'axios';
+import { AxiosResponse } from "axios";
 
 export default function Register() {
   const [userName, setUserName] = useState("");

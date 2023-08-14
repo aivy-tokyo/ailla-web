@@ -9,8 +9,6 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import axios from "axios";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
   const chatProcessing = useAtomValue(chatProcessingAtom);
 

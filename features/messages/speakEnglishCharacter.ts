@@ -3,9 +3,9 @@ import { synthesizeVoice } from "../koeiromap/koeiromap";
 import { Viewer } from "../vrmViewer/viewer";
 import { Screenplay } from "./messages";
 import { Talk } from "./messages";
-import { useFortuneTelling } from "@/hooks/useFortuneTelling";
-import { useSetAtom } from "jotai";
-import { isFortuneTellingModeAtom, isFortuneTellingProcessingAtom } from "@/utils/atoms";
+import axios from 'axios';
+import { TextToSpeechApiType } from "@/utils/types";
+
 
 const createSpeakCharacter =  () => {
   let lastTime = 0;
@@ -15,8 +15,9 @@ const createSpeakCharacter =  () => {
   return (
     screenplay: Screenplay,
     viewer: Viewer,
+    textToSpeechApiType: TextToSpeechApiType,
     onStart?: () => void,
-    onComplete?: () => void
+    onComplete?: () => void,
   ): Promise<void> => {  // <-- Return a Promise
     return new Promise((resolve, reject) => {  // <-- Create a new Promise
       const fetchPromise = prevFetchPromise.then(async () => {
@@ -26,7 +27,7 @@ const createSpeakCharacter =  () => {
         }
 
         if(screenplay.talk.message === "")resolve();
-        const buffer = await fetchAudio(screenplay.talk).catch(() => null);
+        const buffer = await fetchAudio(screenplay.talk, textToSpeechApiType).catch(() => null);
         lastTime = Date.now();
         return buffer;
       });
@@ -49,20 +50,37 @@ const createSpeakCharacter =  () => {
 
 export const speakEnglishCharacter = createSpeakCharacter();
 
-export const fetchAudio = async (talk: Talk): Promise<ArrayBuffer | undefined> => {
-  try {
-    const response = await fetch('/api/synthesize', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: talk.message }),
-    });
-  
-    if (!response.ok) {
-      throw new Error(response.statusText);
+export const fetchAudio = async (talk: Talk, textToSpeechApiType: TextToSpeechApiType): Promise<ArrayBuffer | undefined> => {
+  if(textToSpeechApiType === 'googleTextToSpeech'){
+    try {
+      const response = await axios.post('/api/synthesize', { text: talk.message }, {
+        headers: { 'Content-Type': 'application/json' },
+        responseType: "arraybuffer",
+      });
+      
+      return response.data;
+    } catch (error) {
+      console.error('Synthesis failed', error);
     }
-  
-    return await response.arrayBuffer();  
-  } catch (error) {
-    console.error('Synthesis failed', error);
+  }else if(textToSpeechApiType === 'clovaVoice'){
+    try{
+      const response = await axios.post('api/clovaVoice',
+        {
+        speaker: 'danna',
+        // speaker: 'dsinu-matt',　//男性声(英語)
+        // speaker: 'dnaomi_joyful',//日本語女性
+        text: talk.message,
+        format: 'mp3',
+        },
+        {
+          headers: {'Content-Type': 'application/json'},
+          responseType: "arraybuffer"
+        }
+      )
+      return response.data;
+    }catch(error) {
+      console.error('clovaVoice Failed:',error);
+    }
   }
 };
+
