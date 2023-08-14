@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SelectedLanguageType, TextToSpeechApiType } from "@/utils/types";
@@ -7,6 +7,7 @@ import { FaMicrophone, FaQuestion, FaRegComments, FaRegPaperPlane, FaRegSun, FaR
 import { avatarPathAtom, backgroundImagePathAtom, chatLogAtom, textToSpeechApiTypeAtom } from "@/utils/atoms";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { avatars, backgroundImages, textToSpeechApiTypeList } from "@/utils/constants";
+import { signOut } from "next-auth/react";
 import { useEnglishChat } from "@/hooks/useEnglishChat";
 import { useProfile } from "@/hooks/useProfile";
 
@@ -124,6 +125,13 @@ const UiForSp = ({
     setTextToSpeechApiType(e.target.value as TextToSpeechApiType);
   };
 
+  // useCallback: サインアウト
+  const signout = useCallback(() => {
+    signOut();
+    console.log('サインアウト');
+  } ,[]);
+
+
   const settingContainer = () => {
     return (
       <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed text-white overflow-y-scroll">
@@ -185,6 +193,10 @@ const UiForSp = ({
                   })
                 }
               </select>
+            </div>
+            {/* サインアウトボタン */}
+            <div className="w-full">
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => signout()}>サインアウト</button>
             </div>
           </div>
         </div>
