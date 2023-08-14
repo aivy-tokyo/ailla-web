@@ -3,6 +3,8 @@ import { useResponsive } from "@/hooks/useResponsive";
 import UiForSp from "./UiForSp";
 import { SelectedLanguageType } from "@/utils/types";
 import { useEnglishChat } from "@/hooks/useEnglishChat";
+import { useAtomValue } from "jotai";
+import { chatLogAtom } from "@/utils/atoms";
 
 
 export const UiContainer = () => {
@@ -16,6 +18,7 @@ export const UiContainer = () => {
   const [speechRecognition, setSpeechRecognition] = useState<SpeechRecognition>();
   const [chatProcessing, setChatProcessing] = useState<boolean>(false);
   const {handleSendChat} = useEnglishChat()
+  const chatLog = useAtomValue(chatLogAtom);
 
   //MEMO: ハイドレーションエラーを回避するための状態管理
   useEffect(()=>{
@@ -44,7 +47,7 @@ export const UiContainer = () => {
         setUserMessage('');
       }
     },
-    []
+    [chatLog]//MEMO:依存配列にchatLogを指定しないと発話のたびにchatLogがリセットされてしまう。
   );
 
   // 無音が続いた場合も終了する

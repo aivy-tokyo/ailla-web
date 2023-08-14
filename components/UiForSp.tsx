@@ -192,8 +192,6 @@ const UiForSp = ({
     )
   };
 
-  console.log(textToSpeechApiType);
-
   return(
     <div className="">
       {/* SP版:上部のUI群 */}
