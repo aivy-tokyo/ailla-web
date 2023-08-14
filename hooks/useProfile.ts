@@ -27,6 +27,7 @@ export const useProfile = () => {
   
   useEffect(()=>{
     fetchUserInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[isEditMode,userId]);
   
 const editProfile = () => {
@@ -61,7 +62,6 @@ const editProfile = () => {
     fetchUserInfo,
     userId,
     editProfile,
-
 
     userName,       setUserName,
     userPrefecture, setUserPrefecture,

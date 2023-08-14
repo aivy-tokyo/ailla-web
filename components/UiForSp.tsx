@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useCallback, useState } from "react";
 import EndTalkButton from "./EndTalkButton";
 import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SelectedLanguageType, TextToSpeechApiType } from "@/utils/types";
@@ -42,7 +42,7 @@ const UiForSp = ({
   const {handleSendChat} = useEnglishChat();
   const {userName} = useProfile();
   const chatLogs = useAtomValue(chatLogAtom);
-  const [textToSpeechApiType,setTextToSpeechApiType] = useAtom(textToSpeechApiTypeAtom) 
+  const setTextToSpeechApiType = useSetAtom(textToSpeechApiTypeAtom) 
 
   const speechTextArea = () => {
     return  chatLogs.map((chatLog,id) => (
@@ -128,7 +128,6 @@ const UiForSp = ({
   // useCallback: サインアウト
   const signout = useCallback(() => {
     signOut();
-    console.log('サインアウト');
   } ,[]);
 
 

@@ -1,5 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
-import { useResponsive } from "@/hooks/useResponsive";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import UiForSp from "./UiForSp";
 import { SelectedLanguageType } from "@/utils/types";
 import { useEnglishChat } from "@/hooks/useEnglishChat";
@@ -9,7 +8,6 @@ import { chatLogAtom } from "@/utils/atoms";
 
 export const UiContainer = () => {
   const [showHint, setShowHint] = useState<boolean>(false);
-  const {isDeskTop } = useResponsive();
   const [selectedLanguage, setSelectedLanguage] = useState<SelectedLanguageType>('English');
   //MEMO: ハイドレーションエラーを回避するための状態管理
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -29,10 +27,6 @@ export const UiContainer = () => {
     setShowHint(prev => !prev);
   };
 
-  const handleSelectLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLanguage(e.target.value as SelectedLanguageType);
-  };
-
   // 音声認識の結果を処理する
   const handleRecognitionResult = useCallback(
     (event: SpeechRecognitionEvent) => {
@@ -47,7 +41,8 @@ export const UiContainer = () => {
         setUserMessage('');
       }
     },
-    [chatLog]//MEMO:依存配列にchatLogを指定しないと発話のたびにchatLogがリセットされてしまう。
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [chatLog, handleSendChat]//MEMO:依存配列にchatLogを指定しないと発話のたびにchatLogがリセットされてしまう。
   );
 
   // 無音が続いた場合も終了する
@@ -72,7 +67,7 @@ export const UiContainer = () => {
   }, [handleRecognitionResult, handleRecognitionEnd]);
 
   const handleClickMicButton = useCallback(() => {
-    // if(chatProcessing)return;
+    if(chatProcessing)return;
     if (isMicRecording) {
       speechRecognition?.abort();
       setIsMicRecording(false);
@@ -93,7 +88,6 @@ export const UiContainer = () => {
   return (
     <UiForSp
       showHint={showHint} 
-      // handleSelectLanguage={handleSelectLanguage} 
       handleShowHint={handleShowHint} 
       handleClickMicButton={handleClickMicButton} 
       userMessage={userMessage}
