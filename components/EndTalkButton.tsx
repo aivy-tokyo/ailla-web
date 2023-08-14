@@ -1,18 +1,5 @@
 //シチュエーション会話終了ボタン
 const endTalkButton = () => {
-  /* 
-  button style
-  background-color: transparent;
-    color: white;
-    border: 1px solid;
-    padding: 2px;
-    line-height: 1;
-    height: 28px;
-    width: 7em;
-    margin-top: 6px;
-    font-size: 12px;
-}
-  */
   return (
     <button className="
     bg-transparent

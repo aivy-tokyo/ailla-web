@@ -1,5 +1,4 @@
 import { wait } from "@/utils/wait";
-import { synthesizeVoice } from "../koeiromap/koeiromap";
 import { Viewer } from "../vrmViewer/viewer";
 import { Screenplay } from "./messages";
 import { Talk } from "./messages";

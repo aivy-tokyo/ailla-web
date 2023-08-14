@@ -152,8 +152,6 @@ export const useEnglishChat = () => {
       if (newMessage == null) return;
 
       setChatProcessing(true);
-      // 間投詞をランダムに追加(間を埋めるため)
-      // handleSpeakAi(textsToScreenplay([getRandomInterjection()], koeiroParam)[0]);
 
       // ユーザーの発言を追加して表示
       const messageLog: Message[] = [
@@ -184,9 +182,6 @@ export const useEnglishChat = () => {
 
       const reader = stream.getReader();
       let receivedMessage = "";
-      let aiTextLog = "";
-      let tag = "";
-      const sentences = new Array<string>();
       const speakPromises: Promise<any>[] = []; //各センテンスの発話のPromiseを格納する配列
       try {
         while (true) {
@@ -195,57 +190,6 @@ export const useEnglishChat = () => {
           if (done) break;
 
           receivedMessage += value;
-
-          // 返答内容のタグ部分の検出
-          // const tagMatch = receivedMessage.match(/^\[(.*?)\]/);
-          // if (tagMatch && tagMatch[0]) {
-          //   tag = tagMatch[0];
-          //   receivedMessage = receivedMessage.slice(tag.length);
-          // }
-
-          // 返答を一文単位で切り出して処理する
-          // const sentenceMatch = receivedMessage.match(
-          //   /^(.+[。．！？\n]|.{10,}[、,])/
-          // );
-          // if (sentenceMatch && sentenceMatch[0]) {
-          //   const sentence = sentenceMatch[0];
-          //   sentences.push(sentence);
-          //   receivedMessage = receivedMessage
-          //     .slice(sentence.length)
-          //     .trimStart();
-
-          //   // 発話不要/不可能な文字列だった場合はスキップ
-          //   if (
-          //     !sentence.replace(
-          //       /^[\s\[\(\{「［（【『〈《〔｛«‹〘〚〛〙›»〕》〉』】）］」\}\)\]]+$/g,
-          //       ""
-          //     )
-          //   ) {
-          //     continue;
-          //   }
-
-          // setAiResponseText((prev)=> prev + sentence);
-          // const aiText = `${tag} ${sentence}`;
-          // const aiTalks = textsToScreenplay([aiText], koeiroParam);
-          // aiTextLog += aiText;
-
-          // if(isYoutubeMode){
-          //   // 文ごとに音声を生成 & 再生、返答を表示
-          //   const speakPromise = handleSpeakAi(aiTalks[0],
-          //     () => {
-          //       setIsThinking(false)
-          //       setIsAiTalking(true);
-          //     },
-          //     () => {});
-          //   speakPromises.push(speakPromise);
-          // }else{
-          //   // 文ごとに音声を生成 & 再生、返答を表示
-          //   const currentAssistantMessage = sentences.join(" ");
-          //   handleSpeakAi(aiTalks[0], () => {
-          //     setAssistantMessage(currentAssistantMessage);
-          //   });
-          // }
-          // }
         }
         console.log("receivedMessage", receivedMessage);
         handleSpeakAi(
@@ -292,15 +236,17 @@ export const useEnglishChat = () => {
       return Promise.all(speakPromises);
     },
     [
-      chatLog,
-      handleSpeakAi,
-      setCommentIndex,
-      openAiKey,
-      koeiroParam,
-      isAiTalking,
-      setIsAiTalking,
-      setIsThinking,
-      textToSpeechApiType,
+      chatLog, 
+      openAiKey, 
+      setChatProcessing, 
+      setChatLog, 
+      handleSpeakAi, 
+      textToSpeechApiType, 
+      setAssistantMessage, 
+      setIsAiTalking, 
+      setAiResponseText, 
+      setCommentIndex, 
+      commentIndex
     ]
   );
 

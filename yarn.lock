@@ -513,6 +513,13 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.44.0.tgz#961a5903c74139390478bdc808bcde3fc45ab7af"
   integrity sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==
 
+"@gltf-transform/core@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/core/-/core-3.5.1.tgz#ee2abf65ca2c36e63eac26d63a42c83cd2f77e44"
+  integrity sha512-owprbpvr4X5Y6JXN2CPs35ZuHThHVVenlwohjgS+vldnoKiDwuzZt5+E6VwJFyrYFUOsqKxQGkBFiXyxB3OSkw==
+  dependencies:
+    property-graph "^1.3.1"
+
 "@google-cloud/text-to-speech@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@google-cloud/text-to-speech/-/text-to-speech-5.0.0.tgz#d1c5688e8c3172d98d8471b95a2a89e6b61e5067"
@@ -1250,10 +1257,10 @@
   resolved "https://registry.yarnpkg.com/@types/stats.js/-/stats.js-0.17.0.tgz#0ed81d48e03b590c24da85540c1d952077a9fe20"
   integrity sha512-9w+a7bR8PeB0dCT/HBULU2fMqf6BAzvKbxFboYhmDtDkKPiyXYbjoe2auwsXlEFI7CFNMF1dCv3dFH5Poy9R1w==
 
-"@types/three@^0.154.0":
-  version "0.154.0"
-  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.154.0.tgz#91f4384930ed050a14d7f13c09d5785cc167a064"
-  integrity sha512-IioqpGhch6FdLDh4zazRn3rXHj6Vn2nVOziJdXVbJFi9CaI65LtP9qqUtpzbsHK2Ezlox8NtsLNHSw3AQzucjA==
+"@types/three@^0.155.0":
+  version "0.155.0"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.155.0.tgz#703df6d3657b466b1b9ba4f36e000030fb4f137a"
+  integrity sha512-IzdbqXsGsbG0flvq9D5L9pZRwySQQps2bGcizLYEsfvK3dM+B0sqKR6S+xAOXbouXemfDmHttrcQjVOM46YnAw==
   dependencies:
     "@tweenjs/tween.js" "~18.6.4"
     "@types/stats.js" "*"
@@ -3494,6 +3501,11 @@ prop-types@^15.6.1, prop-types@^15.8.1:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"
     react-is "^16.13.1"
+
+property-graph@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/property-graph/-/property-graph-1.3.1.tgz#25fb2c8040ba9b15f04cda90a443f3f844505293"
+  integrity sha512-gei3N/bHWJdCItJ4blnlGWd9iauEZI+JZYj/A0D177XSI01+QhiJGAVscYBhe3Yywow3A2QJzVtsO2P+UgrRRQ==
 
 proto3-json-serializer@^1.1.1:
   version "1.1.1"
