@@ -2,9 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { ChatCompletionRequestMessage } from "openai";
+import { GPT_MODEL } from "../../../utils/constants";
 
 const chat = new ChatOpenAI({
-  modelName: "gpt-3.5-turbo",
+  modelName: GPT_MODEL,
   temperature: 0.7,
   maxTokens: 150,
 });
@@ -91,7 +92,7 @@ export default async function handler(
   res: NextApiResponse<
     | {
         topic: string;
-        message: string;
+        messages: ChatCompletionRequestMessage[];
       }
     | { error: string }
   >
@@ -112,7 +113,13 @@ export default async function handler(
 
     res.status(200).json({
       topic,
-      message: responseMessage,
+      messages: [
+        ...messages,
+        {
+          role: "assistant",
+          content: responseMessage,
+        },
+      ],
     });
   } catch (error: any) {
     console.error(error);
