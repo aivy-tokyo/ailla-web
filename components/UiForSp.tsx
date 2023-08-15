@@ -15,7 +15,8 @@ import { useProfile } from "@/hooks/useProfile";
 type Props = {
   showHint: boolean;
   handleShowHint: () => void;
-  handleClickMicButton: () => void;
+  handleStartRecording: () => void;
+  handleStopRecording: () => void;
   setUserMessage: Dispatch<SetStateAction<string>>;
   userMessage: string;
   handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -27,7 +28,8 @@ type Props = {
 const UiForSp = ({
   showHint, 
   handleShowHint, 
-  handleClickMicButton, 
+  handleStartRecording, 
+  handleStopRecording,
   userMessage, 
   setUserMessage,
   handleChangeUserMessage,
@@ -61,6 +63,13 @@ const UiForSp = ({
     setUserMessage('');
   };
 
+  // const handleClickMicButton = () => {
+  //   if(chatIconSelected){
+  //     setChatIconSelected(false);
+  //   }
+  //   handleStartRecording();
+  // };
+
   const handleClickSettingButton = () => {
     setShowSetting(prev => !prev);
   };
@@ -74,7 +83,14 @@ const UiForSp = ({
   };
   const micIcon = () => {
     return (
-      <div className={`${chatIconSelected ? 'w-[35px] h-[35px] ': 'w-[60px] h-[60px]'} rounded-full  bg-black border-2 border-white flex justify-center items-center cursor-pointer`} onClick={handleClickMicButton}>
+      <div 
+        className={`${chatIconSelected ? 'w-[35px] h-[35px] ': 'w-[60px] h-[60px]'} rounded-full  bg-black border-2 border-white flex justify-center items-center cursor-pointer`} 
+        // onClick={() => handleClickMicButton()}
+        onMouseDown={handleStartRecording}
+        onMouseUp={handleStopRecording}
+        onTouchStart={handleStartRecording}
+        onTouchEnd={handleStopRecording}
+      >
         <FaMicrophone className={`${isMicRecording ? ' text-red-500' : 'text-white'} ${chatIconSelected ? 'text-[23px]' : 'text-[30px]'}`} />
       </div>
     );
@@ -257,7 +273,7 @@ const UiForSp = ({
             {speechTextArea()}
           </div>
         </div>
-        <div className=" w-full h-18 bg-black    py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)] ">
+        <div className="w-full h-18 bg-[rgba(0,0,0,0.6)]  z-20  py-3 m-auto">
           {chatIconSelected ? 
             bottomUiChatIconSelected()
             : 

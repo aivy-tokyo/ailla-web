@@ -50,7 +50,7 @@ export class VRMAnimation {
     const metaVersion = vrm.meta.metaVersion;
     const tracks: THREE.KeyframeTrack[] = [];
 
-    for (const [name, origTrack] of this.humanoidTracks.rotation.entries()) {
+    for (const [name, origTrack] of Array.from(this.humanoidTracks.rotation.entries())) {
       const nodeName = humanoid.getNormalizedBoneNode(name)?.name;
 
       if (nodeName != null) {
@@ -65,7 +65,7 @@ export class VRMAnimation {
       }
     }
 
-    for (const [name, origTrack] of this.humanoidTracks.translation.entries()) {
+    for (const [name, origTrack] of Array.from(this.humanoidTracks.translation.entries())) {
       const nodeName = humanoid.getNormalizedBoneNode(name)?.name;
 
       if (nodeName != null) {
@@ -91,7 +91,7 @@ export class VRMAnimation {
   ): THREE.KeyframeTrack[] {
     const tracks: THREE.KeyframeTrack[] = [];
 
-    for (const [name, origTrack] of this.expressionTracks.entries()) {
+    for (const [name, origTrack] of Array.from(this.expressionTracks.entries())) {
       const trackName = expressionManager.getExpressionTrackName(name);
 
       if (trackName != null) {
