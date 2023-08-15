@@ -30,44 +30,37 @@ export const UiContainer = () => {
   // 音声認識の結果を処理する
   const handleRecognitionResult = useCallback(
     (event: SpeechRecognitionEvent) => {
-      const text = event.results[0][0].transcript;
-      setUserMessage(text);
+      console.log('handleRecognitionResultのevent->',event);
+      const lastIndexOfResultList = event.results.length - 1;
+      const text = event.results[lastIndexOfResultList][0].transcript;
+      
+      setUserMessage(prev => prev + text);
 
-      // 発言の終了時
-      if (event.results[0].isFinal) {
-        // 返答文の生成を開始
-        handleSendChat(text);
-        
-        setUserMessage('');
+      // 無音になるとisFinalがtrueになるのでその時の処理(無音になっても録音継続)
+      if (event.results[0].isFinal && isMicRecording) {
+        speechRecognition?.start();
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [chatLog, handleSendChat]//MEMO:依存配列にchatLogを指定しないと発話のたびにchatLogがリセットされてしまう。
+    [isMicRecording]//Warning: 依存配列にspeechRecognitionを加えてはならない。useEffectが無限に実行される
   );
 
-  // 無音が続いた場合も終了する
-  const handleRecognitionEnd = useCallback(() => {
-    setIsMicRecording(false);
-  }, []);
-
   useEffect(() => {
+    console.log('useEffect新規実行！')
     const SpeechRecognition =
       window.webkitSpeechRecognition || window.SpeechRecognition;
 
     const recognition = new SpeechRecognition();
-    // recognition.lang = "en-US";
-    recognition.lang = "JP";
-    recognition.interimResults = true; // 認識の途中結果を返す
-    recognition.continuous = false; // 発言の終了時に認識を終了する
+    recognition.lang = "en-US";
+    recognition.interimResults = false; // 認識の途中結果を返さない
+    recognition.continuous = true;
 
     recognition.addEventListener("result", handleRecognitionResult);
-    recognition.addEventListener("end", handleRecognitionEnd);
 
     setSpeechRecognition(recognition);
-  }, [handleRecognitionResult, handleRecognitionEnd]);
+  }, [handleRecognitionResult]);
 
   const handleStartRecording = useCallback(() => {
-    // if(chatProcessing)return;
     if (isMicRecording) {
       speechRecognition?.abort();
       setIsMicRecording(false);
@@ -77,8 +70,21 @@ export const UiContainer = () => {
 
     speechRecognition?.start();
     setIsMicRecording(true);
-  // }, [isMicRecording, speechRecognition,chatProcessing]);
   }, [isMicRecording, speechRecognition]);
+
+  const handleStopRecording = useCallback(async() => {
+    speechRecognition?.removeEventListener('result', handleRecognitionResult);
+    speechRecognition?.stop();
+    setSpeechRecognition(undefined);
+    setIsMicRecording(false);
+
+    // 少し待つ
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // 返答文の生成を開始
+    handleSendChat(userMessage);
+    setUserMessage('');
+  }, [speechRecognition, handleRecognitionResult, handleSendChat, userMessage]);
 
   const handleChangeUserMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setUserMessage(e.target.value);
@@ -91,6 +97,7 @@ export const UiContainer = () => {
       showHint={showHint} 
       handleShowHint={handleShowHint} 
       handleStartRecording={handleStartRecording} 
+      handleStopRecording={handleStopRecording}
       userMessage={userMessage}
       setUserMessage={setUserMessage}
       handleChangeUserMessage={handleChangeUserMessage}
