@@ -30,7 +30,6 @@ export const UiContainer = () => {
   // 音声認識の結果を処理する
   const handleRecognitionResult = useCallback(
     (event: SpeechRecognitionEvent) => {
-      console.log('handleRecognitionResultのevent->',event);
       const lastIndexOfResultList = event.results.length - 1;
       const text = event.results[lastIndexOfResultList][0].transcript;
       
@@ -46,7 +45,6 @@ export const UiContainer = () => {
   );
 
   useEffect(() => {
-    console.log('useEffect新規実行！')
     const SpeechRecognition =
       window.webkitSpeechRecognition || window.SpeechRecognition;
 
