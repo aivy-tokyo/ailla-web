@@ -66,8 +66,8 @@ export const UiContainer = () => {
     setSpeechRecognition(recognition);
   }, [handleRecognitionResult, handleRecognitionEnd]);
 
-  const handleClickMicButton = useCallback(() => {
-    if(chatProcessing)return;
+  const handleStartRecording = useCallback(() => {
+    // if(chatProcessing)return;
     if (isMicRecording) {
       speechRecognition?.abort();
       setIsMicRecording(false);
@@ -77,7 +77,8 @@ export const UiContainer = () => {
 
     speechRecognition?.start();
     setIsMicRecording(true);
-  }, [isMicRecording, speechRecognition,chatProcessing]);
+  // }, [isMicRecording, speechRecognition,chatProcessing]);
+  }, [isMicRecording, speechRecognition]);
 
   const handleChangeUserMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setUserMessage(e.target.value);
@@ -89,7 +90,7 @@ export const UiContainer = () => {
     <UiForSp
       showHint={showHint} 
       handleShowHint={handleShowHint} 
-      handleClickMicButton={handleClickMicButton} 
+      handleStartRecording={handleStartRecording} 
       userMessage={userMessage}
       setUserMessage={setUserMessage}
       handleChangeUserMessage={handleChangeUserMessage}

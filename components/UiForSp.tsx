@@ -15,7 +15,7 @@ import { useProfile } from "@/hooks/useProfile";
 type Props = {
   showHint: boolean;
   handleShowHint: () => void;
-  handleClickMicButton: () => void;
+  handleStartRecording: () => void;
   setUserMessage: Dispatch<SetStateAction<string>>;
   userMessage: string;
   handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -27,7 +27,7 @@ type Props = {
 const UiForSp = ({
   showHint, 
   handleShowHint, 
-  handleClickMicButton, 
+  handleStartRecording, 
   userMessage, 
   setUserMessage,
   handleChangeUserMessage,
@@ -61,6 +61,13 @@ const UiForSp = ({
     setUserMessage('');
   };
 
+  const handleClickMicButton = () => {
+    if(chatIconSelected){
+      setChatIconSelected(false);
+    }
+    handleStartRecording();
+  };
+
   const handleClickSettingButton = () => {
     setShowSetting(prev => !prev);
   };
@@ -74,7 +81,7 @@ const UiForSp = ({
   };
   const micIcon = () => {
     return (
-      <div className={`${chatIconSelected ? 'w-[35px] h-[35px] ': 'w-[60px] h-[60px]'} rounded-full  bg-black border-2 border-white flex justify-center items-center cursor-pointer`} onClick={handleClickMicButton}>
+      <div className={`${chatIconSelected ? 'w-[35px] h-[35px] ': 'w-[60px] h-[60px]'} rounded-full  bg-black border-2 border-white flex justify-center items-center cursor-pointer`} onClick={() => handleClickMicButton()}>
         <FaMicrophone className={`${isMicRecording ? ' text-red-500' : 'text-white'} ${chatIconSelected ? 'text-[23px]' : 'text-[30px]'}`} />
       </div>
     );
