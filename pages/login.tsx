@@ -28,7 +28,7 @@ export default function ProtectedPage() {
         console.error("Error:", error);
       });
     }
-  }, [router, session]);
+  }, [router, session, setUserId]);
 
   // useCallback: signin
   const signin = useCallback(() => {

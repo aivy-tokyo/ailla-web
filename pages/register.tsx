@@ -8,7 +8,7 @@ import {
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { userIdAtom } from "@/utils/atoms";
-import axios from "axios";
+import axios from 'axios';
 
 export default function Register() {
   const [userName, setUserName] = useState("");

@@ -1,4 +1,4 @@
-import { VRMExpression, VRMExpressionPresetName } from "@pixiv/three-vrm";
+import { VRMExpressionPresetName } from "@pixiv/three-vrm";
 
 export type KoeiroParam = {
   speakerX: number;
@@ -42,52 +42,4 @@ export type Screenplay = {
 export const splitSentence = (text: string): string[] => {
   const splitMessages = text.split(/(?<=[。．！？\n])/g);
   return splitMessages.filter((msg) => msg !== "");
-};
-
-export const textsToScreenplay = (
-  texts: string[],
-  koeiroParam: KoeiroParam
-): Screenplay[] => {
-  const screenplays: Screenplay[] = [];
-  let prevExpression = "neutral";
-  for (let i = 0; i < texts.length; i++) {
-    const text = texts[i];
-
-    const match = text.match(/\[(.*?)\]/);
-
-    const tag = (match && match[1]) || prevExpression;
-
-    const message = text.replace(/\[(.*?)\]/g, "");
-
-    let expression = prevExpression;
-    if (emotions.includes(tag as any)) {
-      expression = tag;
-      prevExpression = tag;
-    }
-
-    screenplays.push({
-      expression: expression as EmotionType,
-      talk: {
-        style: emotionToTalkStyle(expression as EmotionType),
-        speakerX: koeiroParam.speakerX,
-        speakerY: koeiroParam.speakerY,
-        message: message,
-      },
-    });
-  }
-
-  return screenplays;
-};
-
-const emotionToTalkStyle = (emotion: EmotionType): TalkStyle => {
-  switch (emotion) {
-    case "angry":
-      return "angry";
-    case "happy":
-      return "happy";
-    case "sad":
-      return "sad";
-    default:
-      return "talk";
-  }
 };

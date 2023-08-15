@@ -44,10 +44,4 @@ export class LipSync {
       bufferSource.addEventListener("ended", onEnded);
     }
   }
-
-  public async playFromURL(url: string, onEnded?: () => void) {
-    const res = await fetch(url);
-    const buffer = await res.arrayBuffer();
-    this.playFromArrayBuffer(buffer, onEnded);
-  }
 }

@@ -1,17 +1,13 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
-import { useResponsive } from "@/hooks/useResponsive";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import UiForSp from "./UiForSp";
-import { useAtom } from "jotai";
-import EndTalkButton from "./EndTalkButton";
-import TranslateToggleSwitch from "./TranslateToggleSwitch";
-import UiForDesktop from "./UiForDesktop";
 import { SelectedLanguageType } from "@/utils/types";
 import { useEnglishChat } from "@/hooks/useEnglishChat";
+import { useAtomValue } from "jotai";
+import { chatLogAtom } from "@/utils/atoms";
 
 
 export const UiContainer = () => {
   const [showHint, setShowHint] = useState<boolean>(false);
-  const {isDeskTop } = useResponsive();
   const [selectedLanguage, setSelectedLanguage] = useState<SelectedLanguageType>('English');
   //MEMO: ハイドレーションエラーを回避するための状態管理
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -20,6 +16,7 @@ export const UiContainer = () => {
   const [speechRecognition, setSpeechRecognition] = useState<SpeechRecognition>();
   const [chatProcessing, setChatProcessing] = useState<boolean>(false);
   const {handleSendChat} = useEnglishChat()
+  const chatLog = useAtomValue(chatLogAtom);
 
   //MEMO: ハイドレーションエラーを回避するための状態管理
   useEffect(()=>{
@@ -30,10 +27,6 @@ export const UiContainer = () => {
     setShowHint(prev => !prev);
   };
 
-  const handleSelectLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLanguage(e.target.value as SelectedLanguageType);
-  };
-
   // 音声認識の結果を処理する
   const handleRecognitionResult = useCallback(
     (event: SpeechRecognitionEvent) => {
@@ -42,12 +35,14 @@ export const UiContainer = () => {
 
       // 発言の終了時
       if (event.results[0].isFinal) {
-        setUserMessage(text);
         // 返答文の生成を開始
         handleSendChat(text);
+        
+        setUserMessage('');
       }
     },
-    []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [chatLog, handleSendChat]//MEMO:依存配列にchatLogを指定しないと発話のたびにchatLogがリセットされてしまう。
   );
 
   // 無音が続いた場合も終了する
@@ -60,7 +55,8 @@ export const UiContainer = () => {
       window.webkitSpeechRecognition || window.SpeechRecognition;
 
     const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
+    // recognition.lang = "en-US";
+    recognition.lang = "JP";
     recognition.interimResults = true; // 認識の途中結果を返す
     recognition.continuous = false; // 発言の終了時に認識を終了する
 
@@ -71,7 +67,7 @@ export const UiContainer = () => {
   }, [handleRecognitionResult, handleRecognitionEnd]);
 
   const handleClickMicButton = useCallback(() => {
-    // if(chatProcessing)return;
+    if(chatProcessing)return;
     if (isMicRecording) {
       speechRecognition?.abort();
       setIsMicRecording(false);
@@ -92,10 +88,10 @@ export const UiContainer = () => {
   return (
     <UiForSp
       showHint={showHint} 
-      // handleSelectLanguage={handleSelectLanguage} 
       handleShowHint={handleShowHint} 
       handleClickMicButton={handleClickMicButton} 
       userMessage={userMessage}
+      setUserMessage={setUserMessage}
       handleChangeUserMessage={handleChangeUserMessage}
       isMicRecording={isMicRecording}
       selectedLanguage={selectedLanguage}

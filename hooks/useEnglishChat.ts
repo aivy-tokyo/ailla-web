@@ -13,8 +13,8 @@ import {
   commentIndexAtom,
   isAiTalkingAtom,
   isThinkingAtom,
-  isYoutubeModeAtom,
   koeiroParamAtom,
+  textToSpeechApiTypeAtom,
 } from "@/utils/atoms";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useContext, useState } from "react";
@@ -22,6 +22,7 @@ import {
   SYSTEM_PROMPT_FOR_ENGLISH_CONVERSATION,
 } from "@/features/constants/systemPromptConstants";
 import { speakEnglishCharacter } from "@/features/messages/speakEnglishCharacter";
+import { TextToSpeechApiType } from "@/utils/types";
 
 
 const exceededChatLimitMessages = [
@@ -62,11 +63,12 @@ export const useEnglishChat = () => {
   const koeiroParam = useAtomValue(koeiroParamAtom);
   const [commentIndex, setCommentIndex] = useAtom(commentIndexAtom);
   const setAiResponseText = useSetAtom(aiResponseTextAtom);
-  const isYoutubeMode = useAtomValue(isYoutubeModeAtom);
   const [openAiKey, setOpenAiKey] = useState(process.env.NEXT_PUBLIC_OPENAI_API_KEY);
 
   const [, setIsThinking] = useAtom(isThinkingAtom);
   const [isAiTalking, setIsAiTalking] = useAtom(isAiTalkingAtom);
+
+  const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
 
   const interjections = [
     "Let's see,",
@@ -89,10 +91,11 @@ export const useEnglishChat = () => {
   const handleSpeakAi = useCallback(
     async (
       screenplay: Screenplay,
+      textToSpeechApiType: TextToSpeechApiType,
       onStart?: () => void,
-      onEnd?: () => void
+      onEnd?: () => void,
     ): Promise<void> => {
-      return speakEnglishCharacter(screenplay, viewer, onStart, onEnd);
+      return speakEnglishCharacter(screenplay, viewer, textToSpeechApiType,onStart, onEnd);
     },
     [viewer]
   );
@@ -103,6 +106,7 @@ export const useEnglishChat = () => {
    */
   const handleSendChat = useCallback(
     async (text: string) => {
+      console.log('chatLog->',chatLog);
       if (!openAiKey) {
         console.error("APIキーが入力されていません");
         return;
@@ -110,6 +114,7 @@ export const useEnglishChat = () => {
 
       // Check if the chat limit is exceeded
       const lastChatDate = new Date(localStorage.getItem("lastChatDate") || "");
+
       const chatCount = Number(localStorage.getItem("chatCount"));
       if (!checkChatLimit(lastChatDate, chatCount)) {
         const randomIndex = Math.floor(
@@ -126,6 +131,7 @@ export const useEnglishChat = () => {
             },
             expression: "neutral",
           },
+          textToSpeechApiType,
           () => {
             setAssistantMessage(exceededChatLimitMessage);
           }
@@ -146,8 +152,6 @@ export const useEnglishChat = () => {
       if (newMessage == null) return;
 
       setChatProcessing(true);
-      // 間投詞をランダムに追加(間を埋めるため)
-      // handleSpeakAi(textsToScreenplay([getRandomInterjection()], koeiroParam)[0]);
 
       // ユーザーの発言を追加して表示
       const messageLog: Message[] = [
@@ -155,8 +159,6 @@ export const useEnglishChat = () => {
         { role: "user", content: newMessage },
       ];
       setChatLog(messageLog);
-      // いったんDBなしで動作させるためにコメントアウト
-      // const promptForChat = await fetchPrompt('CHAT').then(res => res.text);
 
       // Chat GPTへ
       const messages: Message[] = [
@@ -180,9 +182,6 @@ export const useEnglishChat = () => {
 
       const reader = stream.getReader();
       let receivedMessage = "";
-      let aiTextLog = "";
-      let tag = "";
-      const sentences = new Array<string>();
       const speakPromises: Promise<any>[] = []; //各センテンスの発話のPromiseを格納する配列
       try {
         while (true) {
@@ -191,57 +190,6 @@ export const useEnglishChat = () => {
           if (done) break;
 
           receivedMessage += value;
-
-          // 返答内容のタグ部分の検出
-          // const tagMatch = receivedMessage.match(/^\[(.*?)\]/);
-          // if (tagMatch && tagMatch[0]) {
-          //   tag = tagMatch[0];
-          //   receivedMessage = receivedMessage.slice(tag.length);
-          // }
-
-          // 返答を一文単位で切り出して処理する
-          // const sentenceMatch = receivedMessage.match(
-          //   /^(.+[。．！？\n]|.{10,}[、,])/
-          // );
-          // if (sentenceMatch && sentenceMatch[0]) {
-          //   const sentence = sentenceMatch[0];
-          //   sentences.push(sentence);
-          //   receivedMessage = receivedMessage
-          //     .slice(sentence.length)
-          //     .trimStart();
-
-          //   // 発話不要/不可能な文字列だった場合はスキップ
-          //   if (
-          //     !sentence.replace(
-          //       /^[\s\[\(\{「［（【『〈《〔｛«‹〘〚〛〙›»〕》〉』】）］」\}\)\]]+$/g,
-          //       ""
-          //     )
-          //   ) {
-          //     continue;
-          //   }
-
-          // setAiResponseText((prev)=> prev + sentence);
-          // const aiText = `${tag} ${sentence}`;
-          // const aiTalks = textsToScreenplay([aiText], koeiroParam);
-          // aiTextLog += aiText;
-
-          // if(isYoutubeMode){
-          //   // 文ごとに音声を生成 & 再生、返答を表示
-          //   const speakPromise = handleSpeakAi(aiTalks[0],
-          //     () => {
-          //       setIsThinking(false)
-          //       setIsAiTalking(true);
-          //     },
-          //     () => {});
-          //   speakPromises.push(speakPromise);
-          // }else{
-          //   // 文ごとに音声を生成 & 再生、返答を表示
-          //   const currentAssistantMessage = sentences.join(" ");
-          //   handleSpeakAi(aiTalks[0], () => {
-          //     setAssistantMessage(currentAssistantMessage);
-          //   });
-          // }
-          // }
         }
         console.log("receivedMessage", receivedMessage);
         handleSpeakAi(
@@ -254,9 +202,10 @@ export const useEnglishChat = () => {
             },
             expression: "neutral",
           },
+          textToSpeechApiType,
           () => {
             setAssistantMessage(receivedMessage);
-          }
+          },
         );
         localStorage.setItem(
           "chatCount",
@@ -287,16 +236,17 @@ export const useEnglishChat = () => {
       return Promise.all(speakPromises);
     },
     [
-      chatLog,
-      handleSpeakAi,
-      setCommentIndex,
-      setTimeout,
-      openAiKey,
-      koeiroParam,
-      isAiTalking,
-      setIsAiTalking,
-      setIsThinking,
-      isYoutubeMode,
+      chatLog, 
+      openAiKey, 
+      setChatProcessing, 
+      setChatLog, 
+      handleSpeakAi, 
+      textToSpeechApiType, 
+      setAssistantMessage, 
+      setIsAiTalking, 
+      setAiResponseText, 
+      setCommentIndex, 
+      commentIndex
     ]
   );
 

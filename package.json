@@ -11,6 +11,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
     "@aws-sdk/client-dynamodb": "^3.379.1",
+    "@gltf-transform/core": "^3.5.1",
     "@google-cloud/text-to-speech": "^5.0.0",
     "@pixiv/three-vrm": "^2.0.1",
     "@types/dom-speech-recognition": "0.0.1",
@@ -43,7 +44,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
-    "@types/three": "^0.154.0",
+    "@types/three": "^0.155.0",
     "daisyui": "^3.4.0"
   }
 }

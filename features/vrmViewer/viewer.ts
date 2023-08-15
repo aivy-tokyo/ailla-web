@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { Model } from "./model";
 import { loadVRMAnimation } from "@/lib/VRMAnimation/loadVRMAnimation";
-import { buildUrl } from "@/utils/buildUrl";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 /**
@@ -56,7 +55,6 @@ export class Viewer {
 
       this._scene.add(this.model.vrm.scene);
 
-      // const vrma = await loadVRMAnimation(buildUrl("/idle_loop.vrma"));
       const vrma = await loadVRMAnimation("/idle_loop.vrma");
       if (vrma) this.model.loadAnimation(vrma);
 
