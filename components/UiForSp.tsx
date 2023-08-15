@@ -264,7 +264,7 @@ const UiForSp = ({
             {speechTextArea()}
           </div>
         </div>
-        <div className=" w-full h-18 bg-black    py-3 m-auto shadow-[0_-10px_50px_30px_rgba(0,0,0,1)] ">
+        <div className="w-full h-18 bg-[rgba(0,0,0,0.6)]  z-20  py-3 m-auto">
           {chatIconSelected ? 
             bottomUiChatIconSelected()
             : 
