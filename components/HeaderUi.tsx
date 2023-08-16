@@ -4,20 +4,21 @@ import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SettingContainer } from "./SettingContainer";
 import { useState } from "react";
 
-type HeaderUiProps = {};
-export const HeaderUi: React.FC<HeaderUiProps> = () => {
+type HeaderUiProps = {
+  onClickEndTalk?: () => void;
+};
+export const HeaderUi: React.FC<HeaderUiProps> = ({ onClickEndTalk }) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
 
   return (
     <>
-      <div className="flex h-12 justify-between m-2 pt-2">
+      <div className="z-1 fixed top-0 w-full flex h-12 justify-between items-center my-2 px-2">
         <TranslateToggleSwitch />
-        <div className="flex">
-          <EndTalkButton />
-          <FaRegSun
-            className="text-white text-[34px] self-center"
-            onClick={() => setShowSetting(true)}
-          />
+        <div className="flex items-center gap-2">
+          {onClickEndTalk && <EndTalkButton onClick={onClickEndTalk} />}
+          <button className="btn btn-icon btn-ghost btn-sm" onClick={() => setShowSetting(true)}>
+            <FaRegSun className="text-white self-center" />
+          </button>
         </div>
       </div>
       {showSetting && (

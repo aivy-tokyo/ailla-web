@@ -1,5 +1,5 @@
 //シチュエーション会話終了ボタン
-const endTalkButton = () => {
+const endTalkButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   return (
     <button className="
     bg-transparent
@@ -9,11 +9,10 @@ const endTalkButton = () => {
     p-1
     h-7
     w-28
-    mt-1.5
-    mr-1.5
     text-sm
     rounded-md
-    ">
+    "
+    onClick={onClick}>
       <span>会話を終了</span>
     </button>
   );

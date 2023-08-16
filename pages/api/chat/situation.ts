@@ -21,11 +21,11 @@ const promptTemplate = new PromptTemplate({
 // 返り値: prompt text
 const generatePromptText = async ({
   title,
-  situantion,
+  description: situantion,
   messages,
 }: {
   title: string;
-  situantion: string;
+  description: string;
   messages: ChatCompletionRequestMessage[];
 }) => {
   const systemPrompt = await promptTemplate.format({
@@ -55,11 +55,12 @@ const generatePromptText = async ({
 // 引数: messages - 会話の配列
 // 返り値: 会話の配列
 type Parameter = {
-  situation: string;
+  title: string;
+  description: string;
   messages: ChatCompletionRequestMessage[];
 };
 
-// Path: pages/api/chat/ice-break.ts
+// Path: pages/api/chat/situation.ts
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
@@ -68,10 +69,12 @@ export default async function handler(
   >
 ) {
   try {
-    const situantion = (req.body as Parameter).situation ?? "";
+    const title = (req.body as Parameter).title ?? "";
+    const description = (req.body as Parameter).description ?? "";
     const messages = (req.body as Parameter).messages ?? [];
     const promptText = await generatePromptText({
-      situantion,
+      title: title,
+      description: description,
       messages,
     });
     const responseMessage = await chat.predict(promptText);

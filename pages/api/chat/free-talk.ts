@@ -82,11 +82,11 @@ const generatePromptText = async ({
 type Parameter = {
   userName: string;
   messages: ChatCompletionRequestMessage[];
-  topic: string;
+  topic?: string;
   end?: boolean;
 };
 
-// Path: pages/api/chat/ice-break.ts
+// Path: /api/chat/free-talk
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
@@ -97,7 +97,6 @@ export default async function handler(
     | { error: string }
   >
 ) {
-  console.log(req.body);
   try {
     const topic = (req.body as Parameter).topic ?? getRandomPickuoTopic();
     const userName = (req.body as Parameter).userName ?? "you";
