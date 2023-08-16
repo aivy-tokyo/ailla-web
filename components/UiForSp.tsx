@@ -44,16 +44,24 @@ const UiForSp = ({
   const {handleSendChat} = useEnglishChat();
   const {userName} = useProfile();
   const chatLogs = useAtomValue(chatLogAtom);
-  const setTextToSpeechApiType = useSetAtom(textToSpeechApiTypeAtom) 
+  const setTextToSpeechApiType = useSetAtom(textToSpeechApiTypeAtom);
+  const [isChatLogExpanded, setIsChatLogExpanded] = useState<boolean>(false);
 
   const speechTextArea = () => {
     return  chatLogs.map((chatLog,id) => (
-      <div className="flex text-white max-w-[900px] justify-center pl-1" key={id}>
-        <FaRegUserCircle className="text-[66px] w-10 relative -top-3 text-white self-start"/>
-        <div className=" border-1 mb-2 px-2 w-[90%]">
-          <p className="text-xl font-bold">{chatLog.role === 'user' ? userName : 'AILLA'}</p>
-          <p>{chatLog.content}</p>
-        </div>
+      <div className={`chat mb-1 flex text-white max-w-[900px] ${chatLog.role === 'user' ? 'chat-end justify-end' : 'chat-start'}`} key={id}>
+          <p 
+            className={
+              `${chatLog.role === 'user' 
+                ? 
+                  'chat-bubble bg-gray-100 text-gray-600' 
+                : 
+                  'chat-bubble bg-gray-800 text-white'
+              } 
+              max-w-[80vw] w-fit`
+            }>
+              {chatLog.content}
+            </p>
       </div>
     ));        
   };
@@ -63,12 +71,16 @@ const UiForSp = ({
     setUserMessage('');
   };
 
-  // const handleClickMicButton = () => {
-  //   if(chatIconSelected){
-  //     setChatIconSelected(false);
-  //   }
-  //   handleStartRecording();
-  // };
+  const handleClickMicButton = () => {
+    if(chatIconSelected){
+      setChatIconSelected(false);
+    }
+    if(isMicRecording){
+      handleStopRecording()
+    }else{
+      handleStartRecording();
+    }
+  };
 
   const handleClickSettingButton = () => {
     setShowSetting(prev => !prev);
@@ -85,11 +97,7 @@ const UiForSp = ({
     return (
       <div 
         className={`${chatIconSelected ? 'w-[35px] h-[35px] ': 'w-[60px] h-[60px]'} rounded-full  bg-black border-2 border-white flex justify-center items-center cursor-pointer`} 
-        // onClick={() => handleClickMicButton()}
-        onMouseDown={handleStartRecording}
-        onMouseUp={handleStopRecording}
-        onTouchStart={handleStartRecording}
-        onTouchEnd={handleStopRecording}
+        onClick={() => handleClickMicButton()}
       >
         <FaMicrophone className={`${isMicRecording ? ' text-red-500' : 'text-white'} ${chatIconSelected ? 'text-[23px]' : 'text-[30px]'}`} />
       </div>
@@ -146,6 +154,9 @@ const UiForSp = ({
     signOut();
   } ,[]);
 
+  const handleExpandChatLog = useCallback(()=>{
+    setIsChatLogExpanded(prev => !prev);
+  },[]);
 
   const settingContainer = () => {
     return (
@@ -222,13 +233,17 @@ const UiForSp = ({
   return(
     <div className="">
       {/* SP版:上部のUI群 */}
-      <div className="flex h-12 justify-between m-2 pt-2">
-        <TranslateToggleSwitch/>
-        <div className="flex z-10">
-          <EndTalkButton/>
-          <FaRegSun className="text-white text-[34px] self-center" onClick={handleClickSettingButton}/>
-        </div>
-      </div>
+      {isChatLogExpanded ? 
+        <></> 
+        : 
+        <div className="flex h-12 justify-between m-2 pt-2">
+          <TranslateToggleSwitch/>
+          <div className="flex z-10">
+            <EndTalkButton/>
+            <FaRegSun className="text-white text-[34px] self-center" onClick={handleClickSettingButton}/>
+          </div>
+        </div>  
+      }
 
       {
         // ヒント表示領域
@@ -267,19 +282,28 @@ const UiForSp = ({
       }
 
       {/* 下部のUI群 */}
-      <div className="fixed bottom-0 flex flex-col  justify-between w-full  ">
-        <div className="z-10 px-2 h-44 mask-top-fadeout relative flex justify-center">
-          <div className="overflow-y-scroll absolute top-0 py-5 h-full fadeout-contents">
+      <div className="fixed bottom-0 flex flex-col  justify-between w-full">
+        <div 
+          onClick={() => handleExpandChatLog()}
+          className={`z-10 relative flex  transition-height ease-in-out duration-150 justify-center cursor-pointer ${isChatLogExpanded ? 'h-screen' : 'h-56'}`}
+        >
+          <div className={`w-screen  max-w-[600px] px-5 h-full flex  transition-color ease-in duration-150 hover:bg-black hover:opacity-80 flex-col ${isChatLogExpanded ? 'overflow-y-scroll py-5 bg-black opacity-80' : 'py-1 mask-top-fadeout top-0 absolute justify-end'}`}>
             {speechTextArea()}
           </div>
         </div>
-        <div className="w-full h-18 bg-[rgba(0,0,0,0.6)]  z-20  py-3 m-auto">
-          {chatIconSelected ? 
-            bottomUiChatIconSelected()
-            : 
-            bottomUiDefault()
-          }
-        </div>
+
+        {
+          isChatLogExpanded ? 
+          <></>
+          :
+          <div className="w-full h-18 bg-[rgba(0,0,0,0.6)]  z-20  py-3 m-auto">
+            {chatIconSelected ? 
+              bottomUiChatIconSelected()
+              : 
+              bottomUiDefault()
+            }
+          </div>
+        }
       </div>
     </div>
   );

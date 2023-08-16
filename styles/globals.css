@@ -35,11 +35,6 @@
 }
 
 .mask-top-fadeout {
-  mask-image: linear-gradient(to bottom, transparent 0, #FFF 30%, #FFF 70%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #FFF 10%, #FFF 70%, transparent 100%);
-}
-
-.fadeout-contents{
-  position: absolute;
-  overflow: scroll;
+  mask-image: linear-gradient(to bottom, transparent 0, #FFF 30%, #FFF 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #FFF 30%, #FFF 100%);
 }
