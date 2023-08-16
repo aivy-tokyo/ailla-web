@@ -6,6 +6,7 @@ import {
   DeleteItemCommand
 } from '@aws-sdk/client-dynamodb';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { TableNames } from '../../utils/constants';
 
 const client = new DynamoDBClient({});
 
@@ -23,7 +24,7 @@ export default async function handler(
     };
     await client.send(
       new PutItemCommand({
-        TableName: process.env.TABLE_NAME,
+        TableName: TableNames.users,
         Item,
       })
     );
@@ -34,7 +35,7 @@ export default async function handler(
   if (req.method === 'GET') {
     const { Item } = await client.send(
       new GetItemCommand({
-        TableName: process.env.TABLE_NAME,
+        TableName: TableNames.users,
         Key: {
           id: { S: req.query.id as string}
         }
@@ -47,7 +48,7 @@ export default async function handler(
   if (req.method === 'POST') {
     const { Attributes } = await client.send(
       new UpdateItemCommand({
-        TableName: process.env.TABLE_NAME,
+        TableName: TableNames.users,
         Key: {
           id: { S: req.body.id }
         },
@@ -68,7 +69,7 @@ export default async function handler(
   if (req.method === 'DELETE') {
     await client.send(
       new DeleteItemCommand({
-        TableName: process.env.TABLE_NAME,
+        TableName: TableNames.users,
         Key: {
           id: { S: req.body.id }
         }

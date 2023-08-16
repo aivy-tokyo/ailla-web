@@ -1,5 +1,10 @@
 import { Avatar, BackgroundImage, Prefecture, TextToSpeechApiType } from "./types";
 
+export const TableNames = {
+  users: 'AILLA',
+  userLogs: 'UserLogs',
+} as const;
+
 export const GPT_MODEL="gpt-3.5-turbo";
 
 export const avatars: Avatar[]= [
