@@ -287,7 +287,7 @@ const UiForSp = ({
           onClick={() => handleExpandChatLog()}
           className={`z-10 relative flex  transition-height ease-in-out duration-150 justify-center cursor-pointer ${isChatLogExpanded ? 'h-screen' : 'h-56'}`}
         >
-          <div className={`w-screen px-5 h-full flex  transition-color ease-in duration-150 hover:bg-black hover:opacity-80 flex-col ${isChatLogExpanded ? 'w-screen overflow-y-scroll py-5 bg-black opacity-80' : 'py-1 mask-top-fadeout top-0 absolute justify-end'}`}>
+          <div className={`w-screen  max-w-[600px] px-5 h-full flex  transition-color ease-in duration-150 hover:bg-black hover:opacity-80 flex-col ${isChatLogExpanded ? 'overflow-y-scroll py-5 bg-black opacity-80' : 'py-1 mask-top-fadeout top-0 absolute justify-end'}`}>
             {speechTextArea()}
           </div>
         </div>
