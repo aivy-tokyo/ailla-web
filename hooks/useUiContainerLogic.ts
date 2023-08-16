@@ -4,8 +4,10 @@ import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { useAtom, useAtomValue } from "jotai";
 import { firstGreetingDoneAtom, userInfoAtom, textToSpeechApiTypeAtom, isTranslatedAtom } from "@/utils/atoms";
 import { speakFirstConversation } from "../features/speakFirstConversation";
+import { ChatMode } from "../utils/types";
 
 export const useUiContainerLogic = () => {
+  const [chatMode, setChatMode] = useState<ChatMode>("mic");
   const [isMicRecording, setIsMicRecording] = useState<boolean>(false);
   const [userMessage, setUserMessage] = useState<string>("");
   const isTranslated = useAtomValue(isTranslatedAtom);
@@ -17,23 +19,6 @@ export const useUiContainerLogic = () => {
   const { viewer } = useContext(ViewerContext);
   const userInfo = useAtomValue(userInfoAtom);
   const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
-
-  // 音声認識の結果を処理する
-  const handleRecognitionResult = useCallback(
-    (event: SpeechRecognitionEvent) => {
-      const lastIndexOfResultList = event.results.length - 1;
-      const text = event.results[lastIndexOfResultList][0].transcript;
-
-      setUserMessage(text);
-
-      // 無音になるとisFinalがtrueになるのでその時の処理(無音になっても録音継続)
-      // if (event.results[0].isFinal && isMicRecording) {
-      //   speechRecognition.current?.start();
-      // }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isMicRecording] //Warning: 依存配列にspeechRecognitionを加えてはならない。useEffectが無限に実行される
-  );
 
   useEffect(() => {
     const SpeechRecognition =
@@ -89,12 +74,19 @@ export const useUiContainerLogic = () => {
 
   // mic recordingがfalseになったら、メッセージを送信する
   useEffect(() => {
-    if (!isMicRecording && userMessage) {
+    if (chatMode === "mic" && !isMicRecording && userMessage) {
       console.log("send message", userMessage);
       handleSendChat(userMessage);
       setUserMessage("");
     }
-  }, [isMicRecording, userMessage, handleSendChat]);
+  }, [isMicRecording, userMessage, handleSendChat, chatMode]);
+
+  const handleSendText = useCallback(() => {
+    if (userMessage) {
+      handleSendChat(userMessage);
+      setUserMessage("");
+    }
+  }, [userMessage, handleSendChat]);
 
   const handleStartRecording = useCallback(() => {
     speechRecognition.current?.start();
@@ -126,8 +118,11 @@ export const useUiContainerLogic = () => {
   }, [viewer.model, firstGreetingDone, userInfo?.name, textToSpeechApiType, setFirstGreetingDone]);
 
   return {
+    chatMode,
+    setChatMode,
     isMicRecording,
     userMessage,
+    handleSendText,
     handleStartRecording,
     handleStopRecording,
     setUserMessage,

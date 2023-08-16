@@ -3,20 +3,27 @@ import {
   useEffect,
   useState,
 } from "react";
-import UiForSp from "./UiForSp";
+import BottomUi from "./BottomUi";
 import { useAtomValue } from "jotai";
 import { chatLogAtom } from "@/utils/atoms";
 import { useUiContainerLogic } from "../hooks/useUiContainerLogic";
+import { ChatHint } from "./ChatHint";
+import { ChatMenu } from "./ChatMenu";
+import { HeaderUi } from "./HeaderUi";
 
 export const UiContainer = () => {
   const [showHint, setShowHint] = useState<boolean>(false);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
   const chatLog = useAtomValue(chatLogAtom);
   
   // カスタムフックからロジックと状態を取得
   const {
+    chatMode,
+    setChatMode,
     isMicRecording,
     userMessage,
+    handleSendText,
     handleStartRecording,
     handleStopRecording,
     setUserMessage,
@@ -40,15 +47,19 @@ export const UiContainer = () => {
 
   return (
     <>
-      <UiForSp
-        showHint={showHint}
+      <HeaderUi />
+      { showHint && <ChatHint/>}
+      { showMenu && <ChatMenu/>}
+      <BottomUi
+        chatMode={chatMode}
+        setChatMode={setChatMode}
         handleShowHint={handleShowHint}
         handleStartRecording={handleStartRecording}
         handleStopRecording={handleStopRecording}
         userMessage={userMessage}
-        setUserMessage={setUserMessage}
         handleChangeUserMessage={handleChangeUserMessage}
         isMicRecording={isMicRecording}
+        sendChat={handleSendText}
       />
       {!firstGreetingDone && chatLog.length === 0 && (
         <div className="fixed top-0 flex justify-center items-center h-screen w-full bg-black bg-opacity-60">
