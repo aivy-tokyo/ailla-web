@@ -52,5 +52,3 @@ export interface UserProfile  {
 }
 
 export type TextToSpeechApiType = 'koeiroMap' | 'voiceVox' | 'clovaVoice' | 'googleTextToSpeech'
-
-

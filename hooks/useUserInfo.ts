@@ -19,7 +19,7 @@ export const useUserInfo = () => {
     }
     setIsUserInfoLoading(false);
   }
-  , []);
+  , [setUserInfo]);
 
   useEffect(() => {
     fetchUserInfo();
