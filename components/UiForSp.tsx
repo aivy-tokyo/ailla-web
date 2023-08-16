@@ -269,7 +269,7 @@ const UiForSp = ({
       {/* 下部のUI群 */}
       <div className="fixed bottom-0 flex flex-col  justify-between w-full  ">
         <div className="z-10 px-2 h-44 mask-top-fadeout relative flex justify-center">
-          <div className="overflow-y-scroll absolute top-0 py-5 h-full fadeout-contents">
+          <div className="overflow-y-scroll absolute top-0 py-1 h-full flex flex-col justify-end">
             {speechTextArea()}
           </div>
         </div>
