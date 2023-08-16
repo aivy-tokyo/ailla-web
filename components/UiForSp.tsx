@@ -44,11 +44,12 @@ const UiForSp = ({
   const {handleSendChat} = useEnglishChat();
   const {userName} = useProfile();
   const chatLogs = useAtomValue(chatLogAtom);
-  const setTextToSpeechApiType = useSetAtom(textToSpeechApiTypeAtom) 
+  const setTextToSpeechApiType = useSetAtom(textToSpeechApiTypeAtom);
+  const [isChatLogExpanded, setIsChatLogExpanded] = useState<boolean>(false);
 
   const speechTextArea = () => {
     return  chatLogs.map((chatLog,id) => (
-      <div className={`chat flex text-white max-w-[900px] pl-1 justify-end ${chatLog.role === 'user' ? 'chat-end' : 'chat-start '}`} key={id}>
+      <div className={`chat flex text-white max-w-[900px] justify-end ${chatLog.role === 'user' ? 'chat-end' : 'chat-start '}`} key={id}>
         <div className={`m-0`}>
           <p className={`${chatLog.role === 'user' ? 'chat-bubble bg-gray-100 text-gray-600' : 'chat-bubble bg-gray-800 text-white'}`}>{chatLog.content}</p>
         </div>
@@ -144,6 +145,9 @@ const UiForSp = ({
     signOut();
   } ,[]);
 
+  const handleExpandChatLog = useCallback(()=>{
+    setIsChatLogExpanded(prev => !prev);
+  },[]);
 
   const settingContainer = () => {
     return (
@@ -220,13 +224,17 @@ const UiForSp = ({
   return(
     <div className="">
       {/* SP版:上部のUI群 */}
-      <div className="flex h-12 justify-between m-2 pt-2">
-        <TranslateToggleSwitch/>
-        <div className="flex z-10">
-          <EndTalkButton/>
-          <FaRegSun className="text-white text-[34px] self-center" onClick={handleClickSettingButton}/>
-        </div>
-      </div>
+      {isChatLogExpanded ? 
+        <></> 
+        : 
+        <div className="flex h-12 justify-between m-2 pt-2">
+          <TranslateToggleSwitch/>
+          <div className="flex z-10">
+            <EndTalkButton/>
+            <FaRegSun className="text-white text-[34px] self-center" onClick={handleClickSettingButton}/>
+          </div>
+        </div>  
+      }
 
       {
         // ヒント表示領域
@@ -265,19 +273,28 @@ const UiForSp = ({
       }
 
       {/* 下部のUI群 */}
-      <div className="fixed bottom-0 flex flex-col  justify-between w-full  ">
-        <div className="z-10 px-2 h-56 mask-top-fadeout relative flex justify-center">
-          <div className="absolute px-6 top-0 py-1 h-full flex flex-col justify-end">
+      <div className="fixed bottom-0 flex flex-col  justify-between w-full">
+        <div 
+          onClick={() => handleExpandChatLog()}
+          className={`z-10 relative flex justify-center cursor-pointer ${isChatLogExpanded ? '' : 'h-56'}`}
+        >
+          <div className={`px-6 h-full flex flex-col ${isChatLogExpanded ? 'w-screen h-screen  overflow-y-scroll py-5' : 'h-56 py-1 mask-top-fadeout top-0 absolute justify-end'}`}>
             {speechTextArea()}
           </div>
         </div>
-        <div className="w-full h-18 bg-[rgba(0,0,0,0.6)]  z-20  py-3 m-auto">
-          {chatIconSelected ? 
-            bottomUiChatIconSelected()
-            : 
-            bottomUiDefault()
-          }
-        </div>
+
+        {
+          isChatLogExpanded ? 
+          <></>
+          :
+          <div className="w-full h-18 bg-[rgba(0,0,0,0.6)]  z-20  py-3 m-auto">
+            {chatIconSelected ? 
+              bottomUiChatIconSelected()
+              : 
+              bottomUiDefault()
+            }
+          </div>
+        }
       </div>
     </div>
   );
