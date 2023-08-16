@@ -12,11 +12,11 @@ export default function Home() {
   // session取得、ログインしていない場合はlogin.tsxへリダイレクト
   const router = useRouter();
   const { data: session } = useSession();
-  // useEffect(() => {
-  //   if (!session) {
-  //     router.push("/login");
-  //   }
-  // }, [router, session]);
+  useEffect(() => {
+    if (!session) {
+      router.push("/login");
+    }
+  }, [router, session]);
 
   // User情報を取得、未登録の場合はregister.tsxへリダイレクト
   const userId = useAtomValue(userIdAtom);
