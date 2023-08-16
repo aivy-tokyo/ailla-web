@@ -59,18 +59,14 @@ export const UiContainer = () => {
   }, [handleRecognitionResult]);
 
   const handleStartRecording = useCallback(() => {
-    if (isMicRecording) {
-      speechRecognition?.abort();
-      setIsMicRecording(false);
-
-      return;
-    }
+    console.log('start');
 
     speechRecognition?.start();
     setIsMicRecording(true);
-  }, [isMicRecording, speechRecognition]);
+  }, [speechRecognition]);
 
   const handleStopRecording = useCallback(async() => {
+    console.log('stop')
     speechRecognition?.removeEventListener('result', handleRecognitionResult);
     speechRecognition?.stop();
     setSpeechRecognition(undefined);

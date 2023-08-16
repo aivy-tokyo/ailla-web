@@ -63,12 +63,16 @@ const UiForSp = ({
     setUserMessage('');
   };
 
-  // const handleClickMicButton = () => {
-  //   if(chatIconSelected){
-  //     setChatIconSelected(false);
-  //   }
-  //   handleStartRecording();
-  // };
+  const handleClickMicButton = () => {
+    if(chatIconSelected){
+      setChatIconSelected(false);
+    }
+    if(isMicRecording){
+      handleStopRecording()
+    }else{
+      handleStartRecording();
+    }
+  };
 
   const handleClickSettingButton = () => {
     setShowSetting(prev => !prev);
@@ -85,11 +89,7 @@ const UiForSp = ({
     return (
       <div 
         className={`${chatIconSelected ? 'w-[35px] h-[35px] ': 'w-[60px] h-[60px]'} rounded-full  bg-black border-2 border-white flex justify-center items-center cursor-pointer`} 
-        // onClick={() => handleClickMicButton()}
-        onMouseDown={handleStartRecording}
-        onMouseUp={handleStopRecording}
-        onTouchStart={handleStartRecording}
-        onTouchEnd={handleStopRecording}
+        onClick={() => handleClickMicButton()}
       >
         <FaMicrophone className={`${isMicRecording ? ' text-red-500' : 'text-white'} ${chatIconSelected ? 'text-[23px]' : 'text-[30px]'}`} />
       </div>
