@@ -49,10 +49,19 @@ const UiForSp = ({
 
   const speechTextArea = () => {
     return  chatLogs.map((chatLog,id) => (
-      <div className={`chat flex text-white max-w-[900px] justify-end ${chatLog.role === 'user' ? 'chat-end' : 'chat-start '}`} key={id}>
-        <div className={`m-0`}>
-          <p className={`${chatLog.role === 'user' ? 'chat-bubble bg-gray-100 text-gray-600' : 'chat-bubble bg-gray-800 text-white'}`}>{chatLog.content}</p>
-        </div>
+      <div className={`chat mb-1 flex text-white max-w-[900px] ${chatLog.role === 'user' ? 'chat-end justify-end' : 'chat-start'}`} key={id}>
+          <p 
+            className={
+              `${chatLog.role === 'user' 
+                ? 
+                  'chat-bubble bg-gray-100 text-gray-600' 
+                : 
+                  'chat-bubble bg-gray-800 text-white'
+              } 
+              max-w-[80vw] w-fit`
+            }>
+              {chatLog.content}
+            </p>
       </div>
     ));        
   };
@@ -276,9 +285,9 @@ const UiForSp = ({
       <div className="fixed bottom-0 flex flex-col  justify-between w-full">
         <div 
           onClick={() => handleExpandChatLog()}
-          className={`z-10 relative flex justify-center cursor-pointer ${isChatLogExpanded ? '' : 'h-56'}`}
+          className={`z-10 relative flex  transition-height ease-in-out duration-150 justify-center cursor-pointer ${isChatLogExpanded ? 'h-screen' : 'h-56'}`}
         >
-          <div className={`px-6 h-full flex flex-col ${isChatLogExpanded ? 'w-screen h-screen  overflow-y-scroll py-5' : 'h-56 py-1 mask-top-fadeout top-0 absolute justify-end'}`}>
+          <div className={`w-screen px-5 h-full flex  transition-color ease-in duration-150 hover:bg-black hover:opacity-80 flex-col ${isChatLogExpanded ? 'w-screen overflow-y-scroll py-5 bg-black opacity-80' : 'py-1 mask-top-fadeout top-0 absolute justify-end'}`}>
             {speechTextArea()}
           </div>
         </div>
