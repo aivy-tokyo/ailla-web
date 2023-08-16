@@ -48,11 +48,9 @@ const UiForSp = ({
 
   const speechTextArea = () => {
     return  chatLogs.map((chatLog,id) => (
-      <div className="flex text-white max-w-[900px] justify-center pl-1" key={id}>
-        <FaRegUserCircle className="text-[66px] w-10 relative -top-3 text-white self-start"/>
-        <div className=" border-1 mb-2 px-2 w-[90%]">
-          <p className="text-xl font-bold">{chatLog.role === 'user' ? userName : 'AILLA'}</p>
-          <p>{chatLog.content}</p>
+      <div className={`chat flex text-white max-w-[900px] pl-1 justify-end ${chatLog.role === 'user' ? 'chat-end' : 'chat-start '}`} key={id}>
+        <div className={`m-0`}>
+          <p className={`${chatLog.role === 'user' ? 'chat-bubble bg-gray-100 text-gray-600' : 'chat-bubble bg-gray-800 text-white'}`}>{chatLog.content}</p>
         </div>
       </div>
     ));        
@@ -268,8 +266,8 @@ const UiForSp = ({
 
       {/* 下部のUI群 */}
       <div className="fixed bottom-0 flex flex-col  justify-between w-full  ">
-        <div className="z-10 px-2 h-44 mask-top-fadeout relative flex justify-center">
-          <div className="overflow-y-scroll absolute top-0 py-1 h-full flex flex-col justify-end">
+        <div className="z-10 px-2 h-56 mask-top-fadeout relative flex justify-center">
+          <div className="absolute px-6 top-0 py-1 h-full flex flex-col justify-end">
             {speechTextArea()}
           </div>
         </div>
