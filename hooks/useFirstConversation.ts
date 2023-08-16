@@ -7,8 +7,8 @@ import { textToSpeechApiTypeAtom } from "../utils/atoms";
 import { useAtomValue } from "jotai";
 import { TextToSpeechApiType } from "../utils/types";
 
-const INTRODUCTION_GREETING = `Hi {UserName}! I'm AILLA, your English conversation partner. Let's have a fun and engaging chat together!`;
-const APP_EXPLANATION = `
+const introductionGreeting = `Hi {UserName}! I'm AILLA, your English conversation partner. Let's have a fun and engaging chat together!`;
+const appExplanation = `
 このアプリでは、AILLAと英語で会話をすることができます。
 英会話の練習には3つのモードがあります。
 1. フリートークモード
@@ -20,12 +20,20 @@ const APP_EXPLANATION = `
 モードを選択すると、会話が始まります。
 さあ、はじめましょう！!
 `;
-const COME_BACK_GREETING_LIST = [
+
+const comeBackGreetingList = [
   "Welcome back! It's great to see you again. Ready for another exciting lesson?",
   "Hi {UserName}! I hope you had a great week. Let's continue our English journey together!",
   "Good to see you again, {UserName}! I'm looking forward to hearing about your progress.",
   "Hello {UserName}! How have you been? Let's make today's lesson another success!",
   "Welcome back, {UserName}! Your hard work is really paying off. Let's keep it up!",
+];
+const lessonsStartPhrases = [
+  "今日は何から始めたいと思いますか？どのレッスンにしましょうか？",
+  "今日のレッスンはどれから手をつけましょうか？",
+  "今日はどのトピックから学び始めるのがいいと思いますか？",
+  "どのレッスンから今日の授業を始めたいですか？",
+  "今日の始めたいレッスンは何ですか？どれから進めましょうか？"
 ];
 
 // UserNameをユーザー名に置き換える
@@ -37,10 +45,12 @@ const replaceUserName = (text: string, userName: string) => {
 const speak = async (
   text: string,
   viewer: Viewer,
-  textToSpeechApiType: TextToSpeechApiType
+  textToSpeechApiType: TextToSpeechApiType,
+  lang = "en",
 ) => {
+  console.log("speak:", text);
   try {
-    const buffer = await tts({ text, textToSpeechApiType });
+    const buffer = await tts({ text, textToSpeechApiType, lang });
     if (!buffer) {
       return;
     }
@@ -57,11 +67,8 @@ export const useFirstConversation = () => {
   const { viewer } = useContext(ViewerContext);
   const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
 
-  // localStorageからisAppExplanationDoneを取得
-  const isAppExplanationDone = localStorage.getItem("isAppExplanationDone");
-
   // ユーザー情報を取得
-  const { userInfo } = useUserInfo();
+  const { userInfo } = {userInfo:{name: 'TARO'}};
 
   // 初回会話の内容を話す
   const speakFirstConversation = useCallback(async () => {
@@ -71,30 +78,41 @@ export const useFirstConversation = () => {
 
     const handleFirstConversation = async (): Promise<void> => {
       try {
+        // localStorageからisAppExplanationDoneを取得
+        const isAppExplanationDone = localStorage.getItem("isAppExplanationDone");
+
         if (!isAppExplanationDone) {
           // アプリの説明をしていない場合は、はじめましての挨拶とアプリの説明をする
           await speak(
-            replaceUserName(INTRODUCTION_GREETING, userInfo.name),
+            replaceUserName(introductionGreeting, userInfo.name),
             viewer,
             textToSpeechApiType
           );
           await speak(
-            replaceUserName(APP_EXPLANATION, userInfo.name),
+            replaceUserName(appExplanation, userInfo.name),
             viewer,
-            textToSpeechApiType
+            textToSpeechApiType,
+            'ja'
           );
+          localStorage.setItem("isAppExplanationDone", "true");
         } else {
           // アプリの説明をしている場合は、アイスブレイクの会話をする
           const randomIndex = Math.floor(
-            Math.random() * COME_BACK_GREETING_LIST.length
+            Math.random() * comeBackGreetingList.length
           );
           await speak(
             replaceUserName(
-              COME_BACK_GREETING_LIST[randomIndex],
+              comeBackGreetingList[randomIndex],
               userInfo.name
             ),
             viewer,
             textToSpeechApiType
+          );
+          await speak(
+            lessonsStartPhrases[randomIndex],
+            viewer,
+            textToSpeechApiType,
+            'ja'
           );
         }
       } catch (error) {
@@ -103,7 +121,7 @@ export const useFirstConversation = () => {
     };
 
     handleFirstConversation();
-  }, [viewer, userInfo, isAppExplanationDone, textToSpeechApiType]);
+  }, [viewer, userInfo, textToSpeechApiType]);
 
   return { speakFirstConversation };
 };

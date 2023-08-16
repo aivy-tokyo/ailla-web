@@ -28,9 +28,8 @@ export const tts = async ({
 
       case 'clovaVoice':
         response = await axios.post('/api/clova-voice', {
-          speaker: 'danna',
           text,
-          format: 'mp3',
+          lang,
         }, {
           headers: { 'Content-Type': 'application/json' },
           responseType: "arraybuffer",
@@ -41,6 +40,7 @@ export const tts = async ({
         console.error('Unsupported textToSpeechApiType:', textToSpeechApiType);
         return undefined;
     }
+    console.log('Synthesis succeeded:', textToSpeechApiType);
 
     return response.data;
   } catch (error) {

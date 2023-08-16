@@ -22,9 +22,9 @@ export default async function handler(
       {
         headers: {
           "X-NCP-APIGW-API-KEY-ID":
-            process.env.NEXT_PUBLIC_CLOVA_VOICE_CLIENT_ID,
+            process.env.CLOVA_VOICE_CLIENT_ID,
           "X-NCP-APIGW-API-KEY":
-            process.env.NEXT_PUBLIC_CLOVA_VOICE_CLIENT_SECRET,
+            process.env.CLOVA_VOICE_CLIENT_SECRET,
           "Content-Type": "application/x-www-form-urlencoded",
         },
         responseType: "arraybuffer",

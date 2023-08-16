@@ -35,3 +35,5 @@ export const textToSpeechApiTypeAtom = atomWithStorage<TextToSpeechApiType>('tex
 export const userIdAtom = atomWithStorage<string>('userId', '');
 
 export const userInfoAtom = atom<UserInfo | null>(null);
+
+export const firstGreetingDoneAtom = atom<boolean>(false);
