@@ -3,25 +3,22 @@ import {
   use,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import BottomUi from "./BottomUi";
-import { useAtom } from "jotai";
-import { firstGreetingDoneAtom } from "@/utils/atoms";
 import { ChatHint } from "./ChatHint";
 import { ChatMenu } from "./ChatMenu";
 import { HeaderUi } from "./HeaderUi";
 import { useUserInput } from "../hooks/useUserInput";
-import { useFreeTalk } from "../hooks/useFreeTalk";
 import { useRouter } from "next/router";
-import { useFirstGreeting } from "../hooks/useFirstGreeting";
+import { useSituationTalk } from "../hooks/useSituationTalk";
 
 export const UiContainerSituation: React.FC = () => {
   const router = useRouter();
   const [showHint, setShowHint] = useState<boolean>(false);
-  const [showMenu, setShowMenu] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
-  
+
   // UserInputの状態管理とロジックを取得
   const {
     chatMode,
@@ -33,13 +30,15 @@ export const UiContainerSituation: React.FC = () => {
     setUserMessage,
   } = useUserInput();
 
-  // FreeTalkの状態管理とロジックを取得
+  // SituationTalkの状態管理とロジックを取得
   const {
-    topic,
+    situation,
+    situationList,
+    nextStep,
     messages,
     sendMessage,
-    startFreeTalk,
-  } = useFreeTalk();
+    startSituation,
+  } = useSituationTalk();
 
   useEffect(() => {
     setIsClient(true);
@@ -49,56 +48,61 @@ export const UiContainerSituation: React.FC = () => {
     router.replace("/");
   }, [router]);
 
-  const handleShowHint = useCallback(() => {
-    setShowHint((prev) => !prev);
-  }, [setShowHint]);
+  const handleChangeUserMessage = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setUserMessage(e.target.value);
+    },
+    [setUserMessage]
+  );
 
-  const handleChangeUserMessage = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setUserMessage(e.target.value);
-  }, [setUserMessage]);
+  const handleShowHint = useCallback(() => {
+    setShowHint(!showHint);
+  }, [showHint]);
 
   const sendUserMessage = useCallback(() => {
     sendMessage(userMessage);
     setUserMessage("");
   }, [sendMessage, userMessage, setUserMessage]);
 
-  const {
-    firstGreeting,
-    firstGreetingDone,
-  } = useFirstGreeting();
-  useEffect(() => {
-    if (firstGreetingDone) {
-      startFreeTalk();
-    }
-  }, [firstGreetingDone, startFreeTalk]);
+  const situationListOptions = useMemo(() => {
+    return situationList.map((situation, index) => ({
+      label: situation.title,
+      value: index.toString(),
+    }));
+  }, [situationList]);
+  const handleSelectSituation = useCallback(
+    (value: string) => {
+      startSituation(situationList[Number(value)]);
+    },
+    [situationList, startSituation]
+  );
 
   if (!isClient) return <></>; //MEMO: ハイドレーションエラーを回避するための状態管理
 
   return (
     <>
       <HeaderUi onClickEndTalk={endTalk} />
-      { showHint && <ChatHint/>}
-      { showMenu && <ChatMenu/>}
-      <BottomUi
-        chatMode={chatMode}
-        setChatMode={setChatMode}
-        handleShowHint={handleShowHint}
-        handleStartRecording={handleStartRecording}
-        handleStopRecording={handleStopRecording}
-        userMessage={userMessage}
-        handleChangeUserMessage={handleChangeUserMessage}
-        isMicRecording={isMicRecording}
-        sendChat={sendUserMessage}
-      />
-      {!firstGreetingDone && (
-        <div className="fixed top-0 flex justify-center items-center h-screen w-full bg-black bg-opacity-60">
-          <button
-            className="btn btn-secondary is-rounded is-large is-fullwidth"
-            onClick={() => firstGreeting()}
-          >
-            AILLAと英会話を始めましょう！
-          </button>
-        </div>
+      {nextStep && showHint && (
+        <ChatHint description={nextStep.description} hint={nextStep.hint} />
+      )}
+      {!situation && (
+        <ChatMenu
+          options={situationListOptions}
+          onClickOption={handleSelectSituation}
+        />
+      )}
+      {situation && (
+        <BottomUi
+          chatMode={chatMode}
+          setChatMode={setChatMode}
+          handleShowHint={handleShowHint}
+          handleStartRecording={handleStartRecording}
+          handleStopRecording={handleStopRecording}
+          userMessage={userMessage}
+          handleChangeUserMessage={handleChangeUserMessage}
+          isMicRecording={isMicRecording}
+          sendChat={sendUserMessage}
+        />
       )}
     </>
   );

@@ -6,8 +6,6 @@ import {
   useState,
 } from "react";
 import BottomUi from "./BottomUi";
-import { useAtom } from "jotai";
-import { firstGreetingDoneAtom } from "@/utils/atoms";
 import { ChatHint } from "./ChatHint";
 import { ChatMenu } from "./ChatMenu";
 import { HeaderUi } from "./HeaderUi";
@@ -77,8 +75,8 @@ export const UiContainerFreeTalk: React.FC = () => {
   return (
     <>
       <HeaderUi onClickEndTalk={endTalk} />
-      { showHint && <ChatHint/>}
-      { showMenu && <ChatMenu/>}
+      {/* { showHint && <ChatHint/>} */}
+      {/* { showMenu && <ChatMenu/>} */}
       <BottomUi
         chatMode={chatMode}
         setChatMode={setChatMode}
@@ -90,16 +88,6 @@ export const UiContainerFreeTalk: React.FC = () => {
         isMicRecording={isMicRecording}
         sendChat={sendUserMessage}
       />
-      {!firstGreetingDone && (
-        <div className="fixed top-0 flex justify-center items-center h-screen w-full bg-black bg-opacity-60">
-          <button
-            className="btn btn-secondary is-rounded is-large is-fullwidth"
-            onClick={() => firstGreeting()}
-          >
-            AILLAと英会話を始めましょう！
-          </button>
-        </div>
-      )}
     </>
   );
 };

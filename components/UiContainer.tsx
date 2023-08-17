@@ -6,10 +6,6 @@ import { useFirstGreeting } from "../hooks/useFirstGreeting";
 
 export const UiContainer = () => {
   const router = useRouter();
-  const {
-    firstGreeting,
-    firstGreetingDone,
-  } = useFirstGreeting();
 
   return (
     <>
@@ -32,16 +28,6 @@ export const UiContainer = () => {
           使い方を見る
         </button>
       </div>
-      {!firstGreetingDone && (
-        <div className="fixed top-0 flex justify-center items-center h-screen w-full bg-black bg-opacity-60">
-          <button
-            className="btn btn-secondary is-rounded is-large is-fullwidth"
-            onClick={() => firstGreeting()}
-          >
-            AILLAと英会話を始めましょう！
-          </button>
-        </div>
-      )}
     </>
   );
 };
