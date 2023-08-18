@@ -90,9 +90,7 @@ export const useUserInput = () => {
   }, [speechRecognition]);
 
   const handleStopRecording = useCallback(async () => {
-    setTimeout(() => {
-      speechRecognition.current?.stop();
-    }, 1000);
+    speechRecognition.current?.stop();
   }, [speechRecognition]);
 
   return {
