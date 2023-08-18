@@ -3,6 +3,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  useMemo,
   useState,
 } from "react";
 import {
@@ -13,6 +14,7 @@ import { SpeechTextArea } from "./SpeechTextArea";
 import { BottomUiDefault } from "./BottomUiDefault";
 import { BottomUiChatIconSelected } from "./BottomUiChatIconSelected";
 import { ChatMode } from "../utils/types";
+import { Message } from "../features/messages/messages";
 
 type Props = {
   chatMode: ChatMode;
@@ -40,22 +42,30 @@ const BottomUi = ({
   const chatLogs = useAtomValue(chatLogAtom);
   const [isChatLogExpanded, setIsChatLogExpanded] = useState<boolean>(false);
 
-  const handleClickMicButton = () => {
+  const handleClickMicButton = useCallback(() => {
     setChatMode("mic");
     if (isMicRecording) {
       handleStopRecording();
+      sendChat();
     } else {
       handleStartRecording();
     }
-  };
+  }, [setChatMode, isMicRecording, handleStopRecording, sendChat, handleStartRecording]);
 
-  const handleChatIconSelected = (selected: boolean) => {
+  const handleChatIconSelected = useCallback((selected: boolean) => {
     setChatMode(selected ? "text" : "mic");
-  };
+  }, [setChatMode]);
 
   const toggleExpandChatLog = useCallback(() => {
     setIsChatLogExpanded((prev) => !prev);
   }, []);
+
+  const chatLogsWithMessage: Message[] = useMemo(() => {
+    return [...chatLogs, {
+      role: "user" as const,
+      content: userMessage,
+    }].filter((chatLog) => chatLog.content !== "");
+  }, [chatLogs, userMessage]);
 
   return (
     <>
@@ -73,7 +83,7 @@ const BottomUi = ({
                 : "py-1 mask-top-fadeout top-0 absolute justify-end"
             }`}
           >
-            <SpeechTextArea chatLogs={chatLogs} />
+            <SpeechTextArea chatLogs={chatLogsWithMessage} />
           </div>
         </div>
 

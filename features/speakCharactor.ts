@@ -15,6 +15,7 @@ export const speakCharactor = async (
       return;
     }
     await viewerModel.speak(buffer, { expression: "happy" });
+    viewerModel.emoteController?.playEmotion("relaxed");
   } catch (error) {
     console.error("Failed to speak:", error);
   }

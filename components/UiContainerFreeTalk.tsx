@@ -43,6 +43,10 @@ export const UiContainerFreeTalk: React.FC = () => {
     setIsClient(true);
   }, []);
 
+  useEffect(() => {
+    startFreeTalk();
+  }, [startFreeTalk]);
+
   const endTalk = useCallback(() => {
     router.replace("/");
   }, [router]);
@@ -56,19 +60,10 @@ export const UiContainerFreeTalk: React.FC = () => {
   }, [setUserMessage]);
 
   const sendUserMessage = useCallback(() => {
+    console.log("sendUserMessage", userMessage);
     sendMessage(userMessage);
     setUserMessage("");
   }, [sendMessage, userMessage, setUserMessage]);
-
-  const {
-    firstGreeting,
-    firstGreetingDone,
-  } = useFirstGreeting();
-  useEffect(() => {
-    if (firstGreetingDone) {
-      startFreeTalk();
-    }
-  }, [firstGreetingDone, startFreeTalk]);
 
   if (!isClient) return <></>; //MEMO: ハイドレーションエラーを回避するための状態管理
 

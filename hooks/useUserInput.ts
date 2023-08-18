@@ -17,7 +17,7 @@ export const useUserInput = () => {
 
     const recognition = new SpeechRecognition();
     recognition.lang = isTranslated ? "ja-JP" : "en-US"; // 言語を指定する
-    recognition.interimResults = true; // 途中経過を取得する
+    recognition.interimResults = false; // 途中経過を取得する
     recognition.continuous = true; // 連続的に音声認識を行う
     recognition.maxAlternatives = 1; // 1つの認識結果のみを取得する
 
@@ -38,11 +38,11 @@ export const useUserInput = () => {
     recognition.addEventListener("error", errorHandle);
 
     const resultHandle = (event: SpeechRecognitionEvent) => {
-      console.log("result", event);
       const lastIndexOfResultList = event.results.length - 1;
       const text = event.results[lastIndexOfResultList][0].transcript;
+      console.log("result", text);
 
-      setUserMessage(text);
+      setUserMessage(prev => prev + text);
     };
     recognition.addEventListener("result", resultHandle);
 
@@ -51,6 +51,28 @@ export const useUserInput = () => {
       setIsMicRecording(false);
     };
     recognition.addEventListener("end", endHandle);
+
+    recognition.addEventListener("speechstart", (event) => {
+      console.log("speechstart", event);
+    });
+    recognition.addEventListener("speechend", (event) => {
+      console.log("speechend", event);
+    });
+    recognition.addEventListener("nomatch", (event) => {
+      console.log("nomatch", event);
+    });
+    recognition.addEventListener("soundstart", (event) => {
+      console.log("soundstart", event);
+    });
+    recognition.addEventListener("soundend", (event) => {
+      console.log("soundend", event);
+    });
+    recognition.addEventListener("audioend", (event) => {
+      console.log("audioend", event);
+    });
+    recognition.addEventListener("audiostart", (event) => {
+      console.log("audiostart", event);
+    });
 
     speechRecognition.current = recognition;
 

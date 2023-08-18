@@ -28,7 +28,7 @@ export const useFreeTalk = () => {
       try {
         setMessages([]);
         const response = await axios.post("/api/chat/free-talk", {
-          messages: [],
+          messages: [{ role: "system", content: "free talk, please."}],
         });
         console.log("response->", response);
         const { topic, messages: newMessages } = response.data;
