@@ -13,11 +13,15 @@ import { HeaderUi } from "./HeaderUi";
 import { useUserInput } from "../hooks/useUserInput";
 import { useRouter } from "next/router";
 import { useSituationTalk } from "../hooks/useSituationTalk";
+import { useSetAtom } from "jotai";
+import { backgroundImagePathAtom } from "../utils/atoms";
+import { backgroundImages } from "../utils/constants";
 
 export const UiContainerSituation: React.FC = () => {
   const router = useRouter();
   const [showHint, setShowHint] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
+  const setBackgroundImagePath = useSetAtom(backgroundImagePathAtom);
 
   // UserInputの状態管理とロジックを取得
   const {
@@ -45,8 +49,9 @@ export const UiContainerSituation: React.FC = () => {
   }, []);
 
   const endTalk = useCallback(() => {
+    setBackgroundImagePath(backgroundImages[0].path);
     router.replace("/");
-  }, [router]);
+  }, [router, setBackgroundImagePath]);
 
   const handleChangeUserMessage = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -72,9 +77,10 @@ export const UiContainerSituation: React.FC = () => {
   }, [situationList]);
   const handleSelectSituation = useCallback(
     (value: string) => {
+      setBackgroundImagePath(backgroundImages[2].path);
       startSituation(situationList[Number(value)]);
     },
-    [situationList, startSituation]
+    [setBackgroundImagePath, situationList, startSituation]
   );
 
   if (!isClient) return <></>; //MEMO: ハイドレーションエラーを回避するための状態管理

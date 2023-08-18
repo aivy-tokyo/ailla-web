@@ -1,8 +1,5 @@
-import { useAtom } from "jotai";
-import { firstGreetingDoneAtom } from "../utils/atoms";
 import { HeaderUi } from "./HeaderUi";
 import { useRouter } from "next/router";
-import { useFirstGreeting } from "../hooks/useFirstGreeting";
 
 export const UiContainer = () => {
   const router = useRouter();

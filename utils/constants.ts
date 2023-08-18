@@ -9,20 +9,52 @@ export const GPT_MODEL="gpt-3.5-turbo";
 
 export const avatars: Avatar[]= [
   {
+    label: '響狐リク',
+    path: '/vrm/Liqu.vrm'
+  },
+  {
+    label: '安穏こころ',
+    path: '/vrm/Cocoro.vrm',
+  },
+  {
+    label: '九条フレカ私服',
+    path: '/vrm/Fureka_shifuku.vrm',
+  },
+  {
     label: 'URARA',
-    path: '/AvatarSample_A2.vrm'
+    path: '/vrm/AvatarSample_A2.vrm'
+  },
+  {
+    label: 'URARA_BOY',
+    path: '/vrm/URARA_BOY.vrm',
+  },
+  {
+    label: 'URARA_BOY_Hoodie',
+    path: '/vrm/URARA_BOY_Hoodie.vrm',
   },
   {
     label: 'AvatarSample2',
-    path: '/AvatarSample_A.vrm',
+    path: '/vrm/AvatarSample_A.vrm',
   },
   {
     label: 'AvatarSample3',
-    path: 'AvatarSample_B.vrm'
+    path: '/vrm/AvatarSample_B.vrm'
   }
 ];
 
 export const backgroundImages: BackgroundImage[] = [
+  {
+    label: '部屋',
+    path: '/background/room.jpg',
+  },
+  {
+    label: '空',
+    path: '/background/sky.jpg',
+  },
+  {
+    label: 'チェックインカウンター',
+    path: '/background/checkin.jpg',
+  },
   {
     label: '背景1',
     path: 'uraraBackground.gif',

@@ -1,5 +1,5 @@
-import { tts } from "../features/tts";
 import { TextToSpeechApiType } from "../utils/types";
+import { speakCharactor } from "./speakCharactor";
 import { Model } from "./vrmViewer/model";
 
 const introductionGreeting = `Hi {UserName}! I'm AILLA, your English conversation partner. Let's have a fun and engaging chat together!`;
@@ -36,25 +36,6 @@ const replaceUserName = (text: string, userName: string) => {
   return text.replace("{UserName}", userName);
 };
 
-// ttsを呼び出して、挨拶をする
-const speak = async (
-  text: string,
-  viewerModel: Model,
-  textToSpeechApiType: TextToSpeechApiType,
-  lang = "en",
-) => {
-  console.log("speak:", text);
-  try {
-    const buffer = await tts({ text, textToSpeechApiType, lang });
-    if (!buffer) {
-      return;
-    }
-    await viewerModel.speak(buffer, { expression: "happy" });
-  } catch (error) {
-    console.error("Failed to speak:", error);
-  }
-};
-
 // アプリ起動時の初回発話をする
 type Params = {
   viewerModel: Model;
@@ -72,12 +53,12 @@ export const speakFirstConversation = async ({
 
     if (!isAppExplanationDone) {
       // アプリの説明をしていない場合は、はじめましての挨拶とアプリの説明をする
-      await speak(
+      await speakCharactor(
         replaceUserName(introductionGreeting, userName),
         viewerModel,
         textToSpeechApiType
       );
-      await speak(
+      await speakCharactor(
         replaceUserName(appExplanation, userName),
         viewerModel,
         textToSpeechApiType,
@@ -89,7 +70,7 @@ export const speakFirstConversation = async ({
       const randomIndex = Math.floor(
         Math.random() * comeBackGreetingList.length
       );
-      await speak(
+      await speakCharactor(
         replaceUserName(
           comeBackGreetingList[randomIndex],
           userName
@@ -97,7 +78,7 @@ export const speakFirstConversation = async ({
         viewerModel,
         textToSpeechApiType
       );
-      await speak(
+      await speakCharactor(
         lessonsStartPhrases[randomIndex],
         viewerModel,
         textToSpeechApiType,

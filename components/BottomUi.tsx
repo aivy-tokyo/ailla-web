@@ -60,13 +60,6 @@ const BottomUi = ({
     setIsChatLogExpanded((prev) => !prev);
   }, []);
 
-  const chatLogsWithMessage: Message[] = useMemo(() => {
-    return [...chatLogs, {
-      role: "user" as const,
-      content: userMessage,
-    }].filter((chatLog) => chatLog.content !== "");
-  }, [chatLogs, userMessage]);
-
   return (
     <>
       <div className="fixed bottom-0 flex flex-col  justify-between w-full">
@@ -83,7 +76,7 @@ const BottomUi = ({
                 : "py-1 mask-top-fadeout top-0 absolute justify-end"
             }`}
           >
-            <SpeechTextArea chatLogs={chatLogsWithMessage} />
+            <SpeechTextArea chatLogs={chatLogs} />
           </div>
         </div>
 

@@ -1,10 +1,19 @@
+/**
+ * シチュエーションの型定義
+ * シチュエーションは、タイトル、説明、ステップからなる
+ * ステップは、キーワード、説明、ヒントからなる
+ * シチュエーションのタイトル、説明はAIへのシーン設定のプロンプトに使用される
+ * ステップのキーワードで会話の流れを制御する
+ * ステップの説明とヒントは、ユーザーに表示される
+ */
 export type Situation = {
-  title: string;
-  description: string;
+  title: string; // シチュエーションのタイトル
+  description: string; // シチュエーションの説明
   steps: {
-    keySentences: string[];
-    description: string;
-    hint: string;
+    // シチュエーションのステップ
+    keySentences: string[]; // キーワード
+    description: string; // ステップの説明
+    hint: string; // ヒント
   }[];
 };
 

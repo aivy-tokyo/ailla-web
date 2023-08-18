@@ -30,10 +30,9 @@ export const isTranslatedAtom = atom<boolean>(false);
 
 export const avatarPathAtom = atomWithStorage<string>('avatar',avatars[0].path);
 export const backgroundImagePathAtom = atomWithStorage<string> ('backgroundImagePath',backgroundImages[0].path);
-export const textToSpeechApiTypeAtom = atomWithStorage<TextToSpeechApiType>('textToSpeechApiType','googleTextToSpeech')
+export const textToSpeechApiTypeAtom = atomWithStorage<TextToSpeechApiType>('textToSpeechApiType','clovaVoice')
 
 export const userIdAtom = atomWithStorage<string>('userId', '');
-
 export const userInfoAtom = atom<UserInfo | null>(null);
 
 export const firstGreetingDoneAtom = atom<boolean>(false);

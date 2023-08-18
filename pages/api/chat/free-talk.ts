@@ -29,11 +29,6 @@ const promptTemplateForIceBreak = new PromptTemplate({
   inputVariables: ["topic", "userName"],
 });
 
-const promptTemplateForIceBreakEnd = new PromptTemplate({
-  template: `会話を終了する`,
-  inputVariables: ["topic", "userName"],
-});
-
 // prompt textを生成する
 // 引数: topic - トピック, messages - 会話の配列, userName - ユーザー名
 // 返り値: prompt text
@@ -41,17 +36,12 @@ const generatePromptText = async ({
   topic,
   messages,
   userName,
-  end,
 }: {
   topic: string;
   messages: ChatCompletionRequestMessage[];
   userName: string;
-  end?: boolean;
 }) => {
-  const promptForIceBreak = end ? await promptTemplateForIceBreakEnd.format({
-    topic,
-    userName,
-  }) : await promptTemplateForIceBreak.format({
+  const promptForIceBreak = await promptTemplateForIceBreak.format({
     topic,
     userName,
   });
@@ -101,14 +91,12 @@ export default async function handler(
     const topic = (req.body as Parameter).topic ?? getRandomPickuoTopic();
     const userName = (req.body as Parameter).userName ?? "you";
     const messages = (req.body as Parameter).messages ?? [];
-    const end = (req.body as Parameter).end ?? false;
     const promptText = await generatePromptText({
       topic,
       messages,
       userName,
-      end,
     });
-    const responseMessage = await chat.predict(promptText);
+    const chatMessage = await chat.predict(promptText);
 
     res.status(200).json({
       topic,
@@ -116,7 +104,7 @@ export default async function handler(
         ...messages,
         {
           role: "assistant",
-          content: responseMessage,
+          content: chatMessage,
         },
       ],
     });
