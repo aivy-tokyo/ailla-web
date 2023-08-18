@@ -4,6 +4,9 @@ import { atomWithStorage } from "jotai/utils";
 import { TextToSpeechApiType } from "./types";
 import { avatars, backgroundImages } from "./constants";
 import { DEFAULT_PARAM, KoeiroParam } from "@/features/constants/koeiroParam";
+import { UserInfo } from "../entities/UserInfo";
+// import { Prompt } from "@prisma/client";
+// import { User } from "@line/bot-sdk";
 
 export const chatProcessingAtom = atom<boolean>(false);
 
@@ -27,6 +30,9 @@ export const isTranslatedAtom = atom<boolean>(false);
 
 export const avatarPathAtom = atomWithStorage<string>('avatar',avatars[0].path);
 export const backgroundImagePathAtom = atomWithStorage<string> ('backgroundImagePath',backgroundImages[0].path);
-export const textToSpeechApiTypeAtom = atomWithStorage<TextToSpeechApiType>('textToSpeechApiType','googleTextToSpeech')
+export const textToSpeechApiTypeAtom = atomWithStorage<TextToSpeechApiType>('textToSpeechApiType','clovaVoice')
 
 export const userIdAtom = atomWithStorage<string>('userId', '');
+export const userInfoAtom = atom<UserInfo | null>(null);
+
+export const firstGreetingDoneAtom = atom<boolean>(false);

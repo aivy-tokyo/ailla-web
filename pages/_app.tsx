@@ -18,6 +18,7 @@ export default function App({
         backgroundImage: `url("${backgroundImagePath}")`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
       }}
     >
       <Component {...pageProps} />

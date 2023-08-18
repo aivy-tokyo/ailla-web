@@ -1,17 +1,28 @@
-import { userIdAtom } from "@/utils/atoms";
+import { userIdAtom, userInfoAtom } from "@/utils/atoms";
 import { Prefecture, UserGenderType, UserProfile } from "@/utils/types";
 import axios from "axios";
-import { useAtomValue } from "jotai";
-import { useEffect, useState } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
+import { userInfo } from "os";
+import { use, useEffect, useState } from "react";
 
 export const useProfile = () => {
   const [userName, setUserName] = useState<string>('');
-  const [userPrefecture, setUserPrefecture] = useState<Prefecture>();
+  const [userPrefecture, setUserPrefecture] = useState<Prefecture>('選択しない');
   const [userBirthday, setUserBirthday] = useState<string>('');
   const [userGender, setUserGender] = useState<UserGenderType>('選択しない');
   const userId = useAtomValue(userIdAtom);
   const [isEditMode,setIsEditMode] = useState<boolean>(false);
 
+  // TODO: ユーザー情報周りをリファクタリングしたら、ここは消す
+  const setUserInfo = useSetAtom(userInfoAtom);
+  useEffect(()=>{
+    setUserInfo({
+      name: userName,
+      prefecture: userPrefecture,
+      birthdate: userBirthday,
+      gender: userGender
+    });
+  },[userName, userPrefecture, userBirthday, userGender, setUserInfo]);
   
   const fetchUserInfo = async () => {
     if(!userId)return;

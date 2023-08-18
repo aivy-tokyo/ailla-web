@@ -10,7 +10,7 @@ import { useAtom } from "jotai";
 import { userIdAtom } from "@/utils/atoms";
 import axios from 'axios';
 
-export default function Register() {
+export default function RegisterPage() {
   const [userName, setUserName] = useState("");
   const [userPrefecture, setUserPrefecture] = useState<Prefecture>();
   const [userBirthday, setUserBirthday] = useState<string>("");
