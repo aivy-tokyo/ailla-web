@@ -25,7 +25,7 @@ const getRandomPickuoTopic = () => {
 
 // IceBreakの会話をするためのSYSTEMのメッセージテンプレート
 const promptTemplateForIceBreak = new PromptTemplate({
-  template: `あなたは英会話の教師です。あなたの名前はAILLA。生徒の名前は{userName}。英会話の授業を始める前のアイスブレイク会話をしてください。トピックは{topic}です。`,
+  template: `あなたは英会話の教師です。あなたの名前はAILLA。生徒の名前は{userName}。英会話の授業を始める前のアイスブレイク会話をしてください。トピックは{topic}です。会話は100文字におさめてください。会話はかならず英語で行ってください。`,
   inputVariables: ["topic", "userName"],
 });
 
@@ -66,6 +66,18 @@ const generatePromptText = async ({
   return `${promptForIceBreak}${conversation}`;
 };
 
+// Function: search UserName, and extract text before UserName.
+// ex) text: "Hello, I'm AILLA. What's your name? USER: My name is John. AILLA: Nice to meet you, John. Let's start the lesson."
+// UserName: "USER:"
+// return: "Hello, I'm AILLA. What's your name? "
+export const extractTextBeforeUserName = (text: string, userName: string) => {
+  const userNameIndex = text.indexOf(userName);
+  if (userNameIndex === -1) {
+    return text;
+  }
+  return text.slice(0, userNameIndex);
+};
+
 // OpenAI APIを使ってIceBreakの会話をする
 // 引数: messages - 会話の配列
 // 返り値: 会話の配列
@@ -89,7 +101,7 @@ export default async function handler(
 ) {
   try {
     const topic = (req.body as Parameter).topic ?? getRandomPickuoTopic();
-    const userName = (req.body as Parameter).userName ?? "you";
+    const userName = ((req.body as Parameter).userName ?? "you").toUpperCase();
     const messages = (req.body as Parameter).messages ?? [];
     const promptText = await generatePromptText({
       topic,
@@ -97,6 +109,12 @@ export default async function handler(
       userName,
     });
     const chatMessage = await chat.predict(promptText);
+    console.log("chatMessage->", chatMessage);
+    const assistantMessage = extractTextBeforeUserName(
+      chatMessage,
+      `${userName}:`
+    );
+    console.log("assistantMessage->", assistantMessage);
 
     res.status(200).json({
       topic,
@@ -104,7 +122,7 @@ export default async function handler(
         ...messages,
         {
           role: "assistant",
-          content: chatMessage,
+          content: assistantMessage,
         },
       ],
     });

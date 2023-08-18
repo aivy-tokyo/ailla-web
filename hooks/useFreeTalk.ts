@@ -59,8 +59,8 @@ export const useFreeTalk = () => {
           role: "user",
           content: message,
         };
+        console.log("userMessage->", userMessage);
         setChatLog((prev) => [...prev, userMessage]);
-
         const response = await axios.post("/api/chat/free-talk", {
           userName: userInfo?.name,
           messages: [...messages, userMessage],
