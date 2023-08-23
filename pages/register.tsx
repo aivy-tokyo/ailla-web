@@ -73,14 +73,14 @@ export default function RegisterPage() {
               type="text"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="rounded-md p-2 w-full text-white"
+              className="rounded-md p-2 w-full text-white bg-slate-900"
             />
           </div>
 
           <div className="flex flex-col mb-5">
             <label>都道府県：</label>
             <select
-              className="text-white rounded-md p-2 mb-5"
+              className="text-white rounded-md p-2 mb-5 bg-slate-900"
               value={userPrefecture}
               onChange={(e) => setUserPrefecture(e.target.value as Prefecture)}
             >
@@ -99,7 +99,7 @@ export default function RegisterPage() {
             <span>生年月日：</span>
             <input
               type="text"
-              className="text-white rounded-md p-2 mb-5"
+              className="text-white rounded-md p-2 mb-5 bg-slate-900"
               value={userBirthday}
               onChange={(e) => setUserBirthday(String(e.target.value))}
             />
@@ -109,7 +109,7 @@ export default function RegisterPage() {
               name=""
               id=""
               value={userGender}
-              className="text-white rounded-md p-2 mb-5"
+              className="text-white rounded-md p-2 mb-5 bg-slate-900"
               onChange={(e) => setUserGender(e.target.value as UserGenderType)}
             >
               <option value="男性">男性</option>
