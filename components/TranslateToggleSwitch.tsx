@@ -1,27 +1,21 @@
 import { isTranslatedAtom } from "@/utils/atoms";
 import { useAtom } from "jotai";
-import { ChangeEvent } from "react";
 
 const TranslateToggleSwitch = () => {
   const [isTranslated, setIsTranslated] = useAtom(isTranslatedAtom);
-  const handleTranslate = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.checked);
-    if(e.target.checked){
-      setIsTranslated(true);
-    }else{
-      setIsTranslated(false);
-    }
+  const handleTranslate = () => {
+    setIsTranslated((prev) => !prev);
   };
 
   return (
-    <label className="cursor-pointer flex items-center relative">
-    {isTranslated ?
-      <span className="absolute left-2 text-xs">翻訳</span>
-      :
-      <span className="absolute right-2 text-xs">翻訳</span> 
-    }
-    <input type="checkbox" className="toggle toggle-lg toggle-info" checked={isTranslated} onChange={handleTranslate}/>
-  </label>
+    <div className={`relative w-[64px] h-[31px] border cursor-pointer ${isTranslated ? 'border-sky-500 bg-stone-300 text-black' : 'border-slate-500 bg-slate-800 text-stone-300'} rounded-full flex items-center px-[1px]`} onClick={() => handleTranslate()}>
+      <div className={`w-[26px] h-[26px] rounded-full self-center transform transition-transform  ease-in-out duration-200 ${isTranslated ? 'translate-x-[33px] bg-sky-500' : 'translate-x-0 bg-slate-700' }`}></div>
+      {isTranslated ?
+        <span className="absolute left-2 text-xs">翻訳</span>
+        :
+        <span className="absolute right-2 text-xs">翻訳</span> 
+      }
+    </div>
   );
 };
 
