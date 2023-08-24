@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { userIdAtom, userInfoAtom } from "../utils/atoms";
 import { fetchUserId } from "../features/fetchUserId";
-import { UserProfile } from "../utils/types";
+import { UserInfo } from "@/entities/UserInfo";
 
 export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
@@ -46,14 +46,13 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
         }
 
         setCanShowContents(true);
-        // TODO: ユーザー情報周りをリファクタリングしたら、ここは消す
-        const profile = response.data as UserProfile;
-        setUserInfo({
-          name: profile.userName.S,
-          prefecture: profile.userPrefecture.S,
-          birthdate: profile.userBirthday.S,
-          gender: profile.userGender.S,
-        });
+        const userInfo: UserInfo= {
+          name: response.data.userName.S,
+          prefecture: response.data.userPrefecture.S,
+          birthdate: response.data.userBirthday.S,
+          gender: response.data.userGender.S,
+        };
+        setUserInfo(userInfo);
       })
       .catch((error) => {
         console.error("Error:", error);

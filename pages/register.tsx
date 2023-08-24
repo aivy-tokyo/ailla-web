@@ -1,23 +1,25 @@
 import { prefectures } from "@/utils/constants";
-import { Prefecture, UserGenderType, UserProfile } from "@/utils/types";
+import { Prefecture, UserGenderType} from "@/utils/types";
 import {
   FormEvent,
   useCallback,
   useState,
 } from "react";
 import { useRouter } from "next/router";
-import { useAtom } from "jotai";
-import { userIdAtom } from "@/utils/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import { userIdAtom, userInfoAtom } from "@/utils/atoms";
 import axios from 'axios';
+import { UserInfo } from "@/entities/UserInfo";
 
 export default function RegisterPage() {
   const [userName, setUserName] = useState("");
   const [userPrefecture, setUserPrefecture] = useState<Prefecture>();
   const [userBirthday, setUserBirthday] = useState<string>("");
   const [userGender, setUserGender] = useState<UserGenderType>("選択しない");
+  const setUserInfo = useSetAtom(userInfoAtom);
 
   const router = useRouter();
-  const [userId, setUserId] = useAtom(userIdAtom);
+  const userId = useAtomValue(userIdAtom);
 
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -39,13 +41,14 @@ export default function RegisterPage() {
           userGender,
         });
 
-        const data: UserProfile = await response.data;
-        setUserId(data.id.S);
-        setUserName(data.userName.S);
-        setUserPrefecture(data.userPrefecture.S);
-        setUserBirthday(data.userBirthday.S);
-        setUserGender(data.userGender.S);
+        const userInfo: UserInfo = {
+          name: response.data.userName.S,
+          prefecture: response.data.userPrefecture.S,
+          birthdate: response.data.userBirthday.S,
+          gender: response.data.userGender.S,
+        }
 
+        setUserInfo(userInfo);
         router.push("/");
       } catch (error) {
         console.error("Error:", error);
@@ -57,7 +60,7 @@ export default function RegisterPage() {
       userBirthday,
       userGender,
       userId,
-      setUserId,
+      setUserInfo,
       router,
     ]
   );

@@ -2,23 +2,23 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { Prefecture, UserGenderType } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
 import { useProfile } from "@/hooks/useProfile";
+import { useState } from "react";
 
 const Profile = () => {
   const {
-    editProfile,
-    
-    userName,setUserName, 
-    userPrefecture,setUserPrefecture, 
-    userBirthday,setUserBirthday, 
-    userGender,setUserGender,
-
+    editProfile,    
+    userInfo,
     isEditMode, setIsEditMode,
-
+    
   } = useProfile();
+  const [userName, setUserName] = useState<string>(userInfo?.name as string);
+  const [userPrefecture, setUserPrefecture] = useState<Prefecture>(userInfo?.prefecture as Prefecture);
+  const [userBirthdate, setUserBirthdate] = useState<string>(userInfo?.birthdate as string);
+  const [userGender, setUserGender] = useState<UserGenderType>(userInfo?.gender as UserGenderType);
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    editProfile();
+    editProfile(userName,userPrefecture,userBirthdate,userGender);
   };
 
   return (
@@ -56,7 +56,7 @@ const Profile = () => {
               </select>
     
               <span>生年月日：</span>
-              <input type="text" className="rounded-md p-2 mb-5" value={userBirthday} onChange={(e) => setUserBirthday(String(e.target.value))}/>
+              <input type="text" className="rounded-md p-2 mb-5" value={userBirthdate} onChange={(e) => setUserBirthdate(e.target.value)}/>
     
               <label htmlFor="">性別：</label>
               <select name="" id="" value={userGender} className="rounded-md p-2" onChange={(e) => setUserGender(e.target.value as UserGenderType)}>
@@ -77,21 +77,21 @@ const Profile = () => {
           <div className="flex flex-col mb-5">
             <div className="flex mb-5 items-center">
               <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 text-white self-start `}/>
-              <p className="text-2xl">{userName}</p>
+              <p className="text-2xl">{userInfo?.name}</p>
             </div>
     
               <div className="mb-5">
                 都道府県：
-                <p>{userPrefecture}</p>
+                <p>{userInfo?.prefecture}</p>
               </div>
               <div className="mb-5">
                 誕生日：
-                <p>{userBirthday}</p>
+                <p>{userInfo?.birthdate}</p>
               </div>
     
               <div className="mb-5">
                 性別：
-                <p>{userGender}</p>
+                <p>{userInfo?.gender}</p>
               </div>
           </div>
         </div>
