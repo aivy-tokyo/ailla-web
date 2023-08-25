@@ -15,6 +15,7 @@ export default function RegisterPage() {
   const [userPrefecture, setUserPrefecture] = useState<Prefecture>();
   const [userBirthday, setUserBirthday] = useState<string>("");
   const [userGender, setUserGender] = useState<UserGenderType>("選択しない");
+  const [isSendingRequest, setIsSendingRequest] = useState(false);
 
   const router = useRouter();
   const [userId, setUserId] = useAtom(userIdAtom);
@@ -29,6 +30,7 @@ export default function RegisterPage() {
         alert("値のどれかが未入力です");
         return;
       }
+      setIsSendingRequest(true);
 
       try {
         const response = await axios.put('/api/user', {
@@ -49,6 +51,8 @@ export default function RegisterPage() {
         router.push("/");
       } catch (error) {
         console.error("Error:", error);
+      } finally {
+        setIsSendingRequest(false);
       }
     },
     [
@@ -64,6 +68,13 @@ export default function RegisterPage() {
 
   return (
     <div className="flex h-full text-black text-center">
+      {
+         isSendingRequest && 
+          <button className="btn fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <span className="loading loading-spinner"></span>
+            Now Registering...
+          </button>
+       }
       <div className="bg-stone-300 rounded-xl bg-opacity-90 w-[500px] h-fit m-auto pt-5 flex flex-col items-center">
         <h2 className="text-2xl">新規登録</h2>
         <form onSubmit={handleSubmit} className="w-[80%] my-5">
