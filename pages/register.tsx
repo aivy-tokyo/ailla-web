@@ -16,6 +16,8 @@ export default function RegisterPage() {
   const [userBirthday, setUserBirthday] = useState<string>("");
   const [userGender, setUserGender] = useState<UserGenderType>("選択しない");
   const [isSendingRequest, setIsSendingRequest] = useState(false);
+  const [isResultError, setIsResultError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const router = useRouter();
   const [userId, setUserId] = useAtom(userIdAtom);
@@ -23,16 +25,16 @@ export default function RegisterPage() {
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!userName || !userPrefecture || !userBirthday || !userGender) {
-        console.log("userName", userName);
-        console.log("userPrefecture", userPrefecture);
-        console.log("userBirthday", userBirthday);
-        alert("値のどれかが未入力です");
-        return;
-      }
-      setIsSendingRequest(true);
-
       try {
+        if (!userName || !userPrefecture || !userBirthday || !userGender) {
+          console.log("userName", userName);
+          console.log("userPrefecture", userPrefecture);
+          console.log("userBirthday", userBirthday);
+          setIsResultError(true);
+          throw new Error("値のどれかが未入力です");
+        }
+        setIsSendingRequest(true);
+
         const response = await axios.put('/api/user', {
           id: userId,
           userName,
@@ -49,9 +51,20 @@ export default function RegisterPage() {
         setUserGender(data.userGender.S);
 
         router.push("/");
-      } catch (error) {
-        console.error("Error:", error);
+      } catch (error: unknown) {
+        console.log(error);
+        setIsResultError(true);
+
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else {
+            setErrorMessage('Error occurred.');
+        }
+
       } finally {
+        setTimeout(() => {
+          setIsResultError(false);
+        }, 3000);
         setIsSendingRequest(false);
       }
     },
@@ -74,6 +87,13 @@ export default function RegisterPage() {
             <span className="loading loading-spinner"></span>
             Now Registering...
           </button>
+       }
+       {
+          isResultError &&
+          <div className="alert alert-error fixed top-2 left-1/2 w-[40vw] transform -translate-x-1/2">
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>{errorMessage}</span>
+          </div>
        }
       <div className="bg-stone-300 rounded-xl bg-opacity-90 w-[500px] h-fit m-auto pt-5 flex flex-col items-center">
         <h2 className="text-2xl">新規登録</h2>
