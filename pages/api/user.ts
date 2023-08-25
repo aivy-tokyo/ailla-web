@@ -17,10 +17,10 @@ export default async function handler(
   if (req.method === 'PUT') {
     const Item = {
       id: { S: req.body.id },
-      userName: { S: req.body.userName },
-      userPrefecture: { S: req.body.userPrefecture },
-      userBirthday: { S: req.body.userBirthday },
-      userGender: { S: req.body.userGender },
+      name: { S: req.body.name },
+      prefecture: { S: req.body.prefecture },
+      birthdate: { S: req.body.birthdate },
+      gender: { S: req.body.gender },
     };
     await client.send(
       new PutItemCommand({
@@ -52,12 +52,15 @@ export default async function handler(
         Key: {
           id: { S: req.body.id }
         },
-        UpdateExpression: 'set userName = :n, userPrefecture = :p, userBirthday = :b ,userGender = :g',
+        UpdateExpression: 'set #nameAttr = :n, prefecture = :p, birthdate = :b ,gender = :g',
         ExpressionAttributeValues: {
-          ':n': { S: req.body.userName },
-          ':p': { S: req.body.userPrefecture },
-          ':b': { S: req.body.userBirthday },
-          ':g': { S: req.body.userGender },
+          ':n': { S: req.body.name },
+          ':p': { S: req.body.prefecture },
+          ':b': { S: req.body.birthdate },
+          ':g': { S: req.body.gender },
+        },
+        ExpressionAttributeNames: {
+          '#nameAttr': 'name'
         },
         ReturnValues: 'ALL_NEW'
       })

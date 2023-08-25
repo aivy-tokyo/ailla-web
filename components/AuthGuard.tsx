@@ -40,17 +40,18 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
     axios
       .get(`/api/user?id=${userId}`)
       .then((response) => {
-        if (!response.data.userName) {
+        if (!response.data.name) {
+          console.log('ユーザー情報がないので登録画面に遷移します');
           router.push("/register");
           return;
         }
 
         setCanShowContents(true);
         const userInfo: UserInfo= {
-          name: response.data.userName.S,
-          prefecture: response.data.userPrefecture.S,
-          birthdate: response.data.userBirthday.S,
-          gender: response.data.userGender.S,
+          name: response.data.name.S,
+          prefecture: response.data.prefecture.S,
+          birthdate: response.data.birthdate.S,
+          gender: response.data.gender.S,
         };
         setUserInfo(userInfo);
       })

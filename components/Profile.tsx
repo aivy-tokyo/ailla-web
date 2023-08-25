@@ -11,14 +11,14 @@ const Profile = () => {
     isEditMode, setIsEditMode,
     
   } = useProfile();
-  const [userName, setUserName] = useState<string>(userInfo?.name as string);
-  const [userPrefecture, setUserPrefecture] = useState<Prefecture>(userInfo?.prefecture as Prefecture);
-  const [userBirthdate, setUserBirthdate] = useState<string>(userInfo?.birthdate as string);
-  const [userGender, setUserGender] = useState<UserGenderType>(userInfo?.gender as UserGenderType);
+  const [name, setName] = useState<string>(userInfo?.name as string);
+  const [prefecture, setPrefecture] = useState<Prefecture>(userInfo?.prefecture as Prefecture);
+  const [birthdate, setBirthdate] = useState<string>(userInfo?.birthdate as string);
+  const [gender, setGender] = useState<UserGenderType>(userInfo?.gender as UserGenderType);
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    editProfile(userName,userPrefecture,userBirthdate,userGender);
+    editProfile(name,prefecture,birthdate,gender);
   };
 
   return (
@@ -39,13 +39,13 @@ const Profile = () => {
               <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 text-white self-center`}/>
               <div>
                 <label htmlFor="">名前：</label>
-                <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} className="rounded-md p-2 w-full"/>
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="rounded-md p-2 w-full"/>
               </div>
             </div>
     
             <div className="flex flex-col mb-5">
               <label>都道府県：</label>
-              <select className="rounded-md p-2 mb-5" value={userPrefecture} onChange={(e) => setUserPrefecture(e.target.value as Prefecture)}>
+              <select className="rounded-md p-2 mb-5" value={prefecture} onChange={(e) => setPrefecture(e.target.value as Prefecture)}>
                 {
                   prefectures.map((prefecture,index)=> {
                     return (
@@ -56,10 +56,10 @@ const Profile = () => {
               </select>
     
               <span>生年月日：</span>
-              <input type="text" className="rounded-md p-2 mb-5" value={userBirthdate} onChange={(e) => setUserBirthdate(e.target.value)}/>
+              <input type="text" className="rounded-md p-2 mb-5" value={birthdate} onChange={(e) => setBirthdate(e.target.value)}/>
     
               <label htmlFor="">性別：</label>
-              <select name="" id="" value={userGender} className="rounded-md p-2" onChange={(e) => setUserGender(e.target.value as UserGenderType)}>
+              <select name="" id="" value={gender} className="rounded-md p-2" onChange={(e) => setGender(e.target.value as UserGenderType)}>
                 <option value="男性">男性</option>
                 <option value="女性">女性</option>
                 <option value="選択しない">選択しない</option>

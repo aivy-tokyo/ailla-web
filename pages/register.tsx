@@ -12,10 +12,10 @@ import axios from 'axios';
 import { UserInfo } from "@/entities/UserInfo";
 
 export default function RegisterPage() {
-  const [userName, setUserName] = useState("");
-  const [userPrefecture, setUserPrefecture] = useState<Prefecture>();
-  const [userBirthday, setUserBirthday] = useState<string>("");
-  const [userGender, setUserGender] = useState<UserGenderType>("選択しない");
+  const [name, setName] = useState("");
+  const [prefecture, setPrefecture] = useState<Prefecture>();
+  const [birthdate, setBirthdate] = useState<string>("");
+  const [gender, setGender] = useState<UserGenderType>("選択しない");
   const setUserInfo = useSetAtom(userInfoAtom);
 
   const router = useRouter();
@@ -24,10 +24,10 @@ export default function RegisterPage() {
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!userName || !userPrefecture || !userBirthday || !userGender) {
-        console.log("userName", userName);
-        console.log("userPrefecture", userPrefecture);
-        console.log("userBirthday", userBirthday);
+      if (!name || !prefecture || !birthdate || !gender) {
+        console.log("name", name);
+        console.log("prefecture", prefecture);
+        console.log("birthdate", birthdate);
         alert("値のどれかが未入力です");
         return;
       }
@@ -35,17 +35,17 @@ export default function RegisterPage() {
       try {
         const response = await axios.put('/api/user', {
           id: userId,
-          userName,
-          userPrefecture,
-          userBirthday,
-          userGender,
+          name: name,
+          prefecture: prefecture,
+          birthdate: birthdate,
+          gender: gender,
         });
 
         const userInfo: UserInfo = {
-          name: response.data.userName.S,
-          prefecture: response.data.userPrefecture.S,
-          birthdate: response.data.userBirthday.S,
-          gender: response.data.userGender.S,
+          name: response.data.name.S,
+          prefecture: response.data.prefecture.S,
+          birthdate: response.data.birthdate.S,
+          gender: response.data.gender.S,
         }
 
         setUserInfo(userInfo);
@@ -55,10 +55,10 @@ export default function RegisterPage() {
       }
     },
     [
-      userName,
-      userPrefecture,
-      userBirthday,
-      userGender,
+      name,
+      prefecture,
+      birthdate,
+      gender,
       userId,
       setUserInfo,
       router,
@@ -74,8 +74,8 @@ export default function RegisterPage() {
             <label htmlFor="">名前：</label>
             <input
               type="text"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="rounded-md p-2 w-full text-white"
             />
           </div>
@@ -84,8 +84,8 @@ export default function RegisterPage() {
             <label>都道府県：</label>
             <select
               className="text-white rounded-md p-2 mb-5"
-              value={userPrefecture}
-              onChange={(e) => setUserPrefecture(e.target.value as Prefecture)}
+              value={prefecture}
+              onChange={(e) => setPrefecture(e.target.value as Prefecture)}
             >
               <option value="" selected disabled>
                 選択してください
@@ -103,17 +103,17 @@ export default function RegisterPage() {
             <input
               type="text"
               className="text-white rounded-md p-2 mb-5"
-              value={userBirthday}
-              onChange={(e) => setUserBirthday(String(e.target.value))}
+              value={birthdate}
+              onChange={(e) => setBirthdate(String(e.target.value))}
             />
 
             <label htmlFor="">性別：</label>
             <select
               name=""
               id=""
-              value={userGender}
+              value={gender}
               className="text-white rounded-md p-2 mb-5"
-              onChange={(e) => setUserGender(e.target.value as UserGenderType)}
+              onChange={(e) => setGender(e.target.value as UserGenderType)}
             >
               <option value="男性">男性</option>
               <option value="女性">女性</option>

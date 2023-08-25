@@ -13,12 +13,12 @@ export const useProfile = () => {
 const editProfile = (userName: string, userPrefecture: Prefecture, userBirthdate: string, userGender: UserGenderType) => {
   if (!userId) return;
 
-  axios.post(`/api/user?id`, {
+  axios.post(`/api/user`, {
     id: userId,
-    userName: userName,
-    userPrefecture: userPrefecture,
-    userBirthday: userBirthdate,
-    userGender: userGender,
+    name: userName,
+    prefecture: userPrefecture,
+    birthdate: userBirthdate,
+    gender: userGender,
   }, {
     headers: {
       'Content-Type': 'application/json',
@@ -26,10 +26,10 @@ const editProfile = (userName: string, userPrefecture: Prefecture, userBirthdate
   })
   .then(response => {
     const userInfo: UserInfo = {
-      name: response.data.userName.S,
-      prefecture: response.data.userPrefecture.S,
-      birthdate: response.data.userBirthday.S,
-      gender: response.data.userGender.S
+      name: response.data.name.S,
+      prefecture: response.data.prefecture.S,
+      birthdate: response.data.birthdate.S,
+      gender: response.data.gender.S
     };
     setIsEditMode(false);
     setUserInfo(userInfo);
