@@ -64,7 +64,7 @@ export default function RegisterPage() {
 
   return (
     <div className="flex h-full text-black text-center">
-      <div className="bg-stone-300 rounded-xl opacity-90 w-[500px] h-fit m-auto pt-5 flex flex-col items-center">
+      <div className="bg-stone-300 rounded-xl bg-opacity-90 w-[500px] h-fit m-auto pt-5 flex flex-col items-center">
         <h2 className="text-2xl">新規登録</h2>
         <form onSubmit={handleSubmit} className="w-[80%] my-5">
           <div className="mb-5">
