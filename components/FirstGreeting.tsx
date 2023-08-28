@@ -3,6 +3,7 @@ import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { speakFirstConversation } from "../features/speakFirstConversation";
 import { useAtomValue } from "jotai";
 import { userInfoAtom, textToSpeechApiTypeAtom } from "../utils/atoms";
+import * as Sentry from "@sentry/nextjs";
 
 export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
   const { viewer } = useContext(ViewerContext);
@@ -24,6 +25,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
         });
         setFirstGreetingDone(true);
       } catch (error) {
+        Sentry.captureException(error);
         console.error(error);
       }
     }

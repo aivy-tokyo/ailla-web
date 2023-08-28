@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { userIdAtom } from "@/utils/atoms";
 import axios from 'axios';
+import * as Sentry from "@sentry/react";
 
 export default function RegisterPage() {
   const [userName, setUserName] = useState("");
@@ -48,6 +49,7 @@ export default function RegisterPage() {
 
         router.push("/");
       } catch (error) {
+        Sentry.captureException(error);
         console.error("Error:", error);
       }
     },

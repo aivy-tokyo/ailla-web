@@ -6,6 +6,7 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { userIdAtom, userInfoAtom } from "../utils/atoms";
 import { fetchUserId } from "../features/fetchUserId";
 import { UserProfile } from "../utils/types";
+import * as Sentry from "@sentry/nextjs";
 
 export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
@@ -24,6 +25,7 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
       fetchUserId().then((userId) => {
         setUserId(userId);
       }).catch((error) => {
+        Sentry.captureException(error);
         console.error("Error:", error);
       });
     }
@@ -56,6 +58,7 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
         });
       })
       .catch((error) => {
+        Sentry.captureException(error);
         console.error("Error:", error);
       });
   }, [router, userId]);

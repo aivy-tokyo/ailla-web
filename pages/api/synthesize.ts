@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { TextToSpeechClient } from "@google-cloud/text-to-speech";
+import * as Sentry from "@sentry/node";
 
 const client = new TextToSpeechClient({
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
@@ -67,9 +68,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // send audio
     res.setHeader("Content-Type", "audio/mpeg");
     res.send(response.audioContent);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send(e);
+  } catch (error) {
+    Sentry.captureException(error);
+    console.error(error);
+    res.status(500).send(error);
   }
 };
 export default handler;

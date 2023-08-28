@@ -1,6 +1,7 @@
 import axios from "axios";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import LineProvider from "next-auth/providers/line";
+import * as Sentry from "@sentry/node";
 
 // /api/userからuserIDを元にuserを取得して返す関数
 const getUser = async (userId: string) => {
@@ -51,6 +52,7 @@ export const authOptions: NextAuthOptions = {
           console.log('ユーザー新規追加', response.data);
         }
       } catch (error) {
+        Sentry.captureException(error);
         console.error("Error:", error);
       }
 
