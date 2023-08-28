@@ -89,6 +89,7 @@ export const useSituationTalk = () => {
           role: "user",
           content: message,
         };
+        console.log("userMessage->", userMessage);
         setChatLog((prev) => [...prev, userMessage]);
         const response = await axios.post("/api/chat/situation", {
           title: situation.title,

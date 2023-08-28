@@ -86,6 +86,7 @@ export const speakFirstConversation = async ({
         'ja'
       );
     }
+    viewerModel.orderedToSkip = false;
   } catch (error) {
     Sentry.captureException(error);
     console.error("Failed to speak:", error);

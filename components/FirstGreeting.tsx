@@ -1,4 +1,4 @@
-import { PropsWithChildren, useContext, useState, useCallback } from "react";
+import { PropsWithChildren, useContext, useState, useCallback, useEffect } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { speakFirstConversation } from "../features/speakFirstConversation";
 import { useAtomValue } from "jotai";
@@ -31,23 +31,40 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
     }
   }, [firstGreetingDone, textToSpeechApiType, userInfo?.name, viewer.model]);
 
+  const handleSkipFirstGreeting = useCallback(() => {
+    viewer.model?.stopSpeak();
+    setFirstGreetingDone(true);
+  }, [viewer.model]);
+
   if (!firstGreetingDone) {
     return (
-      <div
-        className={`
-      fixed top-0 flex justify-center items-center h-screen w-full bg-opacity-60
-      ${startButtonClicked ? "bg-transparent" : "bg-black"}
-      `}
-      >
-        {!startButtonClicked && (
-          <button
-            className="btn btn-secondary is-rounded is-large is-fullwidth"
-            onClick={greet}
+      <>
+        <div
+          className={`
+          fixed top-0 flex justify-center items-center h-screen w-full bg-opacity-60
+          ${startButtonClicked ? "bg-transparent" : "bg-black"}
+          `}
           >
-            AILLAと英会話を始めましょう！
-          </button>
-        )}
-      </div>
+          {startButtonClicked ?
+          (
+            <button
+              className="btn btn-secondary is-rounded is-large is-fullwidth"
+              onClick={() => handleSkipFirstGreeting()}
+            >
+              スキップする
+            </button>
+          )
+          :
+          (
+            <button
+              className="btn btn-secondary is-rounded is-large is-fullwidth"
+              onClick={greet}
+            >
+              AILLAと英会話を始めましょう！
+            </button>
+          )}
+        </div>
+      </>
     );
   }
 

@@ -101,6 +101,8 @@ export class Viewer {
       this._renderer.domElement
     );
     this._cameraControls.screenSpacePanning = true;
+    this._cameraControls.enableRotate = false;
+    this._cameraControls.enableZoom = false;
     this._cameraControls.update();
 
     window.addEventListener("resize", () => {
