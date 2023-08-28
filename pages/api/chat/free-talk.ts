@@ -78,6 +78,26 @@ export const extractTextBeforeUserName = (text: string, userName: string) => {
   return text.slice(0, userNameIndex);
 };
 
+// MEMO:【バグ対策】2役の返答が帰ってきた場合にAILLA側の返答のみを取得する処理
+const avoidReturnTwoRoles = (responseMessage: string) => {
+  console.log('responseMessage->', responseMessage);
+
+  //"AILLA: XXXXXX User: XXXXXX ~~~"のパターン
+  const matchPattern1 = responseMessage.match(/AILLA:\s*([^]+?)\s*User:/);
+  if(matchPattern1 && matchPattern1[1]) {
+    console.log("[!WARNING!]:Two roles responded (matchPattern1))")
+    return matchPattern1[1];
+  }
+
+  //"XXXXXX User: XXXXXX ~~~"のパターン
+  const matchPattern2 = responseMessage.match(/^([^]+?)\s*User:/);
+  if(matchPattern2 && matchPattern2[1]) {
+    console.log("[!WARNING!]:Two roles responded (matchPattern2))")
+    return matchPattern2[1];
+  }
+  return responseMessage;
+};
+
 // OpenAI APIを使ってIceBreakの会話をする
 // 引数: messages - 会話の配列
 // 返り値: 会話の配列
@@ -116,13 +136,16 @@ export default async function handler(
     );
     console.log("assistantMessage->", assistantMessage);
 
+    //2役の返答が帰ってきた場合にAILLA側の返答のみを取得する
+    const processedAssistantMessage = avoidReturnTwoRoles(assistantMessage);
+
     res.status(200).json({
       topic,
       messages: [
         ...messages,
         {
           role: "assistant",
-          content: assistantMessage,
+          content: processedAssistantMessage,
         },
       ],
     });
