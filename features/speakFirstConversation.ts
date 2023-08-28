@@ -1,6 +1,7 @@
 import { TextToSpeechApiType } from "../utils/types";
 import { speakCharactor } from "./speakCharactor";
 import { Model } from "./vrmViewer/model";
+import * as Sentry from "@sentry/browser";
 
 const introductionGreeting = `Hi {UserName}! I'm AILLA, your English conversation partner. Let's have a fun and engaging chat together!`;
 const appExplanation = `
@@ -86,6 +87,7 @@ export const speakFirstConversation = async ({
       );
     }
   } catch (error) {
+    Sentry.captureException(error);
     console.error("Failed to speak:", error);
   }
 };
