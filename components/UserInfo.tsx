@@ -1,16 +1,16 @@
 import { FaRegUserCircle } from "react-icons/fa";
 import { Prefecture, UserGenderType } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
-import { useProfile } from "@/hooks/useProfile";
+import { useUserInfo } from "@/hooks/useUserInfo";
 import { useState } from "react";
 
-const Profile = () => {
+const UserInfo = () => {
   const {
-    editProfile,    
+    editUserInfo,    
     userInfo,
     isEditMode, setIsEditMode,
     
-  } = useProfile();
+  } = useUserInfo();
   const [name, setName] = useState<string>(userInfo?.name as string);
   const [prefecture, setPrefecture] = useState<Prefecture>(userInfo?.prefecture as Prefecture);
   const [birthdate, setBirthdate] = useState<string>(userInfo?.birthdate as string);
@@ -18,7 +18,7 @@ const Profile = () => {
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    editProfile(name,prefecture,birthdate,gender);
+    editUserInfo(name,prefecture,birthdate,gender);
   };
 
   return (
@@ -101,4 +101,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UserInfo;

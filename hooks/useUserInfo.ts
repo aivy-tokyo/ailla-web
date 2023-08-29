@@ -5,12 +5,12 @@ import axios from "axios";
 import { useAtom, useAtomValue } from "jotai";
 import { useState } from "react";
 
-export const useProfile = () => {
+export const useUserInfo = () => {
   const userId = useAtomValue(userIdAtom);
   const [isEditMode,setIsEditMode] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useAtom(userInfoAtom);
   
-const editProfile = (userName: string, userPrefecture: Prefecture, userBirthdate: string, userGender: UserGenderType) => {
+const editUserInfo = (userName: string, userPrefecture: Prefecture, userBirthdate: string, userGender: UserGenderType) => {
   if (!userId) return;
 
   axios.post(`/api/user`, {
@@ -41,7 +41,7 @@ const editProfile = (userName: string, userPrefecture: Prefecture, userBirthdate
 
   return {
     userId,
-    editProfile,
+    editUserInfo,
 
     userInfo, setUserInfo,
     isEditMode, setIsEditMode

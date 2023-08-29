@@ -5,7 +5,7 @@ import { FaRegTimesCircle } from 'react-icons/fa';
 import { avatarPathAtom, backgroundImagePathAtom, textToSpeechApiTypeAtom } from '../utils/atoms';
 import { avatars, backgroundImages, textToSpeechApiTypeList } from '../utils/constants';
 import { SelectedLanguageType, TextToSpeechApiType } from '../utils/types';
-import Profile from './Profile';
+import UserInfo from './UserInfo';
 
 interface SettingContainerProps {
   onClose: () => void;
@@ -65,7 +65,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({ onClose }) =
           </div> */}
           {/* プロフィール表示・更新UI */}
           <div className="w-full">
-            <Profile />
+            <UserInfo />
           </div>
           {/* アバターの変更UI */}
           <div className="w-full">
