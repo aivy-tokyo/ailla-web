@@ -1,12 +1,12 @@
-import { useContext, useCallback } from "react";
+import { useContext, useCallback, useEffect, useState } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
-import { buildUrl } from "../utils/buildUrl";
 import { avatarPathAtom } from "@/utils/atoms";
 import { useAtomValue } from "jotai";
 
 export default function VrmViewer() {
   const { viewer } = useContext(ViewerContext);
   const avatarPath = useAtomValue(avatarPathAtom);
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   const canvasRef = useCallback(
     (canvas: HTMLCanvasElement) => {
@@ -43,9 +43,23 @@ export default function VrmViewer() {
     },
     [viewer,avatarPath]
   );
+  useEffect(() => {
+    viewer.onReadyChanged = (isReady: boolean)=>{
+      setIsReady(isReady);
+    }
+
+    return () => {
+      viewer.onReadyChanged = undefined;
+    };
+  }, [viewer]);
 
   return (
-    <div className={`fixed h-screen left-0 top-0 w-full`}>
+    <div className={`fixed h-screen left-0 top-0`}>
+      {isReady || 
+        <button className="btn absolute z-50 w-screen top-[500px] bg-transparent bg-opacity-0 border-0">
+          <span className="loading loading-spinner"></span>
+        </button>
+      }
       <canvas ref={canvasRef} className={"h-full w-full"}></canvas>
     </div>
   );
