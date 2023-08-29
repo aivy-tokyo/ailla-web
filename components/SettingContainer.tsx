@@ -63,7 +63,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({ onClose }) =
               </button>
             </div>
           </div> */}
-          {/* プロフィール表示・更新UI */}
+          {/* ユーザー情報表示・更新UI */}
           <div className="w-full">
             <UserInfo />
           </div>

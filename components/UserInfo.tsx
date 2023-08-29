@@ -24,7 +24,7 @@ const UserInfo = () => {
   return (
     <>
       <div className="flex justify-between">
-        <h2 className="mb-3 font-bold">プロフィール</h2>
+        <h2 className="mb-3 font-bold">ユーザー情報</h2>
         {isEditMode ? 
           <></>
           :
