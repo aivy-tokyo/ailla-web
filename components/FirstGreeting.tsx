@@ -16,8 +16,8 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
 
   const greet = useCallback(async () => {
     if (viewer.model && !firstGreetingDone) {
-      await viewer.model.resumeAudio();//MEMO:iOSだとAudioContextのstateが'suspended'になり、音声が再生できないことへの対策。
       try {
+        await viewer.model.resumeAudio();//MEMO:iOSだとAudioContextのstateが'suspended'になり、音声が再生できないことへの対策。
         setStartButtonClicked(true);
         await speakFirstConversation({
           viewerModel: viewer.model,
