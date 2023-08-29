@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { userIdAtom } from "@/utils/atoms";
 import axios from 'axios';
+import { FaRegTimesCircle } from "react-icons/fa";
 
 export default function RegisterPage() {
   const [userName, setUserName] = useState("");
@@ -26,12 +27,24 @@ export default function RegisterPage() {
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       try {
-        if (!userName || !userPrefecture || !userBirthday || !userGender) {
-          console.log("userName", userName);
-          console.log("userPrefecture", userPrefecture);
-          console.log("userBirthday", userBirthday);
-          setIsResultError(true);
-          throw new Error("値のどれかが未入力です");
+        let errors = [];
+
+        if (!userName) {
+            errors.push('ユーザー名');
+        }
+        if (!userPrefecture) {
+            errors.push('都道府県');
+        }
+        if (!userBirthday) {
+            errors.push('誕生日');
+        }
+        if (!userGender) {
+            errors.push('性別');
+        }
+
+        if (errors.length > 0) {
+            setIsResultError(true);
+            throw new Error(`${errors.join(', ')} が未入力です`);
         }
         setIsSendingRequest(true);
 
@@ -85,13 +98,15 @@ export default function RegisterPage() {
          isSendingRequest && 
           <button className="btn fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <span className="loading loading-spinner"></span>
-            Now Registering...
+            登録中...
           </button>
        }
        {
           isResultError &&
           <div className="alert alert-error fixed top-2 left-1/2 w-[40vw] transform -translate-x-1/2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <FaRegTimesCircle
+              className="text-black text-[34px] "
+            />
             <span>{errorMessage}</span>
           </div>
        }
