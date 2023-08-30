@@ -1,6 +1,5 @@
 import {
   ChangeEvent,
-  use,
   useCallback,
   useEffect,
   useMemo,
@@ -64,10 +63,11 @@ export const UiContainerSituation: React.FC = () => {
     setShowHint(!showHint);
   }, [showHint]);
 
-  const sendUserMessage = useCallback(() => {
-    sendMessage(userMessage);
+  const sendUserMessage = useCallback((message: string) => {
+    // sendMessage(userMessage);
+    sendMessage(message);
     setUserMessage("");
-  }, [sendMessage, userMessage, setUserMessage]);
+  }, [sendMessage, setUserMessage]);
 
   const situationListOptions = useMemo(() => {
     return situationList.map((situation, index) => ({

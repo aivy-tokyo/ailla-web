@@ -48,11 +48,11 @@ const BottomUi = ({
       setTimeout(() => {
         const resultText = handleStopRecording()
         sendChat(resultText);
-      },2000);
+      },3000);
     } else {
       handleStartRecording();
     }
-  }, [setChatMode, isMicRecording, handleStopRecording, userMessage, sendChat, handleStartRecording]);
+  }, [setChatMode, isMicRecording, handleStopRecording, sendChat, handleStartRecording]);
 
   const handleChatIconSelected = useCallback((selected: boolean) => {
     setChatMode(selected ? "text" : "mic");
