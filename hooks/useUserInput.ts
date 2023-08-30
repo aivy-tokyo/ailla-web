@@ -5,6 +5,7 @@ import { useAtomValue } from "jotai";
 
 export const useUserInput = () => {
   const isTranslated = useAtomValue(isTranslatedAtom);
+  const transcriptRef = useRef("");
 
   const speechRecognition = useRef<SpeechRecognition | null>();
   const [chatMode, setChatMode] = useState<ChatMode>("mic");
@@ -42,7 +43,10 @@ export const useUserInput = () => {
       const text = event.results[lastIndexOfResultList][0].transcript;
       console.log("result", text);
 
-      setUserMessage(prev => prev + text);
+      setUserMessage(prev => {
+        transcriptRef.current = prev + text;
+        return prev + text
+      });
     };
     recognition.addEventListener("result", resultHandle);
 
@@ -89,8 +93,9 @@ export const useUserInput = () => {
     speechRecognition.current?.start();
   }, [speechRecognition]);
 
-  const handleStopRecording = useCallback(async () => {
+  const handleStopRecording = useCallback(() => {
     speechRecognition.current?.stop();
+    return transcriptRef.current;
   }, [speechRecognition]);
 
   return {
