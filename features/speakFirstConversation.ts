@@ -85,6 +85,7 @@ export const speakFirstConversation = async ({
         'ja'
       );
     }
+    viewerModel.orderedToSkip = false;
   } catch (error) {
     console.error("Failed to speak:", error);
   }

@@ -71,7 +71,7 @@ export const useSituationTalk = () => {
 
   const sendMessage = useCallback(
     async (message: string) => {
-      if (!viewer.model || !situation) return;
+      if (!viewer.model || !situation || !message.trim()) return;
 
       setChatProcessing(true);
       try {

@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import { useAtomValue, useSetAtom } from "jotai";
 import { userIdAtom, userInfoAtom } from "@/utils/atoms";
 import axios from 'axios';
+import { FaRegTimesCircle } from "react-icons/fa";
+
 import { UserInfo } from "@/entities/UserInfo";
 
 export default function RegisterPage() {
@@ -17,6 +19,10 @@ export default function RegisterPage() {
   const [birthdate, setBirthdate] = useState<string>("");
   const [gender, setGender] = useState<UserGenderType>("選択しない");
   const setUserInfo = useSetAtom(userInfoAtom);
+  const [isSendingRequest, setIsSendingRequest] = useState(false);
+  const [isResultError, setIsResultError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
 
   const router = useRouter();
   const userId = useAtomValue(userIdAtom);
@@ -24,6 +30,7 @@ export default function RegisterPage() {
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+
       if (!name || !prefecture || !birthdate || !gender) {
         console.log("name", name);
         console.log("prefecture", prefecture);
@@ -33,6 +40,27 @@ export default function RegisterPage() {
       }
 
       try {
+        let errors = [];
+
+        if (!userName) {
+            errors.push('ユーザー名');
+        }
+        if (!userPrefecture) {
+            errors.push('都道府県');
+        }
+        if (!userBirthday) {
+            errors.push('誕生日');
+        }
+        if (!userGender) {
+            errors.push('性別');
+        }
+
+        if (errors.length > 0) {
+            setIsResultError(true);
+            throw new Error(`${errors.join(', ')} が未入力です`);
+        }
+        setIsSendingRequest(true);
+
         const response = await axios.put('/api/user', {
           id: userId,
           name: name,
@@ -50,8 +78,21 @@ export default function RegisterPage() {
 
         setUserInfo(userInfo);
         router.push("/");
-      } catch (error) {
-        console.error("Error:", error);
+      } catch (error: unknown) {
+        console.log(error);
+        setIsResultError(true);
+
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else {
+            setErrorMessage('Error occurred.');
+        }
+
+      } finally {
+        setTimeout(() => {
+          setIsResultError(false);
+        }, 3000);
+        setIsSendingRequest(false);
       }
     },
     [
@@ -67,7 +108,23 @@ export default function RegisterPage() {
 
   return (
     <div className="flex h-full text-black text-center">
-      <div className="bg-stone-300 rounded-xl opacity-90 w-[500px] h-fit m-auto pt-5 flex flex-col items-center">
+      {
+         isSendingRequest && 
+          <button className="btn fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <span className="loading loading-spinner"></span>
+            登録中...
+          </button>
+       }
+       {
+          isResultError &&
+          <div className="alert alert-error fixed top-2 left-1/2 w-[40vw] transform -translate-x-1/2">
+            <FaRegTimesCircle
+              className="text-black text-[34px] "
+            />
+            <span>{errorMessage}</span>
+          </div>
+       }
+      <div className="bg-stone-300 rounded-xl bg-opacity-90 w-[500px] h-fit m-auto pt-5 flex flex-col items-center">
         <h2 className="text-2xl">新規登録</h2>
         <form onSubmit={handleSubmit} className="w-[80%] my-5">
           <div className="mb-5">
@@ -76,14 +133,14 @@ export default function RegisterPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="rounded-md p-2 w-full text-white"
+              className="rounded-md p-2 w-full text-white bg-slate-900"
             />
           </div>
 
           <div className="flex flex-col mb-5">
             <label>都道府県：</label>
             <select
-              className="text-white rounded-md p-2 mb-5"
+              className="text-white rounded-md p-2 mb-5 bg-slate-900"
               value={prefecture}
               onChange={(e) => setPrefecture(e.target.value as Prefecture)}
             >
@@ -102,7 +159,7 @@ export default function RegisterPage() {
             <span>生年月日：</span>
             <input
               type="text"
-              className="text-white rounded-md p-2 mb-5"
+              className="text-white rounded-md p-2 mb-5 bg-slate-900"
               value={birthdate}
               onChange={(e) => setBirthdate(String(e.target.value))}
             />
@@ -112,7 +169,7 @@ export default function RegisterPage() {
               name=""
               id=""
               value={gender}
-              className="text-white rounded-md p-2 mb-5"
+              className="text-white rounded-md p-2 mb-5 bg-slate-900"
               onChange={(e) => setGender(e.target.value as UserGenderType)}
             >
               <option value="男性">男性</option>
