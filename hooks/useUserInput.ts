@@ -25,6 +25,7 @@ export const useUserInput = () => {
     const startHandle = (event: Event) => {
       console.log("start", event);
       setUserMessage("");
+      transcriptRef.current = "";
       setIsMicRecording(true);
     };
     recognition.addEventListener("start", startHandle);
@@ -52,7 +53,6 @@ export const useUserInput = () => {
 
     const endHandle = (event: Event) => {
       console.log("end", event);
-      setIsMicRecording(false);
     };
     recognition.addEventListener("end", endHandle);
 
@@ -106,5 +106,6 @@ export const useUserInput = () => {
     setUserMessage,
     handleStartRecording,
     handleStopRecording,
+    setIsMicRecording
   };
 };

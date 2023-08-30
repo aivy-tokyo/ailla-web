@@ -31,6 +31,7 @@ export const UiContainerSituation: React.FC = () => {
     handleStartRecording,
     handleStopRecording,
     setUserMessage,
+    setIsMicRecording,
   } = useUserInput();
 
   // SituationTalkの状態管理とロジックを取得
@@ -108,6 +109,7 @@ export const UiContainerSituation: React.FC = () => {
           handleChangeUserMessage={handleChangeUserMessage}
           isMicRecording={isMicRecording}
           sendChat={sendUserMessage}
+          setIsMicRecording={setIsMicRecording}
         />
       )}
     </>
