@@ -26,7 +26,6 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
         setFirstGreetingDone(true);
       } catch (error) {
         Sentry.captureException(error);
-        console.error(error);
       }
     }
   }, [firstGreetingDone, textToSpeechApiType, userInfo?.name, viewer.model]);

@@ -26,7 +26,6 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
         setUserId(userId);
       }).catch((error) => {
         Sentry.captureException(error);
-        console.error("Error:", error);
       });
     }
 
@@ -59,7 +58,6 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
       })
       .catch((error) => {
         Sentry.captureException(error);
-        console.error("Error:", error);
       });
   }, [router, userId]);
 

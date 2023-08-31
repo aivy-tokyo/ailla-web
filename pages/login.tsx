@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { userIdAtom } from "../utils/atoms";
 import { fetchUserId } from "../features/fetchUserId";
-import * as Sentry from "@sentry/react";
+import * as Sentry from "@sentry/nextjs";
 
 export default function LoginPage() {
   // session取得、ログインしている場合はindex.tsxへリダイレクト
@@ -21,7 +21,6 @@ export default function LoginPage() {
         })
         .catch((error) => {
           Sentry.captureException(error);
-          console.error("Error:", error);
         });
     }
   }, [router, session, setUserId]);

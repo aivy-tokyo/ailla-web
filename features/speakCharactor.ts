@@ -1,7 +1,7 @@
 import { TextToSpeechApiType } from "../utils/types";
 import { tts } from "./tts";
 import { Model } from "./vrmViewer/model";
-import * as Sentry from "@sentry/browser";
+import * as Sentry from "@sentry/nextjs";
 
 export const speakCharactor = async (
   text: string,
@@ -19,6 +19,5 @@ export const speakCharactor = async (
     viewerModel.emoteController?.playEmotion("relaxed");
   } catch (error) {
     Sentry.captureException(error);
-    console.error("Failed to speak:", error);
   }
 };

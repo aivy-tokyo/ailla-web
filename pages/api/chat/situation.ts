@@ -3,7 +3,7 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { ChatCompletionRequestMessage } from "openai";
 import { GPT_MODEL } from "../../../utils/constants";
-import * as Sentry from "@sentry/node";
+import * as Sentry from "@sentry/nextjs";
 
 const chat = new ChatOpenAI({
   modelName: GPT_MODEL,
@@ -103,7 +103,6 @@ export default async function handler(
     });
   } catch (error: any) {
     Sentry.captureException(error);
-    console.error(error);
     res.status(500).json({ error: error.message });
   }
 }

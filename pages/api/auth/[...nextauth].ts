@@ -1,7 +1,7 @@
 import axios from "axios";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import LineProvider from "next-auth/providers/line";
-import * as Sentry from "@sentry/node";
+import * as Sentry from "@sentry/nextjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 // /api/userからuserIDを元にuserを取得して返す関数
@@ -81,7 +81,6 @@ export const authOptions: NextAuthOptions = {
         }
       } catch (error) {
         Sentry.captureException(error);
-        console.error("Error:", error);
       }
 
       return session;

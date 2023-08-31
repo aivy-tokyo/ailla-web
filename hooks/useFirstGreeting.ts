@@ -10,7 +10,7 @@ import {
   textToSpeechApiTypeAtom,
 } from "@/utils/atoms";
 import { speakFirstConversation } from "../features/speakFirstConversation";
-import * as Sentry from "@sentry/browser";
+import * as Sentry from "@sentry/nextjs";
 
 export const useFirstGreeting = () => {
   const { viewer } = useContext(ViewerContext);
@@ -35,7 +35,6 @@ export const useFirstGreeting = () => {
         setFirstGreetingDone(true);
       } catch (error) {
         Sentry.captureException(error);
-        console.error(error);
       }
     };
 

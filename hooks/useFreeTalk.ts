@@ -11,7 +11,7 @@ import axios from "axios";
 import { Message } from "../features/messages/messages";
 import { speakCharactor } from "../features/speakCharactor";
 import { useViewer } from "./useViewer";
-import * as Sentry from "@sentry/browser";
+import * as Sentry from "@sentry/nextjs";
 
 export const useFreeTalk = () => {
   const viewer = useViewer();
@@ -45,7 +45,6 @@ export const useFreeTalk = () => {
       );
     } catch (error) {
       Sentry.captureException(error);
-      console.error(error);
     } finally {
       setChatProcessing(false);
     }
@@ -80,7 +79,6 @@ export const useFreeTalk = () => {
         );
       } catch (error) {
         Sentry.captureException(error);
-        console.error(error);
       } finally {
         setChatProcessing(false);
       }

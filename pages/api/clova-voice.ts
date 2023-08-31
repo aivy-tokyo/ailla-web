@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
-import * as Sentry from "@sentry/node";
+import * as Sentry from "@sentry/nextjs";
 
 const ENDPOINT_URL = "https://naveropenapi.apigw.ntruss.com/tts-premium/v1/tts";
 
