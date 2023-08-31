@@ -15,6 +15,7 @@ export class Model {
   public vrm?: VRM | null;
   public mixer?: THREE.AnimationMixer;
   public emoteController?: EmoteController;
+  public orderedToSkip: boolean = false;
 
   private _lookAtTargetParent: THREE.Object3D;
   private _lipSync?: LipSync;
@@ -71,12 +72,23 @@ export class Model {
    * 音声を再生し、リップシンクを行う
    */
   public async speak(buffer: ArrayBuffer, screenplay: Pick<Screenplay, "expression">) {
+    if(this.orderedToSkip) return;
     this.emoteController?.playEmotion(screenplay.expression);
     await new Promise((resolve) => {
       this._lipSync?.playFromArrayBuffer(buffer, () => {
         resolve(true);
       });
     });
+  }
+
+  public stopSpeak() {
+    this._lipSync?.stop();
+    this.orderedToSkip = true;
+  }
+
+  public async resumeAudio(){
+    if(this._lipSync?.audio.state !== "suspended")return;
+    await this._lipSync?.audio.resume();
   }
 
   public update(delta: number): void {

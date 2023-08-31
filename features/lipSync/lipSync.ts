@@ -6,6 +6,8 @@ export class LipSync {
   public readonly audio: AudioContext;
   public readonly analyser: AnalyserNode;
   public readonly timeDomainData: Float32Array;
+  
+  private _bufferSource?: AudioBufferSourceNode; 
 
   public constructor(audio: AudioContext) {
     this.audio = audio;
@@ -34,14 +36,19 @@ export class LipSync {
   public async playFromArrayBuffer(buffer: ArrayBuffer, onEnded?: () => void) {
     const audioBuffer = await this.audio.decodeAudioData(buffer);
 
-    const bufferSource = this.audio.createBufferSource();
-    bufferSource.buffer = audioBuffer;
+    this._bufferSource = this.audio.createBufferSource();
+    this._bufferSource.buffer = audioBuffer;
 
-    bufferSource.connect(this.audio.destination);
-    bufferSource.connect(this.analyser);
-    bufferSource.start();
+    this._bufferSource.connect(this.audio.destination);
+    this._bufferSource.connect(this.analyser);
+    this._bufferSource.start();
     if (onEnded) {
-      bufferSource.addEventListener("ended", onEnded);
+      this._bufferSource.addEventListener("ended", onEnded);
     }
+  }
+
+  public stop() {
+    if (!this._bufferSource)return;
+    this._bufferSource.stop();
   }
 }

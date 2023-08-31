@@ -43,13 +43,6 @@ export interface BackgroundImage {
 };
 
 export type UserGenderType = '男性' | '女性' | '選択しない'
-export interface UserProfile  {
-  id: {S: string},
-  userName: {S: string};
-  userPrefecture: {S: Prefecture};
-  userBirthday: {S: string};
-  userGender: {S: UserGenderType};
-}
 
 export type TextToSpeechApiType = 'koeiroMap' | 'voiceVox' | 'clovaVoice' | 'googleTextToSpeech'
 

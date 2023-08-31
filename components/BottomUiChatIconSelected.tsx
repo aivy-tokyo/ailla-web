@@ -10,7 +10,7 @@ interface BottomUiChatIconSelectedProps {
   chatIconSelected: boolean;
   isMicRecording: boolean;
   handleClickMicButton: () => void;
-  sendChat: () => void;
+  sendChat: (message:string) => void;
 }
 
 export const BottomUiChatIconSelected: React.FC<BottomUiChatIconSelectedProps> = ({
@@ -26,7 +26,7 @@ export const BottomUiChatIconSelected: React.FC<BottomUiChatIconSelectedProps> =
     <QuestionIcon handleShowHint={handleShowHint} />
     <input type="text" placeholder="文字を入力する" value={userMessage} className="w-[70%] rounded-full px-4 h-10 text-white" onChange={handleChangeUserMessage} />
     {userMessage.length > 0 ? (
-      <div className="h-[35px] w-[35px] rounded-full self-center bg-black border-2 border-white flex justify-center items-center cursor-pointer" onClick={sendChat}>
+      <div className="h-[35px] w-[35px] rounded-full self-center bg-black border-2 border-white flex justify-center items-center cursor-pointer" onClick={() =>sendChat(userMessage)}>
         <FaRegPaperPlane className="text-white text-[20px] self-center" />
       </div>
     ) : (

@@ -71,7 +71,7 @@ export const useSituationTalk = () => {
 
   const sendMessage = useCallback(
     async (message: string) => {
-      if (!viewer.model || !situation) return;
+      if (!viewer.model || !situation || !message.trim()) return;
 
       setChatProcessing(true);
       try {
@@ -89,6 +89,7 @@ export const useSituationTalk = () => {
           role: "user",
           content: message,
         };
+        console.log("userMessage->", userMessage);
         setChatLog((prev) => [...prev, userMessage]);
         const response = await axios.post("/api/chat/situation", {
           title: situation.title,
