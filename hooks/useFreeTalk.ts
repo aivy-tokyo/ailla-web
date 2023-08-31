@@ -52,7 +52,7 @@ export const useFreeTalk = () => {
 
   const sendMessage = useCallback(
     async (message: string) => {
-      if (!viewer.model) return;
+      if (!viewer.model || !message.trim()) return;
 
       setChatProcessing(true);
       try {

@@ -5,6 +5,7 @@ import { useAtomValue } from "jotai";
 
 export const useUserInput = () => {
   const isTranslated = useAtomValue(isTranslatedAtom);
+  const transcriptRef = useRef("");
 
   const speechRecognition = useRef<SpeechRecognition | null>();
   const [chatMode, setChatMode] = useState<ChatMode>("mic");
@@ -24,6 +25,7 @@ export const useUserInput = () => {
     const startHandle = (event: Event) => {
       console.log("start", event);
       setUserMessage("");
+      transcriptRef.current = "";
       setIsMicRecording(true);
     };
     recognition.addEventListener("start", startHandle);
@@ -42,13 +44,15 @@ export const useUserInput = () => {
       const text = event.results[lastIndexOfResultList][0].transcript;
       console.log("result", text);
 
-      setUserMessage(prev => prev + text);
+      setUserMessage(prev => {
+        transcriptRef.current = prev + text;
+        return prev + text
+      });
     };
     recognition.addEventListener("result", resultHandle);
 
     const endHandle = (event: Event) => {
       console.log("end", event);
-      setIsMicRecording(false);
     };
     recognition.addEventListener("end", endHandle);
 
@@ -89,8 +93,9 @@ export const useUserInput = () => {
     speechRecognition.current?.start();
   }, [speechRecognition]);
 
-  const handleStopRecording = useCallback(async () => {
+  const handleStopRecording = useCallback(() => {
     speechRecognition.current?.stop();
+    return transcriptRef.current;
   }, [speechRecognition]);
 
   return {
@@ -101,5 +106,6 @@ export const useUserInput = () => {
     setUserMessage,
     handleStartRecording,
     handleStopRecording,
+    setIsMicRecording
   };
 };

@@ -1,6 +1,5 @@
 import {
   ChangeEvent,
-  use,
   useCallback,
   useEffect,
   useMemo,
@@ -14,7 +13,7 @@ import { useUserInput } from "../hooks/useUserInput";
 import { useRouter } from "next/router";
 import { useSituationTalk } from "../hooks/useSituationTalk";
 import { useSetAtom } from "jotai";
-import { backgroundImagePathAtom } from "../utils/atoms";
+import { backgroundImagePathAtom, chatLogAtom } from "../utils/atoms";
 import { backgroundImages } from "../utils/constants";
 
 export const UiContainerSituation: React.FC = () => {
@@ -22,6 +21,8 @@ export const UiContainerSituation: React.FC = () => {
   const [showHint, setShowHint] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
   const setBackgroundImagePath = useSetAtom(backgroundImagePathAtom);
+  const setChatLog = useSetAtom(chatLogAtom);
+
 
   // UserInputの状態管理とロジックを取得
   const {
@@ -32,6 +33,7 @@ export const UiContainerSituation: React.FC = () => {
     handleStartRecording,
     handleStopRecording,
     setUserMessage,
+    setIsMicRecording,
   } = useUserInput();
 
   // SituationTalkの状態管理とロジックを取得
@@ -50,8 +52,9 @@ export const UiContainerSituation: React.FC = () => {
 
   const endTalk = useCallback(() => {
     setBackgroundImagePath(backgroundImages[0].path);
+    setChatLog([]);
     router.replace("/");
-  }, [router, setBackgroundImagePath]);
+  }, [router, setBackgroundImagePath, setChatLog]);
 
   const handleChangeUserMessage = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,10 +67,11 @@ export const UiContainerSituation: React.FC = () => {
     setShowHint(!showHint);
   }, [showHint]);
 
-  const sendUserMessage = useCallback(() => {
-    sendMessage(userMessage);
+  const sendUserMessage = useCallback((message: string) => {
+    // sendMessage(userMessage);
+    sendMessage(message);
     setUserMessage("");
-  }, [sendMessage, userMessage, setUserMessage]);
+  }, [sendMessage, setUserMessage]);
 
   const situationListOptions = useMemo(() => {
     return situationList.map((situation, index) => ({
@@ -108,6 +112,7 @@ export const UiContainerSituation: React.FC = () => {
           handleChangeUserMessage={handleChangeUserMessage}
           isMicRecording={isMicRecording}
           sendChat={sendUserMessage}
+          setIsMicRecording={setIsMicRecording}
         />
       )}
     </>

@@ -52,6 +52,24 @@ const generatePromptText = async ({
   return `${systemPrompt}${conversation}`;
 };
 
+// 2役の返答が帰ってきた場合にCustomer側の返答のみを取得する処理
+const avoidReturnTwoRoles = (responseMessage: string) => {
+  console.log('responseMessage->', responseMessage);
+
+  const matchPattern1 = responseMessage.match(/Customer:\s*([^]+?)\s*Staff:/);
+  if(matchPattern1 && matchPattern1[1]) {
+    console.log("[!WARNING!]:Two roles responded.(matchPattern1))")
+    return matchPattern1[1];
+  }
+
+  const matchPattern2 = responseMessage.match(/^([^]+?)\s*Staff:/);
+  if(matchPattern2 && matchPattern2[1]) {
+    console.log("[!WARNING!]:Two roles responded.(matchPattern2))")
+    return matchPattern2[1];
+  }
+  return responseMessage;
+};
+
 // OpenAI APIを使ってIceBreakの会話をする
 // 引数: messages - 会話の配列
 // 返り値: 会話の配列
@@ -79,23 +97,12 @@ export default async function handler(
       messages,
     });
     const responseMessage = await chat.predict(promptText);
-    // responseMessageに「Customer:」が出現する場合
-    const customerIndex = responseMessage.lastIndexOf("Customer:");
-    if (customerIndex !== -1) {
-      // 最後に出現する「Customer:」以降を取り出す
-      const customerMessage = responseMessage.slice(customerIndex);
-      // 会話の配列に追加する
-      messages.push({
-        role: "assistant",
-        content: customerMessage,
-      });
-    } else {
-      // それ以外の場合は、responseMessageをそのまま返す
-      messages.push({
-        role: "assistant",
-        content: responseMessage,
-      });
-    }
+    //2役の返答が帰ってきた場合にCustomer側の返答のみを取得する
+    const processedResponseMessage = avoidReturnTwoRoles(responseMessage);
+    messages.push({
+      role: "assistant",
+      content: processedResponseMessage,
+    });
       
 
     res.status(200).json({
