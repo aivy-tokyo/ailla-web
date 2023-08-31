@@ -10,14 +10,14 @@ import { UserInfo } from "@/entities/UserInfo";
 
 export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const session = useSession();
   const [userId, setUserId] = useAtom(userIdAtom);
   const setUserInfo = useSetAtom(userInfoAtom);
   const [canShowContents, setCanShowContents] = useState<boolean>(false);
   
   useEffect(() => {
     let timerId: NodeJS.Timeout;
-    if (!session) {
+    if (session?.status === "unauthenticated") {
       timerId = setTimeout(() => {
         router.push("/login");
       }, 1000);
@@ -59,7 +59,7 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
       .catch((error) => {
         Sentry.captureException(error);
       });
-  }, [router, userId]);
+  }, [router, setUserInfo, userId]);
 
   if (!canShowContents) {
     return <></>;
