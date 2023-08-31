@@ -17,8 +17,6 @@ export default function RegisterPage() {
 
   return (
     <>
-      userid: {userId}
-      {session && <p>session: {JSON.stringify(session)}</p>}
       <AppHead />
       <RegisterContainer />
     </>
