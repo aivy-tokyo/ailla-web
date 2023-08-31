@@ -44,6 +44,7 @@ export const UiContainerSituation: React.FC = () => {
     messages,
     sendMessage,
     startSituation,
+    roleOfAi,
   } = useSituationTalk();
 
   useEffect(() => {
@@ -113,6 +114,7 @@ export const UiContainerSituation: React.FC = () => {
           isMicRecording={isMicRecording}
           sendChat={sendUserMessage}
           setIsMicRecording={setIsMicRecording}
+          roleOfAi={roleOfAi}
         />
       )}
     </>

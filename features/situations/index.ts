@@ -9,6 +9,7 @@
 export type Situation = {
   title: string; // シチュエーションのタイトル
   description: string; // シチュエーションの説明
+  roleOfAi?: string; // AIの役割
   steps: {
     // シチュエーションのステップ
     keySentences: string[]; // キーワード
@@ -20,6 +21,7 @@ export type Situation = {
 export const situationCheckIn: Situation = {
   title: "Check-in",
   description: "ホテルのフロントでチェックインするシーンです。",
+  roleOfAi: "Customer",
   steps: [
     {
       keySentences: ["reservation", "name"],

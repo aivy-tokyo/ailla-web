@@ -26,6 +26,7 @@ type Props = {
   handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
   sendChat: (message: string) => void;
   setIsMicRecording: Dispatch<SetStateAction<boolean>>;
+  roleOfAi: string;
 };
 
 const BottomUi = ({
@@ -39,6 +40,7 @@ const BottomUi = ({
   isMicRecording,
   sendChat,
   setIsMicRecording,
+  roleOfAi,
 }: Props) => {
   const chatLogs = useAtomValue(chatLogAtom);
   const [isChatLogExpanded, setIsChatLogExpanded] = useState<boolean>(false);
@@ -80,7 +82,7 @@ const BottomUi = ({
                 : "py-1 mask-top-fadeout top-0 absolute justify-end"
             }`}
           >
-            <SpeechTextArea chatLogs={chatLogs} />
+            <SpeechTextArea chatLogs={chatLogs} roleOfAi={roleOfAi}/>
           </div>
         </div>
 

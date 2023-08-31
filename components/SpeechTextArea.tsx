@@ -7,16 +7,22 @@ interface ChatLog {
 
 interface SpeechTextAreaProps {
   chatLogs: ChatLog[];
+  roleOfAi: string;
 }
 
-export const SpeechTextArea: React.FC<SpeechTextAreaProps> = ({ chatLogs }) => {
+export const SpeechTextArea: React.FC<SpeechTextAreaProps> = ({ chatLogs,roleOfAi }) => {
   return (
     <>
       {chatLogs.map((chatLog, id) => (
-        <div key={id} className={`chat mb-1 flex text-white max-w-[900px] ${chatLog.role === 'user' ? 'chat-end justify-end' : 'chat-start'}`}>
-          <p className={`${chatLog.role === 'user' ? 'chat-bubble bg-gray-100 text-gray-600' : 'chat-bubble bg-gray-800 text-white'} max-w-[80vw] w-fit`}>
-            {chatLog.content}
-          </p>
+        <div key={id}>
+          { chatLog.role !== "user" &&
+            <p>{roleOfAi}</p>
+          }
+          <div className={`chat mb-1 flex text-white max-w-[900px] ${chatLog.role === 'user' ? 'chat-end justify-end' : 'chat-start'}`}>
+            <p className={`${chatLog.role === 'user' ? 'chat-bubble bg-gray-100 text-gray-600' : 'chat-bubble bg-gray-800 text-white'} max-w-[80vw] w-fit`}>
+              {chatLog.content}
+            </p>
+          </div>
         </div>
       ))}
     </>

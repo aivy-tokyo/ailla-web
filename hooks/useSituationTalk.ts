@@ -17,6 +17,7 @@ export const useSituationTalk = () => {
   const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
   const setChatLog = useSetAtom(chatLogAtom);
   const setChatProcessing = useSetAtom(chatProcessingAtom);
+  const [roleOfAi, setRoleOfAi] = useState<string>("Customer");
 
   const [situation, setSituation] = useState<Situation | null>();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
@@ -41,12 +42,14 @@ export const useSituationTalk = () => {
         setSituation(selectedSituation);
         setNextStepIndex(0);
         setMessages([]);
+        setRoleOfAi(selectedSituation.roleOfAi ?? "Customer");
 
         // 最初のメッセージリクエスト
         const response = await axios.post("/api/chat/situation", {
           title: selectedSituation.title,
           description: selectedSituation.description,
           messages: [],
+          role: selectedSituation.roleOfAi,
         });
         console.log("response->", response);
         const { messages: newMessages } = response.data;
@@ -95,6 +98,7 @@ export const useSituationTalk = () => {
           title: situation.title,
           description: situation.description,
           messages: [...messages, userMessage],
+          role: roleOfAi,
         });
         console.log("response->", response);
         const { messages: newMessages } = response.data;
@@ -115,13 +119,14 @@ export const useSituationTalk = () => {
       }
     },
     [
-      viewer.model,
-      situation,
-      setChatProcessing,
-      nextStep?.keySentences,
-      setChatLog,
-      messages,
-      textToSpeechApiType,
+      viewer.model, 
+      situation, 
+      setChatProcessing, 
+      nextStep?.keySentences, 
+      setChatLog, 
+      messages, 
+      roleOfAi, 
+      textToSpeechApiType
     ]
   );
 
@@ -132,5 +137,6 @@ export const useSituationTalk = () => {
     messages,
     startSituation: startSituationTalk,
     sendMessage,
+    roleOfAi,
   };
 };

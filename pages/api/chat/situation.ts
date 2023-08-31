@@ -12,8 +12,8 @@ const chat = new ChatOpenAI({
 
 // シチュエーションの会話をするためのSYSTEMのメッセージテンプレート
 const promptTemplate = new PromptTemplate({
-  template: `あなたは、英会話の教師です。次の設定に従って、役になりきって、英語を話してください。設定:[{title}]{situation}あなたはCustomerです。Customer側の英語を話してください。`,
-  inputVariables: ["title", "situation"],
+  template: `あなたは、英会話の教師です。次の設定に従って、役になりきって、英語を話してください。設定:[{title}]{situation}あなたは{role}です。{role}側の英語を話してください。`,
+  inputVariables: ["title", "situation","role"],
 });
 
 // prompt textを生成する
@@ -23,14 +23,17 @@ const generatePromptText = async ({
   title,
   description: situantion,
   messages,
+  role,
 }: {
   title: string;
   description: string;
   messages: ChatCompletionRequestMessage[];
+  role: string;
 }) => {
   const systemPrompt = await promptTemplate.format({
     title: title,
     situation: situantion,
+    role: role,
   });
   const conversation =
     messages
@@ -76,6 +79,7 @@ type Parameter = {
   title: string;
   description: string;
   messages: ChatCompletionRequestMessage[];
+  role: string;
 };
 
 // Path: pages/api/chat/situation.ts
@@ -90,10 +94,12 @@ export default async function handler(
     const title = (req.body as Parameter).title ?? "";
     const description = (req.body as Parameter).description ?? "";
     const messages = (req.body as Parameter).messages ?? [];
+    const role = (req.body as Parameter).role ?? "";
     const promptText = await generatePromptText({
       title: title,
       description: description,
       messages,
+      role: role,
     });
     const responseMessage = await chat.predict(promptText);
     //2役の返答が帰ってきた場合にCustomer側の返答のみを取得する
