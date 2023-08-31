@@ -26,8 +26,8 @@ type Props = {
   handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
   sendChat: (message: string) => void;
   setIsMicRecording: Dispatch<SetStateAction<boolean>>;
-  roleOfAi: string;
-  roleOfUser: string;
+  roleOfAi?: string;
+  roleOfUser?: string;
 };
 
 const BottomUi = ({
