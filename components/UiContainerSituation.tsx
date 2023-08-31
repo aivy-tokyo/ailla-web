@@ -94,8 +94,8 @@ export const UiContainerSituation: React.FC = () => {
   return (
     <>
       <HeaderUi onClickEndTalk={endTalk} />
-      {nextStep && showHint && (
-        <ChatHint description={nextStep.description} hint={nextStep.hint} />
+      {nextStep && showHint && situation && (
+        <ChatHint description={nextStep.description} hint={nextStep.hint} situation={situation}/>
       )}
       {!situation && (
         <ChatMenu
