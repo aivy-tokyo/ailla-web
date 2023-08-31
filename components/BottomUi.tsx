@@ -27,6 +27,7 @@ type Props = {
   sendChat: (message: string) => void;
   setIsMicRecording: Dispatch<SetStateAction<boolean>>;
   roleOfAi: string;
+  roleOfUser: string;
 };
 
 const BottomUi = ({
@@ -41,6 +42,7 @@ const BottomUi = ({
   sendChat,
   setIsMicRecording,
   roleOfAi,
+  roleOfUser,
 }: Props) => {
   const chatLogs = useAtomValue(chatLogAtom);
   const [isChatLogExpanded, setIsChatLogExpanded] = useState<boolean>(false);
@@ -82,7 +84,7 @@ const BottomUi = ({
                 : "py-1 mask-top-fadeout top-0 absolute justify-end"
             }`}
           >
-            <SpeechTextArea chatLogs={chatLogs} roleOfAi={roleOfAi}/>
+            <SpeechTextArea chatLogs={chatLogs} roleOfAi={roleOfAi} roleOfUser={roleOfUser}/>
           </div>
         </div>
 
