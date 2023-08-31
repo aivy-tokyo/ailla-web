@@ -1,30 +1,30 @@
 import { FaRegUserCircle } from "react-icons/fa";
 import { Prefecture, UserGenderType } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
-import { useProfile } from "@/hooks/useProfile";
+import { useUserInfo } from "@/hooks/useUserInfo";
+import { useState } from "react";
 
-const Profile = () => {
+const UserInfo = () => {
   const {
-    editProfile,
-    
-    userName,setUserName, 
-    userPrefecture,setUserPrefecture, 
-    userBirthday,setUserBirthday, 
-    userGender,setUserGender,
-
+    editUserInfo,    
+    userInfo,
     isEditMode, setIsEditMode,
-
-  } = useProfile();
+    
+  } = useUserInfo();
+  const [name, setName] = useState<string>(userInfo?.name as string);
+  const [prefecture, setPrefecture] = useState<Prefecture>(userInfo?.prefecture as Prefecture);
+  const [birthdate, setBirthdate] = useState<string>(userInfo?.birthdate as string);
+  const [gender, setGender] = useState<UserGenderType>(userInfo?.gender as UserGenderType);
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    editProfile();
+    editUserInfo(name,prefecture,birthdate,gender);
   };
 
   return (
     <>
       <div className="flex justify-between">
-        <h2 className="mb-3 font-bold">プロフィール</h2>
+        <h2 className="mb-3 font-bold">ユーザー情報</h2>
         {isEditMode ? 
           <></>
           :
@@ -39,13 +39,13 @@ const Profile = () => {
               <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 text-white self-center`}/>
               <div>
                 <label htmlFor="">名前：</label>
-                <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} className="rounded-md p-2 w-full"/>
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="rounded-md p-2 w-full"/>
               </div>
             </div>
     
             <div className="flex flex-col mb-5">
               <label>都道府県：</label>
-              <select className="rounded-md p-2 mb-5" value={userPrefecture} onChange={(e) => setUserPrefecture(e.target.value as Prefecture)}>
+              <select className="rounded-md p-2 mb-5" value={prefecture} onChange={(e) => setPrefecture(e.target.value as Prefecture)}>
                 {
                   prefectures.map((prefecture,index)=> {
                     return (
@@ -56,10 +56,10 @@ const Profile = () => {
               </select>
     
               <span>生年月日：</span>
-              <input type="text" className="rounded-md p-2 mb-5" value={userBirthday} onChange={(e) => setUserBirthday(String(e.target.value))}/>
+              <input type="text" className="rounded-md p-2 mb-5" value={birthdate} onChange={(e) => setBirthdate(e.target.value)}/>
     
               <label htmlFor="">性別：</label>
-              <select name="" id="" value={userGender} className="rounded-md p-2" onChange={(e) => setUserGender(e.target.value as UserGenderType)}>
+              <select name="" id="" value={gender} className="rounded-md p-2" onChange={(e) => setGender(e.target.value as UserGenderType)}>
                 <option value="男性">男性</option>
                 <option value="女性">女性</option>
                 <option value="選択しない">選択しない</option>
@@ -77,21 +77,21 @@ const Profile = () => {
           <div className="flex flex-col mb-5">
             <div className="flex mb-5 items-center">
               <FaRegUserCircle className={`text-[50px] -ml-1 mr-5 text-white self-start `}/>
-              <p className="text-2xl">{userName}</p>
+              <p className="text-2xl">{userInfo?.name}</p>
             </div>
     
               <div className="mb-5">
                 都道府県：
-                <p>{userPrefecture}</p>
+                <p>{userInfo?.prefecture}</p>
               </div>
               <div className="mb-5">
                 誕生日：
-                <p>{userBirthday}</p>
+                <p>{userInfo?.birthdate}</p>
               </div>
     
               <div className="mb-5">
                 性別：
-                <p>{userGender}</p>
+                <p>{userInfo?.gender}</p>
               </div>
           </div>
         </div>
@@ -101,4 +101,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UserInfo;

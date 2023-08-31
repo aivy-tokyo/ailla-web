@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { userIdAtom, userInfoAtom } from "../utils/atoms";
 import { fetchUserId } from "../features/fetchUserId";
-import { UserProfile } from "../utils/types";
+import { UserInfo } from "@/entities/UserInfo";
 
 export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
@@ -40,20 +40,20 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
     axios
       .get(`/api/user?id=${userId}`)
       .then((response) => {
-        if (!response.data.userName) {
+        if (!response.data.name) {
+          console.log('ユーザー情報がないので登録画面に遷移します');
           router.push("/register");
           return;
         }
 
         setCanShowContents(true);
-        // TODO: ユーザー情報周りをリファクタリングしたら、ここは消す
-        const profile = response.data as UserProfile;
-        setUserInfo({
-          name: profile.userName.S,
-          prefecture: profile.userPrefecture.S,
-          birthdate: profile.userBirthday.S,
-          gender: profile.userGender.S,
-        });
+        const userInfo: UserInfo= {
+          name: response.data.name.S,
+          prefecture: response.data.prefecture.S,
+          birthdate: response.data.birthdate.S,
+          gender: response.data.gender.S,
+        };
+        setUserInfo(userInfo);
       })
       .catch((error) => {
         console.error("Error:", error);
