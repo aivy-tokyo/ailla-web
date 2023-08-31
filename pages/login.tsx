@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { userIdAtom } from "../utils/atoms";
 import { fetchUserId } from "../features/fetchUserId";
+import { AppHead } from "../components/AppHead";
 
 export default function LoginPage() {
   // session取得、ログインしている場合はindex.tsxへリダイレクト
@@ -30,31 +31,34 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div
-      className="
+    <>
+      <AppHead />
+      <div
+        className="
       flex flex-col
       justify-center items-center
       w-screen h-screen
     "
-    >
-      <div className="text-white">
-        <h1 className="text-4xl font-bold text-center">AILLA</h1>
-        <p className="p-3 mx-auto text-center">
-          AI英会話サービス「AILLA」へようこそ!
-          <br />
-          LINEアカウントでログインしてサービスを開始しましょう!
-        </p>
-      </div>
-      <button
-        className="
+      >
+        <div className="text-white">
+          <h1 className="text-4xl font-bold text-center">AILLA</h1>
+          <p className="p-3 mx-auto text-center">
+            AI英会話サービス「AILLA」へようこそ!
+            <br />
+            LINEアカウントでログインしてサービスを開始しましょう!
+          </p>
+        </div>
+        <button
+          className="
         bg-green-500 hover:bg-green-700
         text-white font-bold py-2 px-4 rounded
         mt-4
       "
-        onClick={() => signin()}
-      >
-        LINEログイン
-      </button>
-    </div>
+          onClick={() => signin()}
+        >
+          LINEログイン
+        </button>
+      </div>
+    </>
   );
 }
