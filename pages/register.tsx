@@ -31,27 +31,19 @@ export default function RegisterPage() {
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      if (!name || !prefecture || !birthdate || !gender) {
-        console.log("name", name);
-        console.log("prefecture", prefecture);
-        console.log("birthdate", birthdate);
-        alert("値のどれかが未入力です");
-        return;
-      }
-
       try {
         let errors = [];
 
-        if (!userName) {
+        if (!name) {
             errors.push('ユーザー名');
         }
-        if (!userPrefecture) {
+        if (!prefecture) {
             errors.push('都道府県');
         }
-        if (!userBirthday) {
+        if (!birthdate) {
             errors.push('誕生日');
         }
-        if (!userGender) {
+        if (!gender) {
             errors.push('性別');
         }
 

@@ -33,6 +33,7 @@ export const UiContainerFreeTalk: React.FC = () => {
     handleStartRecording,
     handleStopRecording,
     setUserMessage,
+    setIsMicRecording,
   } = useUserInput();
 
   // FreeTalkの状態管理とロジックを取得
@@ -68,7 +69,7 @@ export const UiContainerFreeTalk: React.FC = () => {
     // sendMessage(userMessage);
     sendMessage(message);
     setUserMessage("");
-  }, [sendMessage, userMessage, setUserMessage]);
+  }, [sendMessage, setUserMessage]);
 
   if (!isClient) return <></>; //MEMO: ハイドレーションエラーを回避するための状態管理
 
@@ -87,6 +88,7 @@ export const UiContainerFreeTalk: React.FC = () => {
         handleChangeUserMessage={handleChangeUserMessage}
         isMicRecording={isMicRecording}
         sendChat={sendUserMessage}
+        setIsMicRecording={setIsMicRecording}
       />
     </>
   );
