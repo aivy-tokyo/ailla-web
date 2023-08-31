@@ -86,6 +86,11 @@ export class Model {
     this.orderedToSkip = true;
   }
 
+  public async resumeAudio(){
+    if(this._lipSync?.audio.state !== "suspended")return;
+    await this._lipSync?.audio.resume();
+  }
+
   public update(delta: number): void {
     if (this._lipSync) {
       const { volume } = this._lipSync.update();

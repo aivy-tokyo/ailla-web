@@ -64,9 +64,9 @@ export const UiContainerFreeTalk: React.FC = () => {
     setUserMessage(e.target.value);
   }, [setUserMessage]);
 
-  const sendUserMessage = useCallback(() => {
-    console.log("sendUserMessage", userMessage);
-    sendMessage(userMessage);
+  const sendUserMessage = useCallback((message: string) => {
+    // sendMessage(userMessage);
+    sendMessage(message);
     setUserMessage("");
   }, [sendMessage, userMessage, setUserMessage]);
 

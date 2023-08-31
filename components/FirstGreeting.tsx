@@ -1,4 +1,4 @@
-import { PropsWithChildren, useContext, useState, useCallback, useEffect } from "react";
+import { PropsWithChildren, useContext, useState, useCallback} from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { speakFirstConversation } from "../features/speakFirstConversation";
 import { useAtomValue } from "jotai";
@@ -13,9 +13,11 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
   const [startButtonClicked, setStartButtonClicked] = useState<boolean>(false);
   // 最初の挨拶をしたかどうかの状態管理
   const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false);
+
   const greet = useCallback(async () => {
     if (viewer.model && !firstGreetingDone) {
       try {
+        await viewer.model.resumeAudio();//MEMO:iOSだとAudioContextのstateが'suspended'になり、音声が再生できないことへの対策。
         setStartButtonClicked(true);
         await speakFirstConversation({
           viewerModel: viewer.model,
