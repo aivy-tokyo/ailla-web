@@ -88,12 +88,7 @@ export class Model {
 
   public async resumeAudio(){
     if(this._lipSync?.audio.state !== "suspended")return;
-    try {
-      await this._lipSync?.audio.resume();
-    } catch (error) {
-      //@ts-ignore
-      alert('Error resuming audio context: ' + error.message);
-    }
+    await this._lipSync?.audio.resume();
   }
 
   public update(delta: number): void {
