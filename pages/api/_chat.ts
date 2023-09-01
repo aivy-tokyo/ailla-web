@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { chat } from "../../features/chat";
 import { SituationEnglishConversation } from "../../features/prompts/situationEnglishConversation";
+import * as Sentry from "@sentry/nextjs";
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,7 +23,7 @@ export default async function handler(
       ]
     });
   } catch (error: any) {
-    console.error(error);
+    Sentry.captureException(error);
     res.status(500).json({ error: error.message });
   }
 }

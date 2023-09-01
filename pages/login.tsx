@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { userIdAtom } from "../utils/atoms";
 import { fetchUserId } from "../features/fetchUserId";
+import * as Sentry from "@sentry/nextjs";
 import { AppHead } from "../components/AppHead";
 
 export default function LoginPage() {
@@ -20,7 +21,7 @@ export default function LoginPage() {
           router.push("/");
         })
         .catch((error) => {
-          console.error("Error:", error);
+          Sentry.captureException(error);
         });
     }
   }, [router, session, setUserId]);

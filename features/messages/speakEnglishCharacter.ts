@@ -4,6 +4,7 @@ import { Screenplay } from "./messages";
 import { Talk } from "./messages";
 import axios from 'axios';
 import { TextToSpeechApiType } from "@/utils/types";
+import * as Sentry from "@sentry/nextjs";
 
 
 const createSpeakCharacter =  () => {
@@ -78,7 +79,7 @@ export const fetchAudio = async (talk: Talk, textToSpeechApiType: TextToSpeechAp
       )
       return response.data;
     }catch(error) {
-      console.error('clovaVoice Failed:',error);
+      Sentry.captureException(error);
     }
   }
 };
