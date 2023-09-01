@@ -44,6 +44,8 @@ export const UiContainerSituation: React.FC = () => {
     messages,
     sendMessage,
     startSituation,
+    roleOfAi,
+    roleOfUser,
   } = useSituationTalk();
 
   useEffect(() => {
@@ -92,8 +94,8 @@ export const UiContainerSituation: React.FC = () => {
   return (
     <>
       <HeaderUi onClickEndTalk={endTalk} />
-      {nextStep && showHint && (
-        <ChatHint description={nextStep.description} hint={nextStep.hint} />
+      {nextStep && showHint && situation && (
+        <ChatHint description={nextStep.description} hint={nextStep.hint} situation={situation}/>
       )}
       {!situation && (
         <ChatMenu
@@ -113,6 +115,8 @@ export const UiContainerSituation: React.FC = () => {
           isMicRecording={isMicRecording}
           sendChat={sendUserMessage}
           setIsMicRecording={setIsMicRecording}
+          roleOfAi={roleOfAi}
+          roleOfUser={roleOfUser}
         />
       )}
     </>
