@@ -42,10 +42,11 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
       <>
         <div
           className={`
-          fixed top-0 flex justify-center items-center h-screen w-full bg-opacity-60
+          fixed top-0 flex flex-col justify-center items-center h-screen w-full bg-opacity-60
           ${startButtonClicked ? "bg-transparent" : "bg-black"}
           `}
           >
+          <div className="flex-1 flex flex-col justify-end items-center">
           {startButtonClicked ?
           (
             <button
@@ -64,6 +65,10 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
               AILLAと英会話を始めましょう！
             </button>
           )}
+          </div>
+          <div className="p-10">
+            <p className="alert">マナーモード設定してる場合、発音されません</p>
+          </div>
         </div>
       </>
     );
