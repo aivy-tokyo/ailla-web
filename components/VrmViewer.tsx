@@ -54,7 +54,7 @@ export default function VrmViewer() {
   }, [viewer]);
 
   return (
-    <div className={`fixed h-screen left-0 top-0`}>
+    <div className={`fixed h-screen w-screen left-0 top-0`}>
       {isReady || 
         <button className="btn absolute z-50 w-screen top-[500px] bg-transparent bg-opacity-0 border-0">
           <span className="loading loading-spinner"></span>
