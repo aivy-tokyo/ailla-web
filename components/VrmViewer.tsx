@@ -6,7 +6,6 @@ import { useAtomValue } from "jotai";
 export default function VrmViewer() {
   const { viewer } = useContext(ViewerContext);
   const avatarPath = useAtomValue(avatarPathAtom);
-  const [isReady, setIsReady] = useState<boolean>(false);
 
   const canvasRef = useCallback(
     (canvas: HTMLCanvasElement) => {
@@ -43,20 +42,11 @@ export default function VrmViewer() {
     },
     [viewer,avatarPath]
   );
-  useEffect(() => {
-    viewer.onReadyChanged = (isReady: boolean)=>{
-      setIsReady(isReady);
-    }
-
-    return () => {
-      viewer.onReadyChanged = undefined;
-    };
-  }, [viewer]);
 
   return (
     <div className={`fixed h-screen w-screen left-0 top-0`}>
-      {!isReady &&(
-        <div className="fixed z-50 flex w-screen h-screen justify-center items-center">
+      {!viewer.isReady &&(
+        <div className="fixed z-50 flex flex-col w-screen h-screen justify-center items-center">
           <span className="loading loading-ring loading-lg"></span>
           <span className="text-white text-xs">データをロード中…</span>
         </div>
