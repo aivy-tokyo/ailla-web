@@ -8,6 +8,8 @@ export const speakCharactor = async (
   viewerModel: Model,
   textToSpeechApiType: TextToSpeechApiType,
   lang = "en",
+  onSpeaking?: (text: string) => void,
+  onSpeakingEnd?: () => void
 ) => {
   console.log("speak:", text);
   try {
@@ -15,7 +17,15 @@ export const speakCharactor = async (
     if (!buffer) {
       return;
     }
+
+    if (onSpeaking) {
+      onSpeaking(text);
+    }
     await viewerModel.speak(buffer, { expression: "happy" });
+    if (onSpeakingEnd) {
+      onSpeakingEnd();
+    }
+
     viewerModel.emoteController?.playEmotion("relaxed");
   } catch (error) {
     Sentry.captureException(error);

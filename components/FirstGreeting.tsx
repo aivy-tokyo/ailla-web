@@ -1,4 +1,4 @@
-import { PropsWithChildren, useContext, useState, useCallback} from "react";
+import { PropsWithChildren, useContext, useState, useCallback } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { speakFirstConversation } from "../features/speakFirstConversation";
 import { useAtomValue } from "jotai";
@@ -14,16 +14,21 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
   const [startButtonClicked, setStartButtonClicked] = useState<boolean>(false);
   // 最初の挨拶をしたかどうかの状態管理
   const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false);
+  // 話しているテキストの状態管理
+  const [currentText, setCurrentText] = useState<string>("");
 
   const greet = useCallback(async () => {
     if (viewer.model && !firstGreetingDone) {
       try {
-        await viewer.model.resumeAudio();//MEMO:iOSだとAudioContextのstateが'suspended'になり、音声が再生できないことへの対策。
+        await viewer.model.resumeAudio(); //MEMO:iOSだとAudioContextのstateが'suspended'になり、音声が再生できないことへの対策。
         setStartButtonClicked(true);
+
         await speakFirstConversation({
           viewerModel: viewer.model,
           userName: userInfo?.name || "",
           textToSpeechApiType,
+          onSpeaking: setCurrentText,
+          onSpeakingEnd: () => setCurrentText(""),
         });
         setFirstGreetingDone(true);
       } catch (error) {
@@ -37,37 +42,47 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
     setFirstGreetingDone(true);
   }, [viewer.model]);
 
+  if (!viewer.model) {
+    return <></>;
+  }
+
   if (!firstGreetingDone) {
     return (
       <>
         <div
           className={`
-          fixed top-0 flex flex-col justify-center items-center h-screen w-full bg-opacity-60
+          fixed top-0 flex flex-col justify-end items-center h-screen w-full py-10 bg-opacity-60
           ${startButtonClicked ? "bg-transparent" : "bg-black"}
           `}
-          >
-          <div className="flex-1 flex flex-col justify-end items-center">
-          {startButtonClicked ?
-          (
-            <button
-              className="btn btn-secondary is-rounded is-large is-fullwidth"
-              onClick={() => handleSkipFirstGreeting()}
-            >
-              スキップする
-            </button>
-          )
-          :
-          (
-            <button
-              className="btn btn-secondary is-rounded is-large is-fullwidth"
-              onClick={greet}
-            >
-              AILLAと英会話を始めましょう！
-            </button>
-          )}
-          </div>
+        >
           <div className="p-10">
-            <p className="alert">マナーモード設定してる場合、発音されません</p>
+            {startButtonClicked ? (
+              currentText && (
+                <p className="text-white text-center text-xs font-bold bg-black bg-opacity-60 p-3 rounded">
+                  {currentText}
+                </p>
+              )
+            ) : (
+              <p className="text-white text-center text-xs font-bold">
+                マナーモード設定してる場合は
+                <br />
+                音声が発音されません
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col justify-end items-center">
+            {startButtonClicked ? (
+              <button
+                className="btn btn-primary btn-xs"
+                onClick={() => handleSkipFirstGreeting()}
+              >
+                スキップする
+              </button>
+            ) : (
+              <button className="btn btn-primary" onClick={greet}>
+                AILLAと英会話を始めましょう！
+              </button>
+            )}
           </div>
         </div>
       </>
