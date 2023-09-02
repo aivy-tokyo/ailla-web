@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { TextToSpeechApiType } from "../utils/types";
+import * as Sentry from "@sentry/nextjs";
 
 type Params = {
   text: string;
@@ -44,6 +45,6 @@ export const tts = async ({
 
     return response.data;
   } catch (error) {
-    console.error(`Synthesis failed for ${textToSpeechApiType}`, error);
+    Sentry.captureException(error);
   }
 };

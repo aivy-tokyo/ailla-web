@@ -1,5 +1,6 @@
 import { Message } from "../messages/messages";
 import { MAX_TOKENS } from "../constants/systemPromptConstants";
+import * as Sentry from "@sentry/nextjs";
 
 export async function getChatResponseStream(
   messages: Message[],
@@ -50,7 +51,7 @@ export async function getChatResponseStream(
           }
         }
       } catch (error) {
-        controller.error(error);
+        Sentry.captureException(error);
       } finally {
         reader.releaseLock();
         controller.close();

@@ -1,6 +1,7 @@
 import { TextToSpeechApiType } from "../utils/types";
 import { speakCharactor } from "./speakCharactor";
 import { Model } from "./vrmViewer/model";
+import * as Sentry from "@sentry/nextjs";
 
 const introductionGreeting = `Hi {UserName}! I'm AILLA, your English conversation partner. Let's have a fun and engaging chat together!`;
 const appExplanation = `
@@ -41,11 +42,15 @@ type Params = {
   viewerModel: Model;
   userName: string;
   textToSpeechApiType: TextToSpeechApiType;
+  onSpeaking?: (text: string) => void;
+  onSpeakingEnd?: () => void;
 }
 export const speakFirstConversation = async ({
   viewerModel,
   userName,
   textToSpeechApiType,
+  onSpeaking,
+  onSpeakingEnd,
 }: Params) => {
   try {
     // localStorageからisAppExplanationDoneを取得
@@ -56,13 +61,18 @@ export const speakFirstConversation = async ({
       await speakCharactor(
         replaceUserName(introductionGreeting, userName),
         viewerModel,
-        textToSpeechApiType
+        textToSpeechApiType,
+        'en',
+        onSpeaking,
+        onSpeakingEnd,
       );
       await speakCharactor(
         replaceUserName(appExplanation, userName),
         viewerModel,
         textToSpeechApiType,
-        'ja'
+        'ja',
+        onSpeaking,
+        onSpeakingEnd,
       );
       localStorage.setItem("isAppExplanationDone", "true");
     } else {
@@ -76,17 +86,22 @@ export const speakFirstConversation = async ({
           userName
         ),
         viewerModel,
-        textToSpeechApiType
+        textToSpeechApiType,
+        'en',
+        onSpeaking,
+        onSpeakingEnd,
       );
       await speakCharactor(
         lessonsStartPhrases[randomIndex],
         viewerModel,
         textToSpeechApiType,
-        'ja'
+        'ja',
+        onSpeaking,
+        onSpeakingEnd,
       );
     }
     viewerModel.orderedToSkip = false;
   } catch (error) {
-    console.error("Failed to speak:", error);
+    Sentry.captureException(error);
   }
 };
