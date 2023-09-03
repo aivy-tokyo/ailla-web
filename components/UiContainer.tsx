@@ -2,14 +2,18 @@ import { useContext, useEffect } from "react";
 import { HeaderUi } from "./HeaderUi";
 import { useRouter } from "next/router";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
+import { useSetAtom } from "jotai";
+import { chatLogAtom } from "../utils/atoms";
 
 export const UiContainer = () => {
   const router = useRouter();
   const { viewer } = useContext(ViewerContext);
+  const setChatLog = useSetAtom(chatLogAtom);
 
   useEffect(() => {
     viewer.model?.stopSpeak();
-  }, [viewer.model]);
+    setChatLog([]);
+  }, [setChatLog, viewer.model]);
 
   return (
     <>
