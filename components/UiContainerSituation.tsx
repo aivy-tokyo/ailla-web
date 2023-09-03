@@ -39,8 +39,8 @@ export const UiContainerSituation: React.FC = () => {
   // SituationTalkの状態管理とロジックを取得
   const {
     situation,
+    stepStatus,
     situationList,
-    nextStep,
     messages,
     sendMessage,
     startSituation,
@@ -94,8 +94,8 @@ export const UiContainerSituation: React.FC = () => {
   return (
     <>
       <HeaderUi onClickEndTalk={endTalk} />
-      {nextStep && showHint && situation && (
-        <ChatHint description={nextStep.description} hint={nextStep.hint} situation={situation}/>
+      {showHint && situation && (
+        <ChatHint situation={situation} steps={stepStatus}/>
       )}
       {!situation && (
         <ChatMenu
