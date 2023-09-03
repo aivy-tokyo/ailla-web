@@ -1,8 +1,15 @@
+import { useContext, useEffect } from "react";
 import { HeaderUi } from "./HeaderUi";
 import { useRouter } from "next/router";
+import { ViewerContext } from "../features/vrmViewer/viewerContext";
 
 export const UiContainer = () => {
   const router = useRouter();
+  const { viewer } = useContext(ViewerContext);
+
+  useEffect(() => {
+    viewer.model?.stopSpeak();
+  }, [viewer.model]);
 
   return (
     <>
