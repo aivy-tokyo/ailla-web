@@ -57,10 +57,6 @@ export const UiContainerFreeTalk: React.FC = () => {
     router.replace("/");
   }, [router, setChatLog]);
 
-  const handleShowHint = useCallback(() => {
-    setShowHint((prev) => !prev);
-  }, [setShowHint]);
-
   const handleChangeUserMessage = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setUserMessage(e.target.value);
   }, [setUserMessage]);
@@ -76,12 +72,9 @@ export const UiContainerFreeTalk: React.FC = () => {
   return (
     <>
       <HeaderUi onClickEndTalk={endTalk} />
-      {/* { showHint && <ChatHint/>} */}
-      {/* { showMenu && <ChatMenu/>} */}
       <BottomUi
         chatMode={chatMode}
         setChatMode={setChatMode}
-        handleShowHint={handleShowHint}
         handleStartRecording={handleStartRecording}
         handleStopRecording={handleStopRecording}
         userMessage={userMessage}

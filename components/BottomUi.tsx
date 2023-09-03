@@ -19,7 +19,6 @@ type Props = {
   chatMode: ChatMode;
   setChatMode: Dispatch<SetStateAction<ChatMode>>;
   isMicRecording: boolean;
-  handleShowHint: () => void;
   handleStartRecording: () => void;
   handleStopRecording: () => string;
   userMessage: string;
@@ -28,6 +27,7 @@ type Props = {
   setIsMicRecording: Dispatch<SetStateAction<boolean>>;
   roleOfAi?: string;
   roleOfUser?: string;
+  handleShowHint?: () => void;
 };
 
 const BottomUi = ({
