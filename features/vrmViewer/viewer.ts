@@ -11,7 +11,6 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 export class Viewer {
   public isReady: boolean;
   public model?: Model;
-  public onReadyChanged?: (isReady: boolean) => void;
 
   private _renderer?: THREE.WebGLRenderer;
   private _clock: THREE.Clock;
@@ -20,7 +19,7 @@ export class Viewer {
   private _cameraControls?: OrbitControls;
 
   constructor() {
-    this.isReady = false;
+    this.isReady = true;
 
     // scene
     const scene = new THREE.Scene();
@@ -46,6 +45,7 @@ export class Viewer {
 
     // gltf and vrm
     this.model = new Model(this._camera || new THREE.Object3D());
+    this.isReady = false;
     this.model.loadVRM(url).then(async () => {
       if (!this.model?.vrm) return;
 
@@ -58,13 +58,13 @@ export class Viewer {
 
       const vrma = await loadVRMAnimation("/idle_loop.vrma");
       if (vrma) this.model.loadAnimation(vrma);
-      this.isReady = true;
-      this.onReadyChanged?.(this.isReady);
 
       // HACK: アニメーションの原点がずれているので再生後にカメラ位置を調整する
       requestAnimationFrame(() => {
         this.resetCamera();
       });
+    }).finally(() => {
+      this.isReady = true;
     });
   }
 
@@ -72,7 +72,6 @@ export class Viewer {
     if (this.model?.vrm) {
       this._scene.remove(this.model.vrm.scene);
       this.model?.unLoadVrm();
-      this.onReadyChanged?.(false);
     }
   }
 

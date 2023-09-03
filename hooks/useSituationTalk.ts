@@ -28,10 +28,10 @@ export const useSituationTalk = () => {
     situationCheckIn,
     situationCheckIn,
   ]);
-  const [nextStepIndex, setNextStepIndex] = useState<number>(0);
-  const nextStep = useMemo(
-    () => situation?.steps[nextStepIndex],
-    [situation, nextStepIndex]
+  const [stepStatus, setStepStatus] = useState<Array<Situation['steps'][number] & { isClear: boolean }>>([]);
+  useEffect(
+    () => setStepStatus(situation?.steps.map(step => ({ ...step, isClear: false })) ?? []),
+    [situation]
   );
 
   const startSituationTalk = useCallback(
@@ -41,7 +41,6 @@ export const useSituationTalk = () => {
       try {
         // シチュエーション会話スタート: シチュエーション設定、次のステップ設定
         setSituation(selectedSituation);
-        setNextStepIndex(0);
         setMessages([]);
         setRoleOfAi(selectedSituation.roleOfAi);
         setRoleOfUser(selectedSituation.roleOfUser);
@@ -80,14 +79,7 @@ export const useSituationTalk = () => {
 
       setChatProcessing(true);
       try {
-        // nextStepのkeySentencesが全てmessageが含まれているかどうかを確認する
-        const isAllKeySentencesIncluded = nextStep?.keySentences.every(
-          (keySentence) => message.includes(keySentence)
-        );
-        // 含まれている場合は次のstepに進む
-        if (isAllKeySentencesIncluded) {
-          setNextStepIndex((prev) => prev + 1);
-        }
+        // TODO 各stepのkeySentencesを確認して、クリアしたstepを記録する
 
         // Userメッセージを送信
         const userMessage: Message = {
@@ -124,7 +116,6 @@ export const useSituationTalk = () => {
       viewer.model, 
       situation, 
       setChatProcessing, 
-      nextStep?.keySentences, 
       setChatLog, 
       messages, 
       roleOfAi, 
@@ -134,8 +125,8 @@ export const useSituationTalk = () => {
 
   return {
     situation,
+    stepStatus,
     situationList,
-    nextStep,
     messages,
     startSituation: startSituationTalk,
     sendMessage,

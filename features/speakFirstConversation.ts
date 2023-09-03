@@ -3,16 +3,16 @@ import { speakCharactor } from "./speakCharactor";
 import { Model } from "./vrmViewer/model";
 import * as Sentry from "@sentry/nextjs";
 
-const introductionGreeting = `Hi {UserName}! I'm AILLA, your English conversation partner. Let's have a fun and engaging chat together!`;
+const introductionGreeting = `Hi {UserName}! I'm Ailla, your English conversation partner. Let's have a fun and engaging chat together!`;
 const appExplanation = `
-このアプリでは、AILLAと英語で会話をすることができます。
+このアプリでは、Aillaと英語で会話をすることができます。
 英会話の練習には3つのモードがあります。
 1. フリートークモード
 2. シチュエーションモード
 3. リピートプラクティスモード
 フリートークモードでは、自由に会話をすることができます。
 シチュエーションモードでは、シチュエーションに沿った会話をすることができます。
-リピートプラクティスモードでは、AILLAが英語を話すので、それを聞いてリピートすることで発音の練習をすることができます。
+リピートプラクティスモードでは、Aillaが英語を話すので、それを聞いてリピートすることで発音の練習をすることができます。
 モードを選択すると、会話が始まります。
 さあ、はじめましょう！!
 `;

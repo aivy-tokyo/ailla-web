@@ -13,7 +13,7 @@ const chat = new ChatOpenAI({
 
 // シチュエーションの会話をするためのSYSTEMのメッセージテンプレート
 const promptTemplate = new PromptTemplate({
-  template: `あなたは、英会話の教師です。次の設定に従って、役になりきって、英語を話してください。設定:[{title}]{situation}あなたは{role}です。{role}側の英語を話してください。会話の中で名前を名乗る時はAILLAと名乗ってください。`,
+  template: `あなたは、英会話の教師です。次の設定に従って、役になりきって、英語を話してください。設定:[{title}]{situation}あなたは{role}です。{role}側の英語を話してください。会話の中で名前を名乗る時はAillaと名乗ってください。`,
   inputVariables: ["title", "situation","role"],
 });
 
