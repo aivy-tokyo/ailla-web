@@ -1,15 +1,16 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { ChatMode } from "../utils/types";
-import { isTranslatedAtom } from "../utils/atoms";
+import { isCharactorSpeakingAtom, isTranslatedAtom } from "../utils/atoms";
 import { useAtomValue } from "jotai";
 
 export const useUserInput = () => {
   const isTranslated = useAtomValue(isTranslatedAtom);
+  const isCharactorSpeaking = useAtomValue(isCharactorSpeakingAtom);
+  
   const transcriptRef = useRef("");
-
   const speechRecognition = useRef<SpeechRecognition | null>();
   const [chatMode, setChatMode] = useState<ChatMode>("mic");
-  const [isMicRecording, setIsMicRecording] = useState<boolean>(false);
+  const [isMicRecording, setIsMicRecording] = useState(false);
   const [userMessage, setUserMessage] = useState<string>("");
 
   useEffect(() => {
@@ -24,9 +25,6 @@ export const useUserInput = () => {
 
     const startHandle = (event: Event) => {
       console.log("start", event);
-      setUserMessage("");
-      transcriptRef.current = "";
-      setIsMicRecording(true);
     };
     recognition.addEventListener("start", startHandle);
 
@@ -56,28 +54,6 @@ export const useUserInput = () => {
     };
     recognition.addEventListener("end", endHandle);
 
-    recognition.addEventListener("speechstart", (event) => {
-      console.log("speechstart", event);
-    });
-    recognition.addEventListener("speechend", (event) => {
-      console.log("speechend", event);
-    });
-    recognition.addEventListener("nomatch", (event) => {
-      console.log("nomatch", event);
-    });
-    recognition.addEventListener("soundstart", (event) => {
-      console.log("soundstart", event);
-    });
-    recognition.addEventListener("soundend", (event) => {
-      console.log("soundend", event);
-    });
-    recognition.addEventListener("audioend", (event) => {
-      console.log("audioend", event);
-    });
-    recognition.addEventListener("audiostart", (event) => {
-      console.log("audiostart", event);
-    });
-
     speechRecognition.current = recognition;
 
     return () => {
@@ -90,13 +66,22 @@ export const useUserInput = () => {
   }, [isTranslated]);
 
   const handleStartRecording = useCallback(() => {
+    // キャラクターが発話中の場合は、マイクを起動しない
+    if (isCharactorSpeaking) {
+      return;
+    }
+
     speechRecognition.current?.start();
-  }, [speechRecognition]);
+    setUserMessage("");
+    transcriptRef.current = "";
+    setIsMicRecording(true);
+  }, [isCharactorSpeaking, setIsMicRecording]);
 
   const handleStopRecording = useCallback(() => {
     speechRecognition.current?.stop();
+    setIsMicRecording(false);
     return transcriptRef.current;
-  }, [speechRecognition]);
+  }, [setIsMicRecording]);
 
   return {
     chatMode,
@@ -106,6 +91,5 @@ export const useUserInput = () => {
     setUserMessage,
     handleStartRecording,
     handleStopRecording,
-    setIsMicRecording
   };
 };

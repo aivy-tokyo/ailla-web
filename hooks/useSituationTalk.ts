@@ -1,22 +1,18 @@
 import { useAtomValue, useSetAtom } from "jotai";
-import {
-  chatLogAtom,
-  chatProcessingAtom,
-  textToSpeechApiTypeAtom,
-} from "../utils/atoms";
+import { chatLogAtom, textToSpeechApiTypeAtom } from "../utils/atoms";
 import { ChatCompletionRequestMessage } from "openai";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Message } from "../features/messages/messages";
-import { speakCharactor } from "../features/speakCharactor";
 import { useViewer } from "./useViewer";
 import { Situation, situationCheckIn } from "../features/situations";
+import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
 export const useSituationTalk = () => {
   const viewer = useViewer();
+  const { speakCharactor } = useCharactorSpeaking();
   const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
   const setChatLog = useSetAtom(chatLogAtom);
-  const setChatProcessing = useSetAtom(chatProcessingAtom);
   const [roleOfAi, setRoleOfAi] = useState<string>("");
   const [roleOfUser, setRoleOfUser] = useState<string>("");
 
@@ -28,9 +24,14 @@ export const useSituationTalk = () => {
     situationCheckIn,
     situationCheckIn,
   ]);
-  const [stepStatus, setStepStatus] = useState<Array<Situation['steps'][number] & { isClear: boolean }>>([]);
+  const [stepStatus, setStepStatus] = useState<
+    Array<Situation["steps"][number] & { isClear: boolean }>
+  >([]);
   useEffect(
-    () => setStepStatus(situation?.steps.map(step => ({ ...step, isClear: false })) ?? []),
+    () =>
+      setStepStatus(
+        situation?.steps.map((step) => ({ ...step, isClear: false })) ?? []
+      ),
     [situation]
   );
 
@@ -59,25 +60,22 @@ export const useSituationTalk = () => {
         setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
 
         // キャラクター発話
-        await speakCharactor(
-          newMessages[newMessages.length - 1].content,
-          viewer.model,
-          textToSpeechApiType
-        );
+        await speakCharactor({
+          text: newMessages[newMessages.length - 1].content,
+          viewerModel: viewer.model,
+          textToSpeechApiType,
+        });
       } catch (error) {
         console.error(error);
-      } finally {
-        setChatProcessing(false);
       }
     },
-    [setChatLog, setChatProcessing, textToSpeechApiType, viewer.model]
+    [setChatLog, speakCharactor, textToSpeechApiType, viewer.model]
   );
 
   const sendMessage = useCallback(
     async (message: string) => {
       if (!viewer.model || !situation || !message.trim()) return;
 
-      setChatProcessing(true);
       try {
         // TODO 各stepのkeySentencesを確認して、クリアしたstepを記録する
 
@@ -101,25 +99,23 @@ export const useSituationTalk = () => {
         setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
 
         // キャラクターの発話
-        await speakCharactor(
-          newMessages[newMessages.length - 1].content,
-          viewer.model,
-          textToSpeechApiType
-        );
+        await speakCharactor({
+          text: newMessages[newMessages.length - 1].content,
+          viewerModel: viewer.model,
+          textToSpeechApiType,
+        });
       } catch (error) {
         console.error(error);
-      } finally {
-        setChatProcessing(false);
       }
     },
     [
-      viewer.model, 
-      situation, 
-      setChatProcessing, 
-      setChatLog, 
-      messages, 
-      roleOfAi, 
-      textToSpeechApiType
+      viewer.model,
+      situation,
+      setChatLog,
+      messages,
+      roleOfAi,
+      speakCharactor,
+      textToSpeechApiType,
     ]
   );
 

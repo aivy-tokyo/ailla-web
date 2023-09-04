@@ -1,10 +1,5 @@
 import { VRMExpressionPresetName } from "@pixiv/three-vrm";
 
-export type KoeiroParam = {
-  speakerX: number;
-  speakerY: number;
-};
-
 // ChatGPT API
 export type Message = {
   role: "assistant" | "system" | "user";
@@ -37,9 +32,4 @@ type EmotionType = (typeof emotions)[number] & VRMExpressionPresetName;
 export type Screenplay = {
   expression: EmotionType;
   talk: Talk;
-};
-
-export const splitSentence = (text: string): string[] => {
-  const splitMessages = text.split(/(?<=[。．！？\n])/g);
-  return splitMessages.filter((msg) => msg !== "");
 };

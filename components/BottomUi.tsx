@@ -24,7 +24,6 @@ type Props = {
   userMessage: string;
   handleChangeUserMessage: (e: ChangeEvent<HTMLInputElement>) => void;
   sendChat: (message: string) => void;
-  setIsMicRecording: Dispatch<SetStateAction<boolean>>;
   roleOfAi?: string;
   roleOfUser?: string;
   handleShowHint?: () => void;
@@ -40,7 +39,6 @@ const BottomUi = ({
   handleChangeUserMessage,
   isMicRecording,
   sendChat,
-  setIsMicRecording,
   roleOfAi,
   roleOfUser,
 }: Props) => {
@@ -48,17 +46,12 @@ const BottomUi = ({
   const [isChatLogExpanded, setIsChatLogExpanded] = useState<boolean>(false);
 
   const handleClickMicButton = useCallback(() => {
-    setChatMode("mic");
     if (isMicRecording) {
-      setIsMicRecording(false);
-      setTimeout(() => {
-        const resultText = handleStopRecording()
-        sendChat(resultText);
-      },3000);
+      handleStopRecording();
     } else {
       handleStartRecording();
     }
-  }, [setChatMode, isMicRecording, setIsMicRecording, handleStopRecording, sendChat, handleStartRecording]);
+  }, [isMicRecording, handleStopRecording, handleStartRecording]);
 
   const handleChatIconSelected = useCallback((selected: boolean) => {
     setChatMode(selected ? "text" : "mic");
