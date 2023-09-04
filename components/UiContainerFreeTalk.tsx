@@ -12,14 +12,11 @@ import { HeaderUi } from "./HeaderUi";
 import { useUserInput } from "../hooks/useUserInput";
 import { useFreeTalk } from "../hooks/useFreeTalk";
 import { useRouter } from "next/router";
-import { useFirstGreeting } from "../hooks/useFirstGreeting";
 import { useSetAtom } from "jotai";
 import { chatLogAtom } from "@/utils/atoms";
 
 export const UiContainerFreeTalk: React.FC = () => {
   const router = useRouter();
-  const [showHint, setShowHint] = useState<boolean>(false);
-  const [showMenu, setShowMenu] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
   const setChatLog = useSetAtom(chatLogAtom);
 
@@ -33,13 +30,10 @@ export const UiContainerFreeTalk: React.FC = () => {
     handleStartRecording,
     handleStopRecording,
     setUserMessage,
-    setIsMicRecording,
   } = useUserInput();
 
   // FreeTalkの状態管理とロジックを取得
   const {
-    topic,
-    messages,
     sendMessage,
     startFreeTalk,
   } = useFreeTalk();
@@ -81,7 +75,6 @@ export const UiContainerFreeTalk: React.FC = () => {
         handleChangeUserMessage={handleChangeUserMessage}
         isMicRecording={isMicRecording}
         sendChat={sendUserMessage}
-        setIsMicRecording={setIsMicRecording}
       />
     </>
   );

@@ -1,14 +1,10 @@
 import { PropsWithChildren, useContext, useState, useCallback } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
-import { speakFirstConversation } from "../features/speakFirstConversation";
-import { useAtomValue } from "jotai";
-import { userInfoAtom, textToSpeechApiTypeAtom } from "../utils/atoms";
 import * as Sentry from "@sentry/nextjs";
+import { useFirstConversation } from "../hooks/useFirstConversation";
 
 export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
   const { viewer } = useContext(ViewerContext);
-  const userInfo = useAtomValue(userInfoAtom);
-  const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
 
   // 始まりのボタンを押したかどうかの状態管理
   const [startButtonClicked, setStartButtonClicked] = useState<boolean>(false);
@@ -16,35 +12,34 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
   const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false);
   // 話しているテキストの状態管理
   const [currentText, setCurrentText] = useState<string>("");
+  // 最初の挨拶をする関数
+  const { speak } = useFirstConversation({
+    onSpeaking: useCallback((text: string) => setCurrentText(text), []),
+    onSpeakingEnd: useCallback(() => setCurrentText(""), []),
+  });
 
   const greet = useCallback(async () => {
     if (viewer.model && !firstGreetingDone) {
       try {
         await viewer.model.resumeAudio(); //MEMO:iOSだとAudioContextのstateが'suspended'になり、音声が再生できないことへの対策。
         setStartButtonClicked(true);
-
-        await speakFirstConversation({
-          viewerModel: viewer.model,
-          userName: userInfo?.name || "",
-          textToSpeechApiType,
-          onSpeaking: setCurrentText,
-          onSpeakingEnd: () => setCurrentText(""),
-        });
+        // Characterの挨拶
+        await speak();
         setFirstGreetingDone(true);
       } catch (error) {
         Sentry.captureException(error);
       }
     }
-  }, [firstGreetingDone, textToSpeechApiType, userInfo?.name, viewer.model]);
+  }, [firstGreetingDone, speak, viewer.model]);
 
   const handleSkipFirstGreeting = useCallback(() => {
     viewer.model?.stopSpeak();
     setFirstGreetingDone(true);
   }, [viewer.model]);
 
-  if (!viewer.model) {
-    return <></>;
-  }
+  // if (!viewer.model) {
+  //   return <></>;
+  // }
 
   if (!firstGreetingDone) {
     return (
