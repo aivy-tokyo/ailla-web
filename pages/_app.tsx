@@ -37,6 +37,10 @@ export default function App({
     }
   } , [session]);
 
+  useEffect(() => {
+    window.scrollTo(0, 1);
+  }, []);
+
   return (
     <SessionProvider session={session}>
     <div
