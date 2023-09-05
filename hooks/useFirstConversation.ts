@@ -102,7 +102,6 @@ export const useFirstConversation = (props: {
           onSpeakingEnd,
         });
       }
-      viewerModel.orderedToSkip = false;
     } catch (error) {
       Sentry.captureException(error);
     }

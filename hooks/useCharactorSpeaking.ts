@@ -30,6 +30,7 @@ export const useCharactorSpeaking = () => {
       console.log("speak:", text);
       setIsCharactorSpeaking(true);
       try {
+        viewerModel.resumeAudio();
         const buffer = await tts({ text, textToSpeechApiType, lang });
         if (!buffer) {
           return;
