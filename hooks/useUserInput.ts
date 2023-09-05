@@ -83,7 +83,6 @@ export const useUserInput = ({
       return;
     }
 
-    console.log(speechRecognition.current, transcriptRef.current);
     speechRecognition.current?.start();
     setTimeout(() => {
       speechRecognition.current?.start();
