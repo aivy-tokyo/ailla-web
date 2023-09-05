@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import BottomUi from "./BottomUi";
 import { ChatHint } from "./ChatHint";
 import { ChatMenu } from "./ChatMenu";
@@ -23,18 +17,6 @@ export const UiContainerSituation: React.FC = () => {
   const setBackgroundImagePath = useSetAtom(backgroundImagePathAtom);
   const setChatLog = useSetAtom(chatLogAtom);
 
-
-  // UserInputの状態管理とロジックを取得
-  const {
-    chatMode,
-    setChatMode,
-    isMicRecording,
-    userMessage,
-    handleStartRecording,
-    handleStopRecording,
-    setUserMessage,
-  } = useUserInput();
-
   // SituationTalkの状態管理とロジックを取得
   const {
     situation,
@@ -46,6 +28,20 @@ export const UiContainerSituation: React.FC = () => {
     roleOfAi,
     roleOfUser,
   } = useSituationTalk();
+
+  // UserInputの状態管理とロジックを取得
+  const {
+    chatMode,
+    setChatMode,
+    isMicRecording,
+    userMessage,
+    handleStartRecording,
+    handleStopRecording,
+    setUserMessage,
+  } = useUserInput({
+    onStartRecording: () => null,
+    onStopRecording: sendMessage
+  });
 
   useEffect(() => {
     setIsClient(true);
@@ -68,11 +64,14 @@ export const UiContainerSituation: React.FC = () => {
     setShowHint(!showHint);
   }, [showHint]);
 
-  const sendUserMessage = useCallback((message: string) => {
-    // sendMessage(userMessage);
-    sendMessage(message);
-    setUserMessage("");
-  }, [sendMessage, setUserMessage]);
+  const sendUserMessage = useCallback(
+    (message: string) => {
+      // sendMessage(userMessage);
+      sendMessage(message);
+      setUserMessage("");
+    },
+    [sendMessage, setUserMessage]
+  );
 
   const situationListOptions = useMemo(() => {
     return situationList.map((situation, index) => ({
@@ -94,7 +93,7 @@ export const UiContainerSituation: React.FC = () => {
     <>
       <HeaderUi onClickEndTalk={endTalk} />
       {showHint && situation && (
-        <ChatHint situation={situation} steps={stepStatus}/>
+        <ChatHint situation={situation} steps={stepStatus} />
       )}
       {!situation && (
         <ChatMenu
