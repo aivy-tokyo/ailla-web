@@ -15,6 +15,6 @@ export const BottomUiDefault: React.FC<BottomUiDefaultProps> = ({ handleShowHint
   <div className="flex max-w-[250px] h-[60px] gap-5 justify-center items-center mx-auto px-5">
     {handleShowHint && <QuestionIcon handleShowHint={handleShowHint} />}
     <MicIcon chatIconSelected={chatIconSelected} isMicRecording={isMicRecording} handleClickMicButton={handleClickMicButton} />
-    <ChatIcon setChatIconSelected={setChatIconSelected} />
+    {/* <ChatIcon setChatIconSelected={setChatIconSelected} /> */}
   </div>
 );

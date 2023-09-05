@@ -77,12 +77,17 @@ export const useUserInput = ({
   }, [isTranslated, onStopRecording, userMessage]);
 
   const handleStartRecording = useCallback(() => {
+    console.log("handleStartRecording", isCharactorSpeaking);
     // キャラクターが発話中の場合は、マイクを起動しない
     if (isCharactorSpeaking) {
       return;
     }
 
+    console.log(speechRecognition.current, transcriptRef.current);
     speechRecognition.current?.start();
+    setTimeout(() => {
+      speechRecognition.current?.start();
+    }, 500);
     setUserMessage("");
     transcriptRef.current = "";
     setIsMicRecording(true);
