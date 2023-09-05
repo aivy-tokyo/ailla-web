@@ -20,7 +20,12 @@ export const UiContainerFreeTalk: React.FC = () => {
   const [isClient, setIsClient] = useState<boolean>(false);
   const setChatLog = useSetAtom(chatLogAtom);
 
-  
+  // FreeTalkの状態管理とロジックを取得
+  const {
+    sendMessage,
+    startFreeTalk,
+  } = useFreeTalk();
+
   // UserInputの状態管理とロジックを取得
   const {
     chatMode,
@@ -30,13 +35,10 @@ export const UiContainerFreeTalk: React.FC = () => {
     handleStartRecording,
     handleStopRecording,
     setUserMessage,
-  } = useUserInput();
-
-  // FreeTalkの状態管理とロジックを取得
-  const {
-    sendMessage,
-    startFreeTalk,
-  } = useFreeTalk();
+  } = useUserInput({
+    onStartRecording: () => null,
+    onStopRecording: sendMessage,
+  });
 
   useEffect(() => {
     setIsClient(true);

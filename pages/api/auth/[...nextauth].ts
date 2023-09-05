@@ -13,7 +13,7 @@ const getUser = async (userId: string) => {
 // providersの設定
 // VERCEL_ENVがpreviewの場合は、CredentialProviderを使用する
 const providers =
-  process.env.VERCEL_ENV === "preview"
+  process.env.VERCEL_ENV !== "production"
     ? [
         CredentialsProvider({
           name: "Credentials",
