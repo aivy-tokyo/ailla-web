@@ -73,7 +73,7 @@ const BottomUi = ({
           <div
             className={`w-screen  max-w-[600px] overflow-hidden px-5 h-full flex  transition-color ease-in duration-150 flex-col ${
               isChatLogExpanded
-                ? "overflow-y-scroll py-5 bg-black opacity-90"
+                ? "overflow-y-scroll py-20 bg-black opacity-90"
                 : "py-1 mask-top-fadeout top-0 absolute justify-end"
             }`}
           >

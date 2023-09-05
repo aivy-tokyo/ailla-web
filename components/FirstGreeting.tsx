@@ -46,7 +46,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
       <>
         <div
           className={`
-          fixed top-0 flex flex-col justify-end items-center h-screen w-full py-10 bg-opacity-60
+          fixed top-0 flex flex-col justify-end items-center h-screen w-full pb-52 bg-opacity-60
           ${startButtonClicked ? "bg-transparent" : "bg-black"}
           `}
         >

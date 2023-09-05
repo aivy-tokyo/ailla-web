@@ -45,12 +45,13 @@ export default function VrmViewer() {
 
   return (
     <div className={`fixed h-screen w-screen left-0 top-0`}>
-      {!viewer.isReady &&(
+      {/* TODO 動作が安定しないのでいったんコメントアウト */}
+      {/* {!viewer.isReady &&(
         <div className="fixed z-50 flex flex-col w-screen h-screen justify-center items-center">
           <span className="loading loading-ring loading-lg"></span>
           <span className="text-white text-xs">データをロード中…</span>
         </div>
-      )}
+      )} */}
       <canvas ref={canvasRef} className={"h-full w-full"}></canvas>
     </div>
   );

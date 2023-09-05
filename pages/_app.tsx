@@ -44,7 +44,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
     <div
-      className="w-screen h-screen fixed top-0"
+      className="w-screen h-screen"
       style={{
         backgroundImage: `url("${backgroundImagePath}")`,
         backgroundSize: "cover",
