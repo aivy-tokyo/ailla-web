@@ -191,7 +191,7 @@ export const situationCheckOut2: Situation = {
       hint: "I apologize for any inconvenience. Please let me know what the problem is, and I'll do my best to assist you.",
     },
     {
-      keySentences: [],
+      keySentences: ["action"],
       description: "不満点について再び謝罪し、今後の改善を約束する",
       hint: "I'm sorry to hear that. I assure you that we will take immediate action to address these matters. Is there anything else I can assist you with?",
     },
