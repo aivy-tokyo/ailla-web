@@ -48,7 +48,9 @@ export const useCharactorSpeaking = () => {
       } catch (error) {
         Sentry.captureException(error);
       } finally {
-        setIsCharactorSpeaking(false);
+        setTimeout(() => {
+          setIsCharactorSpeaking(false);
+        }, 500);
       }
     }, [setIsCharactorSpeaking]
   );

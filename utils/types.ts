@@ -47,3 +47,13 @@ export type UserGenderType = '男性' | '女性' | '選択しない'
 export type TextToSpeechApiType = 'koeiroMap' | 'voiceVox' | 'clovaVoice' | 'googleTextToSpeech'
 
 export type ChatMode = 'mic' | 'text' | 'none';
+
+export type ButtonProps = {
+  size?: "sm" | "md" | "lg" | "xl" | undefined;
+  type?: "button" | "submit" | "reset" | undefined;
+  disabled?: boolean;
+  className?: string;
+  onClick?: () => void;
+  onMouseDown?: () => void;
+  onMouseUp?: () => void;
+};

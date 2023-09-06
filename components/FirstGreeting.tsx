@@ -13,7 +13,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
   // 話しているテキストの状態管理
   const [currentText, setCurrentText] = useState<string>("");
   // 最初の挨拶をする関数
-  const { speak } = useFirstConversation({
+  const { speak, stopSpeaking } = useFirstConversation({
     onSpeaking: useCallback((text: string) => setCurrentText(text), []),
     onSpeakingEnd: useCallback(() => setCurrentText(""), []),
   });
@@ -35,7 +35,8 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
   const handleSkipFirstGreeting = useCallback(() => {
     viewer.model?.stopSpeak();
     setFirstGreetingDone(true);
-  }, [viewer.model]);
+    stopSpeaking();
+  }, [stopSpeaking, viewer.model]);
 
   // if (!viewer.model) {
   //   return <></>;

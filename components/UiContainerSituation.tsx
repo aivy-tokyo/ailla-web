@@ -1,9 +1,8 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import BottomUi from "./BottomUi";
 import { ChatHint } from "./ChatHint";
 import { ChatMenu } from "./ChatMenu";
 import { HeaderUi } from "./HeaderUi";
-import { useUserInput } from "../hooks/useUserInput";
 import { useRouter } from "next/router";
 import { useSituationTalk } from "../hooks/useSituationTalk";
 import { useSetAtom } from "jotai";
@@ -12,73 +11,43 @@ import { backgroundImages } from "../utils/constants";
 
 export const UiContainerSituation: React.FC = () => {
   const router = useRouter();
-  const [showHint, setShowHint] = useState<boolean>(false);
-  const [isClient, setIsClient] = useState<boolean>(false);
+
   const setBackgroundImagePath = useSetAtom(backgroundImagePathAtom);
   const setChatLog = useSetAtom(chatLogAtom);
 
-  // SituationTalkの状態管理とロジックを取得
-  const {
-    situation,
-    stepStatus,
-    situationList,
-    messages,
-    sendMessage,
-    startSituation,
-    roleOfAi,
-    roleOfUser,
-  } = useSituationTalk();
+  // Hintの表示状態管理
+  const [showHint, setShowHint] = useState<boolean>(false);
+  const toggleHint = useCallback(() => {
+    setShowHint(!showHint);
+  }, [showHint]);
 
-  // UserInputの状態管理とロジックを取得
-  const {
-    chatMode,
-    setChatMode,
-    isMicRecording,
-    userMessage,
-    handleStartRecording,
-    handleStopRecording,
-    setUserMessage,
-  } = useUserInput({
-    onStartRecording: () => null,
-    onStopRecording: sendMessage
-  });
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
+  // チャットを終了する関数
   const endTalk = useCallback(() => {
     setBackgroundImagePath(backgroundImages[0].path);
     setChatLog([]);
     router.replace("/");
   }, [router, setBackgroundImagePath, setChatLog]);
 
-  const handleChangeUserMessage = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setUserMessage(e.target.value);
-    },
-    [setUserMessage]
-  );
+  // SituationTalkの状態管理とロジックを取得
+  const {
+    situation,
+    stepStatus,
+    situationList,
+    sendMessage,
+    startSituation,
+    roleOfAi,
+    roleOfUser,
+  } = useSituationTalk();
 
-  const handleShowHint = useCallback(() => {
-    setShowHint(!showHint);
-  }, [showHint]);
-
-  const sendUserMessage = useCallback(
-    (message: string) => {
-      // sendMessage(userMessage);
-      sendMessage(message);
-      setUserMessage("");
-    },
-    [sendMessage, setUserMessage]
-  );
-
+  // Situationの選択肢を作成
   const situationListOptions = useMemo(() => {
     return situationList.map((situation, index) => ({
       label: situation.title,
       value: index.toString(),
     }));
   }, [situationList]);
+
+  // Situationを選択した時の処理
   const handleSelectSituation = useCallback(
     (value: string) => {
       setBackgroundImagePath(backgroundImages[2].path);
@@ -86,8 +55,6 @@ export const UiContainerSituation: React.FC = () => {
     },
     [setBackgroundImagePath, situationList, startSituation]
   );
-
-  if (!isClient) return <></>; //MEMO: ハイドレーションエラーを回避するための状態管理
 
   return (
     <>
@@ -103,15 +70,8 @@ export const UiContainerSituation: React.FC = () => {
       )}
       {situation && (
         <BottomUi
-          chatMode={chatMode}
-          setChatMode={setChatMode}
-          handleShowHint={handleShowHint}
-          handleStartRecording={handleStartRecording}
-          handleStopRecording={handleStopRecording}
-          userMessage={userMessage}
-          handleChangeUserMessage={handleChangeUserMessage}
-          isMicRecording={isMicRecording}
-          sendChat={sendUserMessage}
+          sendChat={sendMessage}
+          toggleHint={toggleHint}
           roleOfAi={roleOfAi}
           roleOfUser={roleOfUser}
         />
