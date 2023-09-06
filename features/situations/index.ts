@@ -132,6 +132,35 @@ export const situationReserveRestaurant: Situation = {
   ],
 };
 
+export const situationCancellationOfRestaurantReservation: Situation = {
+  title: "Cancellation of Restaurant Reservation",
+  description: "今夜のレストランディナーの予約をキャンセルするシーンです。",
+  roleOfAi: "Customer",
+  roleOfUser: "Staff",
+  steps: [
+    {
+      keySentences: ["reservation", "name"],
+      description: "まずは名前と予約内容を確認しよう",
+      hint: "I'm sorry to hear that. May I have your name and reservation details, please?",
+    },
+    {
+      keySentences: ["reason"],
+      description: "キャンセルの理由を確認しよう",
+      hint: "I have located your reservation. I'm sorry to hear that you need to cancel. May I ask the reason for the cancellation?",
+    },
+    {
+      keySentences: ["contact"],
+      description: "連絡先を確認しよう",
+      hint: "Is there a preferred method of contact in case we need to reach you in the future?"
+    },
+    {
+      keySentences: ["confirm", "cancellation"],
+      description: "最後にキャンセルが完了したことを伝えよう",
+      hint: "I have canceled your reservation for tonight at <resevation time>. We appreciate you letting us know in advance. Should your plans change in the future, please don't hesitate to reach out to us."
+    }
+  ],
+};
+
 // export const situationCheckIn3: Situation = {
 //   title: "Check-in",
 //   description: "ホテルのフロントでチェックインするシーンです。予約内容(禁煙の部屋)と違う部屋(喫煙可の部屋)を割り当ててしまい、顧客への謝罪と緊急の対応が必要な場合です。",
