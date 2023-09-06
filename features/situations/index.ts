@@ -226,3 +226,37 @@ export const situationCheckOut2: Situation = {
     },
   ],
 };
+
+export const situationAskedForMenuRecommendation: Situation = {
+  title: "Asked for a Menu Recommendation",
+  description: "居酒屋でメニューのおすすめを聞かれた時の会話です。",
+  roleOfAi: "Customer",
+  roleOfUser: "Staff",
+  steps: [
+    {
+      keySentences: ["recommend"],
+      description: "まずはおすすめのメニューを伝えよう",
+      hint: "We have several delicious dishes that I can recommend. Our most popular dish is the 'Tori Karaage', which is crispy fried chicken served with a tangy dipping sauce. It's a favorite among our customers.",
+    },
+    {
+      keySentences: ["another"],
+      description: "他のメニューを提案しよう",
+      hint: "Another popular option is our 'Gyoza' which are savory pan-fried dumplings filled with juicy meat and vegetables. They're a perfect choice for appetizers."
+    },
+    {
+      keySentences: ["recommend","seafood"],
+      description: "お客様が海鮮が好きな場合、海鮮料理を提案しよう",
+      hint: "For seafood lovers, I highly recommend our 'Sashimi Moriawase', which is a platter of assorted fresh sashimi, including tuna, salmon, and octopus. It's a refreshing and delicate dish."
+    },
+    {
+      keySentences: ["recommend","vegetable"],
+      description: "お客様にベジタリアンがいる場合、野菜料理を提案しよう",
+      hint: "We have a delicious vegetable tempura that's light and crispy. It's a medley of seasonal vegetables, including sweet potatoes, green beans, and eggplant, deep-fried to perfection."
+    },
+    {
+      keySentences: ["recommend","cocktail"],
+      description: "お客様がカクテルが好きな場合、カクテルを提案しよう",
+      hint: "Our specialty cocktail is called the 'Yuzu Sour'. It's a refreshing blend of yuzu citrus juice, shochu, and a hint of sweetness. It pairs perfectly with the flavors of our dishes.",
+    }
+  ],
+};
