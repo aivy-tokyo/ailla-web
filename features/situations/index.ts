@@ -229,7 +229,7 @@ export const situationCheckOut2: Situation = {
 
 export const situationAskedForMenuRecommendation: Situation = {
   title: "Asked for a Menu Recommendation",
-  description: "居酒屋でメニューのおすすめを聞かれた時の会話です。",
+  description: "居酒屋でメニューのおすすめを聞かれた時の会話です。おすすめのメニューが２回聞かれます。そのあと、海鮮系メニューのおすすめを一品、ベジタリアン向けのおすすめを一品、おすすめのカクテル(甘いお酒)が聞かれます。",
   roleOfAi: "Customer",
   roleOfUser: "Staff",
   steps: [
@@ -258,5 +258,44 @@ export const situationAskedForMenuRecommendation: Situation = {
       description: "お客様がカクテルが好きな場合、カクテルを提案しよう",
       hint: "Our specialty cocktail is called the 'Yuzu Sour'. It's a refreshing blend of yuzu citrus juice, shochu, and a hint of sweetness. It pairs perfectly with the flavors of our dishes.",
     }
+  ],
+};
+
+export const situationAskedForMenuRecommendation2 : Situation = {
+  title: "Asked for a Menu Recommendation",
+  description: "お寿司屋さんでメニューのおすすめを聞かれた時の会話です。まずメニュー全般の中からおすすめを聞かれます。その次に特定のお魚やネタの中からおすすめを聞かれます。さらに他のおすすめが１回聞かれます。その後にベジタリアン向けのメニューについて聞かれます。その後にお寿司に合う飲み物について聞かれます。",
+  roleOfAi: "Customer",
+  roleOfUser: "Staff",
+  steps: [
+    {
+      keySentences: ["recommend"],
+      description: "まずはおすすめのメニューを伝えよう",
+      hint: "We have several delicious options for you to try. Today, our recommended sushi is the 'Omakase' course, where I'll personally select the freshest and most seasonal fish for you.",
+    },
+    {
+      keySentences: ["recommend"],
+      description: "特定の魚でおすすめを聞かれた場合、おすすめの魚を伝えよう",
+      hint: "Today, we have some exquisite fish available. I recommend starting with the 'Maguro' (tuna), which has a rich and buttery flavor. We also have 'Hamachi' (yellowtail) that melts in your mouth with its delicate texture."
+    },
+    {
+      keySentences: ["recommend"],
+      description: "さらに他のおすすめを聞かれた場合の例",
+      hint: "'Uni' (sea urchin) is incredibly fresh and creamy. It's a delicacy you won't want to miss if you enjoy unique flavors. Additionally, our 'Ikura' (salmon roe) sushi bursts with a delightful pop of flavor in every bite."
+    },
+    {
+      keySentences: ["vegetable"],
+      description: "ベジタリアンのお客様向けのメニューを提案しよう",
+      hint: "We have a delicious 'Kappa Maki' (cucumber roll) that's refreshing and crisp. We also have an assortment of vegetable nigiri, such as 'Inari' (sweet tofu pouch) and 'Tamago' (sweet rolled omelet), which are both traditional and flavorful choices."
+    },
+    {
+      keySentences: ["drink"],
+      description: "お寿司に合う飲み物を提案しよう",
+      hint: "We offer a variety of traditional Japanese drinks, including sake and green tea, which pair wonderfully with sushi. If you're looking for a unique experience, I recommend trying our 'Sake Flight', where you can sample different types of sake and discover your favorite."
+    },
+    {
+      keySentences: ["dietary"],
+      description: "食べられない食材がないか聞いておこう",
+      hint: "Is there anything else I can help you with or any dietary restrictions I should be aware of?"
+    },
   ],
 };
