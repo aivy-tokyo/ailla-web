@@ -299,3 +299,33 @@ export const situationAskedForMenuRecommendation2 : Situation = {
     },
   ],
 };
+
+//お会計をする時
+export const situationPayment: Situation = {
+  title: "Payment",
+  description: "お会計をするシーンです。",
+  roleOfAi: "Customer",
+  roleOfUser: "Staff",
+  steps: [
+    {
+      keySentences: ["bill"],
+      description: "まずは伝票を渡し、中身を確認してもらおう",
+      hint: "Here is your bill. Please take your time to review it.",
+    },
+    {
+      keySentences: ["payment"],
+      description: "次に支払い方法を確認しよう",
+      hint: "How would you like to settle the payment?",
+    },
+    {
+      keySentences: ["card"],
+      description: "クレジットカードで支払う場合、カードを渡してもらおう",
+      hint: "May I have your credit card, please?",
+    },
+    {
+      keySentences: ["success"],
+      description: "支払いが完了したことを伝え、レシートを渡そう",
+      hint: "Your payment has been successfully processed. Here is your receipt. Is there anything else I can assist you with?",
+    },
+  ],
+};
