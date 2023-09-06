@@ -1,6 +1,6 @@
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { isTranslatedAtom, isCharactorSpeakingAtom } from "../utils/atoms";
+import { isTranslatedAtom, isCharactorSpeakingAtom, isVoiceInputAllowedAtom } from "../utils/atoms";
 import * as Sentry from "@sentry/nextjs";
 
 type Props = {
@@ -12,6 +12,7 @@ type ReturnType = {
   startRecording: () => void;
   stopRecording: () => void;
   isMicRecording: boolean;
+  getUserMediaPermission: () => void;
 };
 
 let recognition: SpeechRecognition;
@@ -27,6 +28,7 @@ export const useVoiceInput = ({
 }: Props): ReturnType => {
   const isTranslated = useAtomValue(isTranslatedAtom);
   const isCharactorSpeaking = useAtomValue(isCharactorSpeakingAtom);
+  const setIsVoiceInputAllowed = useSetAtom(isVoiceInputAllowedAtom);
 
   const [isMicRecording, setIsMicRecording] = useState(false);
   const transcriptsRef = useRef<string[]>([]);
@@ -93,6 +95,15 @@ export const useVoiceInput = ({
     };
   }, [isTranslated, onStartRecording, onStopRecording]);
 
+  const getUserMediaPermission = useCallback(async () => {
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      setIsVoiceInputAllowed(true);
+    } catch (error) {
+      Sentry.captureException(error);
+    }
+  }, [setIsVoiceInputAllowed]);
+
   const startRecording = useCallback(() => {
     console.log("startRecording", isCharactorSpeaking);
     // キャラクターが発話中の場合は、マイクを起動しない
@@ -111,5 +122,6 @@ export const useVoiceInput = ({
     startRecording,
     stopRecording,
     isMicRecording,
+    getUserMediaPermission,
   };
 };

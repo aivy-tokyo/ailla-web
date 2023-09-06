@@ -2,18 +2,27 @@ import { useContext, useEffect } from "react";
 import { HeaderUi } from "./HeaderUi";
 import { useRouter } from "next/router";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
-import { useSetAtom } from "jotai";
-import { chatLogAtom } from "../utils/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import { chatLogAtom, isVoiceInputAllowedAtom } from "../utils/atoms";
+import { useVoiceInput } from "../hooks/useVoiceInput";
 
 export const UiContainer = () => {
   const router = useRouter();
   const { viewer } = useContext(ViewerContext);
+  const isVoiceInputAllowed = useAtomValue(isVoiceInputAllowedAtom);
   const setChatLog = useSetAtom(chatLogAtom);
 
   useEffect(() => {
     viewer.model?.stopSpeak();
     setChatLog([]);
   }, [setChatLog, viewer.model]);
+
+  const {getUserMediaPermission} = useVoiceInput({});
+  useEffect(() => {
+    if (!isVoiceInputAllowed) {
+      getUserMediaPermission();
+    }
+  }, [getUserMediaPermission, isVoiceInputAllowed]);
 
   return (
     <>

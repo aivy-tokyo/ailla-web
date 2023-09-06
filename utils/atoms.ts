@@ -20,6 +20,8 @@ export const userInfoAtom = atom<UserInfo | null>(null);
 export const firstGreetingDoneAtom = atom<boolean>(false);
 // viewerのアトム
 export const viewerAtom = atom<Viewer | null>(null);
+// 音声入力の許可を得たかどうかのアトム
+export const isVoiceInputAllowedAtom = atom<boolean>(false);
 
 /* 
   Web Storageに保存するアトム
@@ -37,7 +39,7 @@ export const backgroundImagePathAtom = atomWithStorage<string>(
 // テキスト読み上げAPIの種類のアトム
 export const textToSpeechApiTypeAtom = atomWithStorage<TextToSpeechApiType>(
   "textToSpeechApiType",
-  "clovaVoice"
+  "googleTextToSpeech"
 );
 // ボタンの使い方を説明したかどうかのアトム
 export const isButtonUsageExplainedAtom = atomWithStorage<boolean>(

@@ -1,10 +1,11 @@
 import { Model } from "../features/vrmViewer/model";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { TextToSpeechApiType } from "../utils/types";
 import { tts } from "../features/tts";
 import * as Sentry from "@sentry/nextjs";
 import { useSetAtom } from "jotai";
 import { isCharactorSpeakingAtom } from "../utils/atoms";
+import { useViewer } from "./useViewer";
 
 type Props = {
   text: string;
@@ -13,10 +14,21 @@ type Props = {
   lang?: string;
   onSpeaking?: (text: string) => void;
   onSpeakingEnd?: () => void;
-}
+};
 
 export const useCharactorSpeaking = () => {
+  const viewer = useViewer();
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
+
+  useEffect(() => {
+    document.addEventListener(
+      "click",
+      () => {
+        viewer?.model?.resumeAudio();
+      },
+      { once: true }
+    );
+  }, [viewer?.model]);
 
   const speakCharactor = useCallback(
     async ({
@@ -52,7 +64,8 @@ export const useCharactorSpeaking = () => {
           setIsCharactorSpeaking(false);
         }, 500);
       }
-    }, [setIsCharactorSpeaking]
+    },
+    [setIsCharactorSpeaking]
   );
 
   return {
