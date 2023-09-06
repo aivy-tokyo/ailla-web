@@ -96,3 +96,32 @@ export const situationReserveRestaurant: Situation = {
     }
   ],
 };
+
+export const situationCheckOut: Situation = {
+  title: "Check-out",
+  description: "ホテルのフロントでチェックアウトするシーンです。",
+  roleOfAi: "Customer",
+  roleOfUser: "Staff",
+  steps: [
+    {
+      keySentences: ["room", "number"],
+      description: "まずは部屋番号を確認しよう",
+      hint: "May I have your room number, please?",
+    },
+    {
+      keySentences: ["outstanding", "charges"],
+      description: "次に未払いの料金の請求を確認しよう",
+      hint: "Could you please settle any outstanding charges? I see that you have breakfast charges and a minibar bill.",
+    },
+    {
+      keySentences: ["payment", "successful"],
+      description: "支払いが完了したことを伝えよう",
+      hint: "Thank you for your patience. Your payment has been successfully processed. Here's your receipt. Is there anything else we can assist you with?",
+    },
+    {
+      keySentences: ["feedback"],
+      description: "感謝を伝え、フィードバックを求めよう",
+      hint: "It was a pleasure having you as our guest, Mr. Smith. We hope you enjoyed your stay. If you have any feedback or suggestions, please feel free to let us know. We wish you a safe journey home!",
+    },
+  ],
+};
