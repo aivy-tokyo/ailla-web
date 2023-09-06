@@ -132,6 +132,24 @@ export const situationReserveRestaurant: Situation = {
   ],
 };
 
+// export const situationCheckIn3: Situation = {
+//   title: "Check-in",
+//   description: "ホテルのフロントでチェックインするシーンです。予約内容(禁煙の部屋)と違う部屋(喫煙可の部屋)を割り当ててしまい、顧客への謝罪と緊急の対応が必要な場合です。",
+//   roleOfAi: "Customer",
+//   roleOfUser: "Staff",
+//   steps: [
+//     {
+//       keySentences: ["name", "reservation"],
+//       description: "まずは謝罪し,名前と予約内容の詳細を確認しよう",
+//       hint: "I apologize for any inconvenience. Could you please provide me with your name and reservation details?",
+//     },
+//     {
+//       keySentences: [],
+//       description: ""
+//     }
+//   ],
+// };
+
 export const situationCheckOut: Situation = {
   title: "Check-out",
   description: "ホテルのフロントでチェックアウトするシーンです。",
@@ -157,6 +175,25 @@ export const situationCheckOut: Situation = {
       keySentences: ["feedback"],
       description: "感謝を伝え、フィードバックを求めよう",
       hint: "It was a pleasure having you as our guest, Mr. Smith. We hope you enjoyed your stay. If you have any feedback or suggestions, please feel free to let us know. We wish you a safe journey home!",
+    },
+  ],
+};
+
+export const situationCheckOut2: Situation = {
+  title: "Check-out2",
+  description: "ホテルのフロントでチェックアウトするシーンです。お客様から滞在中の不満が表明される場合です。(不満の内容:①エアコンの不具合、②シャワーの排水溝が詰まっていた、③工事の騒音)",
+  roleOfAi: "Customer",
+  roleOfUser: "Staff",
+  steps: [
+    {
+      keySentences: ["inconvenience"],
+      description: "まずは謝罪し,不満の内容を確認しよう",
+      hint: "I apologize for any inconvenience. Please let me know what the problem is, and I'll do my best to assist you.",
+    },
+    {
+      keySentences: [],
+      description: "不満点について再び謝罪し、今後の改善を約束する",
+      hint: "I'm sorry to hear that. I assure you that we will take immediate action to address these matters. Is there anything else I can assist you with?",
     },
   ],
 };
