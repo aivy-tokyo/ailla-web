@@ -52,3 +52,47 @@ export const situationCheckIn: Situation = {
     },
   ],
 };
+
+export const situationReserveRestaurant: Situation = {
+  title: "Reserve Restaurant ",
+  description: "今夜のレストランディナーを予約するシーンです。",
+  roleOfAi: "Customer",
+  roleOfUser: "Staff",
+  steps: [
+    {
+      keySentences: ["reservation", "name"],
+      description: "まずは名前を確認しよう",
+      hint: "May I have your name, please?",
+    },
+    {
+      keySentences: ["How", "many", "people"],
+      description: "次に人数を確認しよう",
+      hint: "How many people will be in your party?",
+    },
+    {
+      keySentences: ["what","time"],
+      description: "次に時間を確認しよう",
+      hint: "What time would you prefer for your reservation?",
+    },
+    {
+      keySentences: ["booked", "availablity"],
+      description: "予約枠が埋まっている場合、他の時間を提案しよう",
+      hint: "I'm sorry, but that time is fully booked. However, we do have availability at 7:00 p.m. or 8:00 p.m. Which one would you prefer?",
+    },
+    {
+      keySentences: ["confirm", "reservation"],
+      description: "記念日や食事の制限について確認しよう",
+      hint: "Is there any special occasion or dietary restrictions we should be aware of?",
+    },
+    {
+      keySentences: ["phone", "number"],
+      description: "連絡先を確認しよう",
+      hint: "Is there a phone number where we can reach you if needed?",
+    },
+    {
+      keySentences: ["confirm", "reservation"],
+      description: "最後に予約を確認しよう",
+      hint: "Thank you for your reservation.  We have your reservation for tonight at <reserved time>",
+    }
+  ],
+};
