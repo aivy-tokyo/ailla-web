@@ -300,10 +300,10 @@ export const situationAskedForMenuRecommendation2 : Situation = {
   ],
 };
 
-//お会計をする時
-export const situationPayment: Situation = {
+//クレジットカードでお会計をする時
+  export const situationPaymentWithCreditCard: Situation = {
   title: "Payment",
-  description: "お会計をするシーンです。",
+  description: "飲食店でお会計をするシーンです。顧客はクレジットカードでの支払いを希望します。",
   roleOfAi: "Customer",
   roleOfUser: "Staff",
   steps: [
@@ -326,6 +326,30 @@ export const situationPayment: Situation = {
       keySentences: ["success"],
       description: "支払いが完了したことを伝え、レシートを渡そう",
       hint: "Your payment has been successfully processed. Here is your receipt. Is there anything else I can assist you with?",
+    },
+  ],
+};
+
+export const situationPaymentWithCash: Situation = {
+  title: "Payment2",
+  description: "飲食店でお会計をするシーンです。顧客は現金での支払いを希望します。",
+  roleOfAi: "Customer",
+  roleOfUser: "Staff",
+  steps: [
+    {
+      keySentences: ["bill"],
+      description: "まずは伝票を渡し、中身を確認してもらおう",
+      hint: "Here is your bill. Please take your time to review it.",
+    },
+    {
+      keySentences: ["payment"],
+      description: "次に支払い方法を確認しよう",
+      hint: "How would you like to settle the payment?",
+    },
+    {
+      keySentences: ["change"],
+      description: "お釣りが必要な場合、お釣りとレシートを渡そう",
+      hint: "Here is your change and receipt. Is there anything else I can assist you with?",
     },
   ],
 };
