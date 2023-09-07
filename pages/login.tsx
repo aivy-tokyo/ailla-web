@@ -39,16 +39,19 @@ export default function LoginPage() {
       flex flex-col
       justify-center items-center
       w-screen h-screen
+      bg-white
     "
       >
-        <div className="text-white">
-          <h1 className="text-4xl font-bold text-center">AILLA</h1>
-          <p className="p-3 mx-auto text-center">
-            AI英会話サービス「AILLA」へようこそ!
-            <br />
-            LINEアカウントでログインしてサービスを開始しましょう!
-          </p>
-        </div>
+        <h1 className="text-4xl font-bold text-center">
+          <img src="/logo_h.png" alt="AILLA" className="w-60 mx-auto" />
+        </h1>
+        <p className="p-3 mx-auto text-center">
+          AI英会話サービス<strong>「AILLA」</strong>へようこそ!
+          <br />
+          LINEアカウントでログインして
+          <br />
+          AILLAと<strong>「Let&apos;s talk English!」</strong>
+        </p>
         <button
           className="
         bg-green-500 hover:bg-green-700

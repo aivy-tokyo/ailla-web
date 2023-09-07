@@ -37,10 +37,14 @@ export default function App({
     }
   } , [session]);
 
+  useEffect(() => {
+    window.scrollTo(0, 1);
+  }, []);
+
   return (
     <SessionProvider session={session}>
     <div
-      className="w-screen h-screen fixed top-0"
+      className="w-screen h-screen"
       style={{
         backgroundImage: `url("${backgroundImagePath}")`,
         backgroundSize: "cover",

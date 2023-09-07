@@ -19,13 +19,13 @@ const topics = [
   "Family", // Light conversation about family members or pets.
   "Recent Events", // Sharing what you did on the last holiday or weekend.
 ];
-const getRandomPickuoTopic = () => {
+const getRandomPickupTopic = () => {
   return topics[Math.floor(Math.random() * topics.length)];
 };
 
 // IceBreakの会話をするためのSYSTEMのメッセージテンプレート
 const promptTemplateForIceBreak = new PromptTemplate({
-  template: `あなたは英会話の教師です。あなたの名前はAILLA。生徒の名前は{userName}。英会話の授業を始める前のアイスブレイク会話をしてください。トピックは{topic}です。会話は100文字におさめてください。会話はかならず英語で行ってください。`,
+  template: `あなたは英会話の教師です。あなたの名前はAilla。生徒の名前は{userName}。英会話の授業を始める前のアイスブレイク会話をしてください。トピックは{topic}です。会話は100文字におさめてください。会話はかならず英語で行ってください。`,
   inputVariables: ["topic", "userName"],
 });
 
@@ -53,23 +53,23 @@ const generatePromptText = async ({
       return `SYSTEM: ${message.content}`;
     }
     if (message.role === "assistant") {
-      return `AILLA: ${message.content}`;
+      return `Ailla: ${message.content}`;
     }
     return "";
   }).join("\n");
   // if (end) {
   //   conversation += `\n And start lesson, please`;
   // }
-  conversation += "\nAILLA: ";
+  conversation += "\nAilla: ";
   console.log(`${promptForIceBreak}${conversation}`);
 
   return `${promptForIceBreak}${conversation}`;
 };
 
 // Function: search UserName, and extract text before UserName.
-// ex) text: "Hello, I'm AILLA. What's your name? USER: My name is John. AILLA: Nice to meet you, John. Let's start the lesson."
+// ex) text: "Hello, I'm Ailla. What's your name? USER: My name is John. Ailla: Nice to meet you, John. Let's start the lesson."
 // UserName: "USER:"
-// return: "Hello, I'm AILLA. What's your name? "
+// return: "Hello, I'm Ailla. What's your name? "
 export const extractTextBeforeUserName = (text: string, userName: string) => {
   const userNameIndex = text.indexOf(userName);
   if (userNameIndex === -1) {
@@ -78,12 +78,12 @@ export const extractTextBeforeUserName = (text: string, userName: string) => {
   return text.slice(0, userNameIndex);
 };
 
-// MEMO:【バグ対策】2役の返答が帰ってきた場合にAILLA側の返答のみを取得する処理
+// MEMO:【バグ対策】2役の返答が帰ってきた場合にAilla側の返答のみを取得する処理
 const avoidReturnTwoRoles = (responseMessage: string) => {
   console.log('responseMessage->', responseMessage);
 
-  //"AILLA: XXXXXX User: XXXXXX ~~~"のパターン
-  const matchPattern1 = responseMessage.match(/AILLA:\s*([^]+?)\s*User:/);
+  //"Ailla: XXXXXX User: XXXXXX ~~~"のパターン
+  const matchPattern1 = responseMessage.match(/Ailla:\s*([^]+?)\s*User:/);
   if(matchPattern1 && matchPattern1[1]) {
     console.log("[!WARNING!]:Two roles responded (matchPattern1))")
     return matchPattern1[1];
@@ -120,8 +120,8 @@ export default async function handler(
   >
 ) {
   try {
-    const topic = (req.body as Parameter).topic ?? getRandomPickuoTopic();
-    const userName = ((req.body as Parameter).userName ?? "you").toUpperCase();
+    const topic = (req.body as Parameter).topic ?? getRandomPickupTopic();
+    const userName = ((req.body as Parameter).userName ?? "you");
     const messages = (req.body as Parameter).messages ?? [];
     const promptText = await generatePromptText({
       topic,
@@ -136,7 +136,7 @@ export default async function handler(
     );
     console.log("assistantMessage->", assistantMessage);
 
-    //2役の返答が帰ってきた場合にAILLA側の返答のみを取得する
+    //2役の返答が帰ってきた場合にAilla側の返答のみを取得する
     const processedAssistantMessage = avoidReturnTwoRoles(assistantMessage);
 
     res.status(200).json({
