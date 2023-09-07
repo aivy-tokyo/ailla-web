@@ -1,5 +1,6 @@
 import { buildUrl } from "@/utils/buildUrl";
 import Head from "next/head";
+import { avatars } from "../utils/constants";
 export const AppHead = () => {
   const title = "AILLA";
   const description = "英会話AI";
@@ -24,6 +25,9 @@ export const AppHead = () => {
       />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
+      {avatars.map((avatar) => (
+        <link key={avatar.path} rel="preload" href={avatar.path} as="fetch" />
+      ))}
     </Head>
   );
 };
