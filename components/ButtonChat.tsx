@@ -9,11 +9,11 @@ export const ButtonChat = forwardRef<HTMLButtonElement, ButtonProps>(function Ch
   return (
     <button ref={ref} className={`
       relative
-      btn btn-circle 
+      btn btn-circle shadow
       btn-neutral
       ${`btn-${size}`}
     `} {...props}>
-      <FaRegComments />
+      <FaRegComments size={24} />
     </button>
   );
 });

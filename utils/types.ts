@@ -56,4 +56,6 @@ export type ButtonProps = {
   onClick?: () => void;
   onMouseDown?: () => void;
   onMouseUp?: () => void;
+  onTouchStart?: () => void;
+  onTOuchEnd?: () => void;
 };

@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import { chatLogAtom, isCharactorSpeakingAtom } from "@/utils/atoms";
 import { useAtomValue, useAtom } from "jotai";
 import { SpeechTextArea } from "./SpeechTextArea";
@@ -35,6 +35,12 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
       [sendChat, setIsButtonUsageExplained]
     ),
   });
+  // isCharacterSpeakingがtrueの間はRecordingを止める
+  useEffect(() => {
+    if (isCharacterSpeaking) {
+      stopRecording();
+    }
+  }, [isCharacterSpeaking, stopRecording]);
 
   // Text Inputの状態管理とロジックを取得
   const [inputValue, setInputValue] = useState<string>("");
@@ -91,10 +97,10 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
         </div>
 
         {!isChatLogExpanded && (
-          <div className="w-full h-18 bg-[rgba(0,0,0,0.6)] z-20 py-3">
+          <div className="w-full h-18 z-20 py-3">
             {chatMode === "text" ? (
               <form
-                className="w-full max-w-md mx-auto flex justify-center items-center gap-3 px-3"
+                className="w-full max-w-md mx-auto flex justify-center items-center gap-3 px-3 py-2"
                 onSubmit={submit}
               >
                 <ButtonClose onClick={() => setChatMode("mic")} size="sm" />
@@ -129,8 +135,8 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
                     isMicRecording={isMicRecording}
                     disabled={isCharacterSpeaking}
                     size="lg"
-                    onMouseDown={() => startRecording()}
-                    onMouseUp={() => stopRecording()}
+                    onButtonDown={() => startRecording()}
+                    onButtonUp={() => stopRecording()}
                   />
                 </div>
                 <ButtonChat

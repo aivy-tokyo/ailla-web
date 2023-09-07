@@ -9,11 +9,11 @@ export const ButtonClose = forwardRef<HTMLButtonElement, ButtonProps>(function C
   return (
     <button ref={ref} className={`
       relative
-      btn btn-circle 
+      btn btn-circle shadow
       btn-neutral
       ${`btn-${size}`}
     `} {...props}>
-      <MdClose />
+      <MdClose size={24} />
     </button>
   );
 });

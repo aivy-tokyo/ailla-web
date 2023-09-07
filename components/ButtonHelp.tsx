@@ -9,13 +9,13 @@ export const ButtonHelp = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={`
     relative
-    btn btn-circle 
+    btn btn-circle shadow
     btn-neutral
     ${`btn-${size}`}
   `}
         {...props}
       >
-        <FaQuestion />
+        <FaQuestion size={24} />
       </button>
     );
   }

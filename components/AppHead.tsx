@@ -22,6 +22,8 @@ export const AppHead = () => {
         sizes="32x32"
         href="/urara_favicon.png"
       />
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
     </Head>
   );
 };
