@@ -20,7 +20,7 @@ export type Situation = {
 };
 
 export const situationCheckIn: Situation = {
-  title: "Check-in",
+  title: "Check in",
   description: "ホテルのフロントでチェックインするシーンです。",
   roleOfAi: "Customer",
   roleOfUser: "Staff",
@@ -54,7 +54,7 @@ export const situationCheckIn: Situation = {
 };
 
 export const situantionCheckIn2: Situation = {
-  title: "Check-in",
+  title: "Check in 2",
   description: "ホテルのフロントでチェックインするシーンです。宿泊代の前払いが必要な場合です。",
   roleOfAi: "Customer",
   roleOfUser: "Staff",
@@ -180,7 +180,7 @@ export const situationCancellationOfRestaurantReservation: Situation = {
 // };
 
 export const situationCheckOut: Situation = {
-  title: "Check-out",
+  title: "Check out",
   description: "ホテルのフロントでチェックアウトするシーンです。",
   roleOfAi: "Customer",
   roleOfUser: "Staff",
@@ -209,7 +209,7 @@ export const situationCheckOut: Situation = {
 };
 
 export const situationCheckOut2: Situation = {
-  title: "Check-out2",
+  title: "Check out 2",
   description: "ホテルのフロントでチェックアウトするシーンです。お客様から滞在中の不満が表明される場合です。(不満の内容:①エアコンの不具合、②シャワーの排水溝が詰まっていた、③工事の騒音)",
   roleOfAi: "Customer",
   roleOfUser: "Staff",
