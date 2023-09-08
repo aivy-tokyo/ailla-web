@@ -19,7 +19,7 @@ const topics = [
   "Family", // Light conversation about family members or pets.
   "Recent Events", // Sharing what you did on the last holiday or weekend.
 ];
-const getRandomPickuoTopic = () => {
+const getRandomPickupTopic = () => {
   return topics[Math.floor(Math.random() * topics.length)];
 };
 
@@ -120,8 +120,8 @@ export default async function handler(
   >
 ) {
   try {
-    const topic = (req.body as Parameter).topic ?? getRandomPickuoTopic();
-    const userName = ((req.body as Parameter).userName ?? "you").toUpperCase();
+    const topic = (req.body as Parameter).topic ?? getRandomPickupTopic();
+    const userName = ((req.body as Parameter).userName ?? "you");
     const messages = (req.body as Parameter).messages ?? [];
     const promptText = await generatePromptText({
       topic,

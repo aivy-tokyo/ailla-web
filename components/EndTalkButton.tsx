@@ -2,15 +2,9 @@
 const endTalkButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   return (
     <button className="
-    bg-transparent
-    text-white
-    border
-    border-white
-    p-1
-    h-7
-    w-28
-    text-sm
-    rounded-md
+    btn btn-outline text-white
+    hover:bg-white
+    hover:bg-opacity-40
     "
     onClick={onClick}>
       <span>会話を終了</span>

@@ -94,14 +94,14 @@ interface TextToSpeechApi {
 };
 
 export const textToSpeechApiTypeList: TextToSpeechApi[] = [
-  {
-    label: 'koeiro map',
-    value: 'koeiroMap'
-  },
-  {
-    label: 'VOICEVOX',
-    value: 'voiceVox'
-  },
+  // {
+  //   label: 'koeiro map',
+  //   value: 'koeiroMap'
+  // },
+  // {
+  //   label: 'VOICEVOX',
+  //   value: 'voiceVox'
+  // },
   {
     label: 'CLOVA Voice',
     value: 'clovaVoice'

@@ -93,7 +93,6 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
               })}
             </select>
           </div>
-          {/* 背景の変更UI */}
           <div className="w-full">
             <HeaderLabel>合成音声の種類を選ぶ</HeaderLabel>
             <select

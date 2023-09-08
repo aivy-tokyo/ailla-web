@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import { useAtomValue } from "jotai";
-import { useContext, useCallback } from "react";
+import { useContext, useCallback, useRef } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import {
   userInfoAtom,
@@ -51,6 +51,8 @@ export const useFirstConversation = (props: {
   const userInfo = useAtomValue(userInfoAtom);
   const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
   const { speakCharactor } = useCharactorSpeaking();
+  // speakを継続するかどうかのフラグ
+  const isSpeaking = useRef(true);
 
   const speak = useCallback(async () => {
     if (!viewer.model || !userInfo) return;
@@ -65,6 +67,10 @@ export const useFirstConversation = (props: {
 
       if (!isAppExplanationDone) {
         // アプリの説明をしていない場合は、はじめましての挨拶とアプリの説明をする
+        if (!isSpeaking.current) {
+          return;
+        }
+        
         await speakCharactor({
           text: replaceUserName(introductionGreeting, userName),
           viewerModel,
@@ -72,6 +78,11 @@ export const useFirstConversation = (props: {
           onSpeaking,
           onSpeakingEnd,
         });
+
+        if (!isSpeaking.current) {
+          return;
+        }
+
         await speakCharactor({
           text: replaceUserName(appExplanation, userName),
           viewerModel,
@@ -83,6 +94,10 @@ export const useFirstConversation = (props: {
         localStorage.setItem("isAppExplanationDone", "true");
       } else {
         // アプリの説明をしている場合は、アイスブレイクの会話をする
+        if (!isSpeaking.current) {
+          return;
+        }
+
         const randomIndex = Math.floor(
           Math.random() * comeBackGreetingList.length
         );
@@ -93,6 +108,11 @@ export const useFirstConversation = (props: {
           onSpeaking,
           onSpeakingEnd,
         });
+
+        if (!isSpeaking.current) {
+          return;
+        }
+
         await speakCharactor({
           text: lessonsStartPhrases[randomIndex],
           viewerModel,
@@ -107,7 +127,13 @@ export const useFirstConversation = (props: {
     }
   }, [viewer.model, userInfo, props, speakCharactor, textToSpeechApiType]);
 
+  const stopSpeaking = useCallback(() => {
+    viewer.model?.stopSpeak();
+    isSpeaking.current = false;
+  }, [viewer.model]);
+
   return {
     speak,
+    stopSpeaking,
   };
 };
