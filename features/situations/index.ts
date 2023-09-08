@@ -6,17 +6,23 @@
  * ステップのキーワードで会話の流れを制御する
  * ステップの説明とヒントは、ユーザーに表示される
  */
+export type SituationStep = {
+  // シチュエーションのステップ
+  keySentences: string[]; // キーワード
+  description: string; // ステップの説明
+  hint: string; // ヒント
+} | {
+  keyPhrases: string[]; // キーワード
+  description: string; // ステップの説明
+  hint: string; // ヒント
+}
+
 export type Situation = {
   title: string; // シチュエーションのタイトル
   description: string; // シチュエーションの説明
   roleOfAi: string; // AIの役割
   roleOfUser: string; // ユーザーの役割
-  steps: {
-    // シチュエーションのステップ
-    keySentences: string[]; // キーワード
-    description: string; // ステップの説明
-    hint: string; // ヒント
-  }[];
+  steps: SituationStep[];
 };
 
 export const situationCheckIn: Situation = {
@@ -50,6 +56,14 @@ export const situationCheckIn: Situation = {
       description: "最後に部屋番号を伝えよう",
       hint: "Your room number is 1234. The elevator is over there.",
     },
+    {
+      keyPhrases: [
+        "Have a safe trip home",
+        "Thank you for staying with us."
+      ],
+      description: "最後の挨拶をしよう",
+      hint: "Have a safe trip home. Thank you for staying with us."
+    }
   ],
 };
 
