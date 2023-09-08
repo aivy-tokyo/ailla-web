@@ -7,10 +7,14 @@ import { userInfoAtom, userIdAtom } from "../utils/atoms";
 import { prefectures } from "../utils/constants";
 import { Prefecture, UserGenderType } from "../utils/types";
 import { UserInfo } from "../entities/UserInfo";
+import { useUserInfo } from "@/hooks/useUserInfo";
 
 export const RegisterContainer: React.FC = () => {
+  const { registerUserInfo, userInfo} =
+    useUserInfo();
+
   const [name, setName] = useState("");
-  const [prefecture, setPrefecture] = useState<Prefecture>();
+  const [prefecture, setPrefecture] = useState<Prefecture>("選択しない");
   const [birthdate, setBirthdate] = useState<string>("");
   const [year, setYear] = useState<string>("");
   const [month, setMonth] = useState<string>("");
@@ -61,24 +65,9 @@ export const RegisterContainer: React.FC = () => {
           setIsResultError(true);
           throw new Error(`${errors.join(", ")} が未入力です`);
         }
+        
         setIsSendingRequest(true);
-
-        const response = await axios.put("/api/user", {
-          id: userId,
-          name: name,
-          prefecture: prefecture,
-          birthdate: birthdate,
-          gender: gender,
-        });
-
-        const userInfo: UserInfo = {
-          name: response.data.name.S,
-          prefecture: response.data.prefecture.S,
-          birthdate: response.data.birthdate.S,
-          gender: response.data.gender.S,
-        };
-
-        setUserInfo(userInfo);
+        await registerUserInfo(name, prefecture, birthdate, gender);
         router.push("/");
       } catch (error: unknown) {
         console.log(error);
@@ -96,7 +85,7 @@ export const RegisterContainer: React.FC = () => {
         setIsSendingRequest(false);
       }
     },
-    [name, prefecture, year, month, day, gender, userId, setUserInfo, router]
+    [month, day, year, name, prefecture, gender, registerUserInfo, router]
   );
 
   return (

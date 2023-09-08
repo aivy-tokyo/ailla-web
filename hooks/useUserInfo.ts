@@ -10,11 +10,34 @@ export const useUserInfo = () => {
   const userId = useAtomValue(userIdAtom);
   const [userInfo, setUserInfo] = useAtom(userInfoAtom);
 
-  // userInfoが変更されるたびにログを吐き出す
-  useEffect(() => {
-    console.log("userInfo", userInfo);
-  }
-  , [userInfo]);
+  const registerUserInfo = useCallback(
+    async (
+      userName: string,
+      userPrefecture: Prefecture,
+      userBirthdate: string,
+      userGender: UserGenderType
+    ) => {
+
+      console.log("registerUserInfo", userName, userPrefecture, userBirthdate, userGender);
+      const response = await axios.put("/api/user", {
+        id: userId,
+        name: userName,
+        prefecture: userPrefecture,
+        birthdate: userBirthdate,
+        gender: userGender,
+      });
+
+      const userInfo: UserInfo = {
+        name: response.data.name.S,
+        prefecture: response.data.prefecture.S,
+        birthdate: response.data.birthdate.S,
+        gender: response.data.gender.S,
+      };
+
+      setUserInfo(userInfo);
+    },
+    [userId, setUserInfo]
+  );
 
   const editUserInfo = useCallback(
     async (
@@ -63,6 +86,7 @@ export const useUserInfo = () => {
 
   return {
     userId,
+    registerUserInfo,
     editUserInfo,
     deleteUserInfo,
     userInfo,

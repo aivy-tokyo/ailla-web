@@ -82,6 +82,8 @@ const UserInfo = () => {
         throw new Error(`${errors.join(", ")}`);
       }
 
+      setIsSendingRequest(true);
+
       await editUserInfo(name, prefecture, birthdate, gender);
       setIsEditMode(false);
 
@@ -139,6 +141,7 @@ const UserInfo = () => {
             </label>
             <input
               id="name"
+              name="name"
               type="text"
               className="input"
               pattern="[A-Za-z0-9]+"
@@ -175,6 +178,7 @@ const UserInfo = () => {
             <div className="flex">
             <input
               id="year"
+              name="year"
               type="number"
               className="input w-1/3 mr-1 px-1"
               pattern="\d{4}"
@@ -185,6 +189,7 @@ const UserInfo = () => {
             <div className="flex items-center">年</div>
             <input
               id="month"
+              name="month"
               type="string"
               className="input w-1/4 mr-1 px-1"
               pattern="\d{1,2}"
@@ -194,6 +199,7 @@ const UserInfo = () => {
             <div className="flex items-center">月</div>
             <input
               id="day"
+              name="day"
               type="string"
               className="input w-1/4 mr-1 padding-x-1"
               pattern="\d{1,2}"
