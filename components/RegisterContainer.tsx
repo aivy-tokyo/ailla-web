@@ -49,21 +49,33 @@ export const RegisterContainer: React.FC = () => {
         let errors = [];
 
         if (!name) {
-          errors.push("ユーザー名");
+          errors.push("ユーザー名が未入力です");
         }
         if (!prefecture) {
-          errors.push("都道府県");
+          errors.push("都道府県が未選択です");
         }
         if (!birthdate) {
-          errors.push("誕生日");
+          errors.push("誕生日が未入力です");
         }
         if (!gender) {
-          errors.push("性別");
+          errors.push("性別が未選択です");
+        }
+
+        // nameが英数字のみかどうかチェック
+        const nameRegex = /^[a-zA-Z0-9]+$/;
+        if (!nameRegex.test(name)) {
+          errors.push("ユーザー名は英数字のみ入力してください");
+        }
+
+        // birthdateが正しい日付かどうかチェック
+        const inputBirthdate = new Date(birthdate);
+        if (isNaN(inputBirthdate.getTime())) {
+          errors.push("誕生日が正しい日付ではありません");
         }
 
         if (errors.length > 0) {
           setIsResultError(true);
-          throw new Error(`${errors.join(", ")} が未入力です`);
+          throw new Error(`${errors.join(", ")}`);
         }
         
         setIsSendingRequest(true);
