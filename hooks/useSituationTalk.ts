@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
-import { Situation, situationCheckIn } from "../features/situations";
+import { Situation, situationCheckIn, situantionCheckIn2, situationCheckOut, situationCheckOut2 } from "../features/situations";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
 export const useSituationTalk = () => {
@@ -20,9 +20,9 @@ export const useSituationTalk = () => {
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const [situationList, setSituationList] = useState<Situation[]>([
     situationCheckIn,
-    situationCheckIn,
-    situationCheckIn,
-    situationCheckIn,
+    situantionCheckIn2,
+    situationCheckOut,
+    situationCheckOut2,
   ]);
   const [stepStatus, setStepStatus] = useState<
     Array<Situation["steps"][number] & { isClear: boolean }>
