@@ -1,0 +1,33 @@
+{
+  "title": "Check-in at the Airport3",
+  "description": "空港でチェックインするシーンです。顧客のフライトが悪天候でキャンセルになった場合の会話です。会話は乗客が、最新の運行状況を問い合わせるセリフから始まります。最後に、乗客が感謝の言葉を述べます。",
+  "roleOfAi": "Passenger",
+  "roleOfUser": "JAL Staff",
+  "steps": [
+    {
+      "keySentences": ["flight", "updates"],
+      "description": "まずは不便をかけている旨を謝罪し、最新の運行状況を伝えよう",
+      "hint": " I apologize for the inconvenience. Yes, there are severe weather conditions in New York, and the airport is currently closed for departures. As a result, your flight has been delayed indefinitely."
+    },
+    {
+      "keySentences": ["arrange", "accommodation"],
+      "description": "宿泊施設の手配と明日のフライトについて伝えよう",
+      "hint": "We have arranged accommodation for affected passengers at nearby hotels for one night. You will stay overnight and be transferred to a new flight departing tomorrow to your destination."
+    },
+    {
+      "keySentences": [],
+      "description": "宿泊施設と明日のフライトについての詳細を伝えよう",
+      "hint": "We have booked you a room at a nearby hotel, which is approximately 15 minutes away from the airport. Our staff will provide transportation to and from the hotel. As for your new flight, we will provide you with the details once the departure time is confirmed, as it depends on the weather conditions in <destination>"
+    },
+    {
+      "keySentences": ["voucher"],
+      "description": "バウチャーの保管について注意を促そう",
+      "hint": "Upon arrival at the hotel, you will receive a voucher for your stay and meal arrangements. Please keep the voucher and your boarding pass safe, as you will need them for the new flight tomorrow."
+    },
+    {
+      "keySentences": [],
+      "description": "乗客からの感謝の言葉に対して返事をしよう",
+      "hint": "We're here to help. If you have any questions or need any further information, please don't hesitate to ask. We apologize for the inconvenience caused and appreciate your understanding."
+    }
+  ]
+}

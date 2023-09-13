@@ -1,0 +1,33 @@
+{
+  "title": "Check in 2",
+  "description": "ホテルのフロントでチェックインするシーンです。宿泊代の前払いが必要な場合です。",
+  "roleOfAi": "Customer",
+  "roleOfUser": "Staff",
+  "steps": [
+    {
+      "keySentences": ["reservation", "name"],
+      "description": "まずは名前を確認しよう",
+      "hint": "May I have your reservation name, please?"
+    },
+    {
+      "keySentences": ["correct", "room", "nights"],
+      "description": "予約内容を確認しよう",
+      "hint": "You have booked a <room type> for <number of nights> nights. Is that correct?"
+    },
+    {
+      "keySentences": ["identification"],
+      "description": "次に身分証明書を確認しよう",
+      "hint": "Before we proceed with the check-in process, could I kindly ask you to provide a form of identification, such as a passport or driver's license?"
+    },
+    {
+      "keySentences": ["payment"],
+      "description": "次に支払い方法を確認しよう",
+      "hint": "How would you like to settle the payment? We accept both cash and credit cards"
+    },
+    {
+      "keySentences": ["room"],
+      "description": "部屋番号や宿泊中の注意事項を伝えよう",
+      "hint": "I've processed your payment, and everything is in order. Now, let's proceed with the check-in formalities. Here is your room key. You'll be staying in room 306 on the third floor. Breakfast is served from 7 am to 10 am in the hotel restaurant, and the Wi-Fi password is 'guest123'. If you have any questions or need assistance during your stay, please don't hesitate to contact our front desk. Enjoy your stay with us!"
+    }
+  ]
+}

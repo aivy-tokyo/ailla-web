@@ -5,10 +5,19 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
-import { Situation, situationCheckIn, situantionCheckIn2, situationCheckOut, situationCheckOut2 } from "../features/situations";
+import { Situation } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
 export const useSituationTalk = () => {
+  const situationFileNames = [
+    // public/Situationsフォルダ内のファイル名を指定"
+    "checkIn.json",
+    "checkIn2.json",
+    "checkOut.json",
+    "checkOut2.json",
+    "earlyArrivalInquiry.json",
+    "recommendPlacesAroundTheHotel.json",
+  ];
   const viewer = useViewer();
   const { speakCharactor } = useCharactorSpeaking();
   const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
@@ -18,12 +27,7 @@ export const useSituationTalk = () => {
 
   const [situation, setSituation] = useState<Situation | null>();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
-  const [situationList, setSituationList] = useState<Situation[]>([
-    situationCheckIn,
-    situantionCheckIn2,
-    situationCheckOut,
-    situationCheckOut2,
-  ]);
+  const [situationList, setSituationList] = useState<Situation[]>([]);
   const [stepStatus, setStepStatus] = useState<
     Array<Situation["steps"][number] & { isClear: boolean }>
   >([]);
@@ -34,6 +38,17 @@ export const useSituationTalk = () => {
       ),
     [situation]
   );
+
+  useEffect(()=>{
+    Promise.all(
+      situationFileNames.map(fileName => 
+        fetch(`Situations/${fileName}`)
+        .then(res => res.json())
+      )
+    )
+    .then(dataArray => setSituationList(dataArray))      
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   const startSituationTalk = useCallback(
     async (selectedSituation: Situation) => {
