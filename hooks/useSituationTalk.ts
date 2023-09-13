@@ -8,16 +8,17 @@ import { useViewer } from "./useViewer";
 import { Situation } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
+const situationFileNames = [
+  // public/Situationsフォルダ内のファイル名を指定"
+  "checkIn.json",
+  "checkIn2.json",
+  "checkOut.json",
+  "reserveRestaurant.json",
+  "earlyArrivalInquiry.json",
+  "recommendPlacesAroundTheHotel.json",
+];
+
 export const useSituationTalk = () => {
-  const situationFileNames = [
-    // public/Situationsフォルダ内のファイル名を指定"
-    "checkIn.json",
-    "checkIn2.json",
-    "checkOut.json",
-    "checkOut2.json",
-    "earlyArrivalInquiry.json",
-    "recommendPlacesAroundTheHotel.json",
-  ];
   const viewer = useViewer();
   const { speakCharactor } = useCharactorSpeaking();
   const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
@@ -39,16 +40,13 @@ export const useSituationTalk = () => {
     [situation]
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     Promise.all(
-      situationFileNames.map(fileName => 
-        fetch(`Situations/${fileName}`)
-        .then(res => res.json())
+      situationFileNames.map((fileName) =>
+        fetch(`Situations/${fileName}`).then((res) => res.json())
       )
-    )
-    .then(dataArray => setSituationList(dataArray))      
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+    ).then((dataArray) => setSituationList(dataArray));
+  }, []);
 
   const startSituationTalk = useCallback(
     async (selectedSituation: Situation) => {
