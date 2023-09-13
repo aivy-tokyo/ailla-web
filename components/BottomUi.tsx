@@ -1,4 +1,4 @@
-import { use, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, use, useCallback, useEffect, useRef, useState } from "react";
 import { chatLogAtom, isCharactorSpeakingAtom } from "@/utils/atoms";
 import { useAtomValue, useAtom } from "jotai";
 import { SpeechTextArea } from "./SpeechTextArea";
@@ -48,7 +48,7 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
     setInputValue(e.target.value);
   }, []);
   const submit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       sendChat(inputValue);
       setInputValue("");
@@ -106,10 +106,17 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
                 <ButtonClose onClick={() => setChatMode("mic")} size="sm" />
                 <input
                   type="text"
+                  name="message"
                   placeholder="文字を入力する"
                   value={inputValue}
                   className="input input-primary w-full"
                   onChange={changeInput}
+                  // enterでsubmit
+                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (e.key === "Enter") {
+                      submit(e as unknown as FormEvent<HTMLFormElement>);
+                    }
+                  }}
                 />
                 <ButtonSendMessage
                   disabled={isCharacterSpeaking}
