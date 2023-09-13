@@ -1,0 +1,38 @@
+{
+  "title": "Check-in at the Airport",
+  "description": "空港でチェックインするシーンです。",
+  "roleOfAi": "Passenger",
+  "roleOfUser": "JAL Staff",
+  "steps": [
+    {
+      "keySentences": ["passport", "ticket"],
+      "description": "まずはパスポートとチケットを確認しよう",
+      "hint": "May I have your passport and flight ticket, please?"
+    },
+    {
+      "keySentences": ["baggage"],
+      "description": "予約の確認・チェックイン手続きを開始する旨を伝え、荷物の確認をさせてもらおう",
+      "hint": "Thank you. I'll check your reservation and get you checked in. Could you also provide me with your baggage?"
+    },
+    {
+      "keySentences": ["weight","size"],
+      "description": "機内持ち込み荷物についての注意事項を伝えよう",
+      "hint": "I see that you have one checked bag. I'll tag it for you. Please make sure to keep your carry-on within the allowed size and weight limits."
+    },
+    {
+      "keySentences": ["boarding", "pass"],
+      "description": "搭乗券を渡し、搭乗ゲートについて伝えよう",
+      "hint": "Now, let me print your boarding pass. Here you go. Your seat is 23A. The gate for your flight is B6. Boarding will begin approximately 30 minutes before departure."
+    },
+    {
+      "keySentences": ["security", "check"],
+      "description": "セキュリティチェックの注意事項について伝えよう",
+      "hint": "please be aware of the security procedures at the airport. Make sure to have your boarding pass and passport readily available during the security check."
+    },
+    {
+      "keySentences": ["flight"],
+      "description": "最後の挨拶をしよう",
+      "hint": "If you have any further questions or need any assistance, please don't hesitate to ask. Enjoy your flight!"
+    }
+  ]
+}

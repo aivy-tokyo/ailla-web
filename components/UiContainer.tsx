@@ -29,6 +29,7 @@ export const UiContainer = () => {
       <HeaderUi />
       <div
         className="
+        max-w-2xl mx-auto
       fixed bottom-0 left-0 right-0
       grid grid-cols-2 gap-2
       p-2

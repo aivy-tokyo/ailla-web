@@ -1,0 +1,33 @@
+{
+  "title": "recommended places around the hotel",
+  "description": "ホテル周辺のおすすめの場所を聞かれた時の会話です。皇居、銀座、東京ミッドタウン日比谷を案内します。",
+  "roleOfAi": "Customer",
+  "roleOfUser": "Staff",
+  "steps": [
+    {
+      "keySentences": ["attractions", "Imperial", "Palace"],
+      "description": "まずは皇居を案内しよう",
+      "hint": "there are several tourist attractions around our hotel. First, the Imperial Palace is within walking distance. It is the residence of the Japanese Imperial Family, where you can see beautiful gardens and historical buildings. Moreover, it's about a 10-minute walk to the Imperial Palace."
+    },
+    {
+      "keySentences": ["Ginza"],
+      "description": "次に銀座を案内しよう",
+      "hint": "Ginza is also nearby. It is a high-end shopping area with many boutiques and restaurants. It's about a 15-minute walk or a few minutes by subway to Ginza."
+    },
+    {
+      "keySentences": ["Midtown"],
+      "description": "東京ミッドタウン日比谷も案内しよう",
+      "hint": "Tokyo Midtown Hibiya is also recommended. It is an area where shopping and dining facilities are gathered, and it's about a 10-minute subway ride from the hotel."
+    },
+    {
+      "keySentences": ["questions"],
+      "description": "最後に、他の質問があったらいつでも聞いてねと伝えよう",
+      "hint": "Feel free to ask any questions. We hope you have a wonderful time in Tokyo. Also, if you have any other questions or requests, please contact us at any time."
+    },
+    {
+      "keySentences": ["enjoy"],
+      "description": "最後の挨拶をしよう",
+      "hint": "Please enjoy your stay."
+    }
+  ]
+}

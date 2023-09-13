@@ -1,0 +1,18 @@
+{
+  "title": "Early Arrival",
+  "description": "宿泊予定のお客様から電話で、早めに到着しそうだがチェックイン前に荷物を預けたいという相談があった時の会話です。",
+  "roleOfAi": "Customer",
+  "roleOfUser": "Staff",
+  "steps": [
+    {
+      "keySentences": ["luggage"],
+      "description": "荷物を預かることができることを伝えよう",
+      "hint": "Certainly, <CUSTOMER NAME>. Thank you very much for choosing our hotel. Rest assured, we can certainly hold onto your luggage before the check-in time. When you arrive, please come to the front desk and our staff will assist you with your luggage."
+    },
+    {
+      "keySentences": ["look", "forward"],
+      "description": "到着をお待ちしていますという旨を伝えよう",
+      "hint": "We look forward to welcoming you. If you have any other questions or requests, please feel free to let us know."
+    }
+  ]
+}

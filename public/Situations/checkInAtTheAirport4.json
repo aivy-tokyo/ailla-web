@@ -1,0 +1,28 @@
+{
+  "title": "Check-in at the Airport4",
+  "description": "空港でチェックインするシーンです。顧客のフライトが悪天候で６時間遅延した場合の会話です。会話は乗客が、最新の運行状況を問い合わせるセリフから始まります。スタッフはバウチャーと待機用エリアを用意し、最後に、乗客が感謝の言葉を述べます。",
+  "roleOfAi": "Passenger",
+  "roleOfUser": "JAL Staff",
+  "steps": [
+    {
+      "keySentences": ["flight", "updates"],
+      "description": "まずは不便をかけている旨を謝罪し、最新の運行状況を伝えよう",
+      "hint": "I apologize for the inconvenience. Yes, there are severe weather conditions at your destination, and as a result, your flight has been delayed by approximately 6 hours."
+    },
+    {
+      "keySentences": [],
+      "description": "最新の出発時間について質問された場合、未定なので答えられない旨を伝えよう",
+      "hint": "Due to the unpredictable nature of the weather, we are unable to provide an exact departure time at the moment. We are continuously monitoring the situation and will keep you updated as soon as we receive further information."
+    },
+    {
+      "keySentences": ["voucher"],
+      "description": "待機中に利用できるバウチャーと専用待機エリアの提供について伝えよう",
+      "hint": "As a token of our appreciation for your patience, we will provide meal vouchers for use at the airport restaurants. Additionally, we have set up a dedicated waiting area with seating and amenities where you can relax and wait for your flight."
+    },
+    {
+      "keySentences": [],
+      "description": "乗客からの感謝の言葉に対して返事をしよう",
+      "hint": "You're welcome. If you have any specific needs or require any assistance during the delay, please feel free to let us know. We are here to help and make your wait as comfortable as possible."
+    }
+  ]
+}
