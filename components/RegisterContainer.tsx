@@ -7,11 +7,19 @@ import { userInfoAtom, userIdAtom } from "../utils/atoms";
 import { prefectures } from "../utils/constants";
 import { Prefecture, UserGenderType } from "../utils/types";
 import { UserInfo } from "../entities/UserInfo";
+import { useUserInfo } from "@/hooks/useUserInfo";
 
 export const RegisterContainer: React.FC = () => {
+  const { registerUserInfo, userInfo} =
+    useUserInfo();
+
   const [name, setName] = useState("");
-  const [prefecture, setPrefecture] = useState<Prefecture>();
+  const [prefecture, setPrefecture] = useState<Prefecture>("選択しない");
   const [birthdate, setBirthdate] = useState<string>("");
+  const [year, setYear] = useState<string>("");
+  const [month, setMonth] = useState<string>("");
+  const [day, setDay] = useState<string>("");
+
   const [gender, setGender] = useState<UserGenderType>("選択しない");
   const setUserInfo = useSetAtom(userInfoAtom);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
@@ -25,44 +33,53 @@ export const RegisterContainer: React.FC = () => {
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
+      // month, dayが1桁の場合は0埋め
+      const paddedMonth = month.padStart(2, '0');
+      const paddedDay = day.padStart(2, '0');
+      setMonth(paddedMonth);
+      setDay(paddedDay);
+
+      await setMonth(paddedMonth);
+      await setDay(paddedDay);
+
+      const birthdate = `${year}/${paddedMonth}/${paddedDay}`;
+      setBirthdate(birthdate);
+
       try {
         let errors = [];
 
         if (!name) {
-          errors.push("ユーザー名");
+          errors.push("ユーザー名が未入力です");
         }
         if (!prefecture) {
-          errors.push("都道府県");
+          errors.push("都道府県が未選択です");
         }
         if (!birthdate) {
-          errors.push("誕生日");
+          errors.push("誕生日が未入力です");
         }
         if (!gender) {
-          errors.push("性別");
+          errors.push("性別が未選択です");
+        }
+
+        // nameが英数字のみかどうかチェック
+        const nameRegex = /^[a-zA-Z0-9]+$/;
+        if (!nameRegex.test(name)) {
+          errors.push("ユーザー名は英数字のみ入力してください");
+        }
+
+        // birthdateが正しい日付かどうかチェック
+        const inputBirthdate = new Date(birthdate);
+        if (isNaN(inputBirthdate.getTime())) {
+          errors.push("誕生日が正しい日付ではありません");
         }
 
         if (errors.length > 0) {
           setIsResultError(true);
-          throw new Error(`${errors.join(", ")} が未入力です`);
+          throw new Error(`${errors.join(", ")}`);
         }
+        
         setIsSendingRequest(true);
-
-        const response = await axios.put("/api/user", {
-          id: userId,
-          name: name,
-          prefecture: prefecture,
-          birthdate: birthdate,
-          gender: gender,
-        });
-
-        const userInfo: UserInfo = {
-          name: response.data.name.S,
-          prefecture: response.data.prefecture.S,
-          birthdate: response.data.birthdate.S,
-          gender: response.data.gender.S,
-        };
-
-        setUserInfo(userInfo);
+        await registerUserInfo(name, prefecture, birthdate, gender);
         router.push("/");
       } catch (error: unknown) {
         console.log(error);
@@ -80,7 +97,7 @@ export const RegisterContainer: React.FC = () => {
         setIsSendingRequest(false);
       }
     },
-    [name, prefecture, birthdate, gender, userId, setUserInfo, router]
+    [month, day, year, name, prefecture, gender, registerUserInfo, router]
   );
 
   return (
@@ -105,6 +122,7 @@ export const RegisterContainer: React.FC = () => {
             <input
               type="text"
               value={name}
+              pattern="[A-Za-z0-9]+" // 英数字のみ
               onChange={(e) => setName(e.target.value)}
               className="rounded-md p-2 w-full text-white bg-slate-900"
             />
@@ -130,12 +148,29 @@ export const RegisterContainer: React.FC = () => {
             </select>
 
             <span>生年月日：</span>
-            <input
-              type="text"
-              className="text-white rounded-md p-2 mb-5 bg-slate-900"
-              value={birthdate}
-              onChange={(e) => setBirthdate(String(e.target.value))}
-            />
+            <div className="flex">
+              <input
+                type="text"
+                className="text-white w-1/3 rounded-md p-2 mb-5 bg-slate-900 mx-1"
+                value={year}
+                onChange={(e) => setYear(String(e.target.value))}
+              />
+              <div className="flex items-center">年</div>
+              <input
+                type="text"
+                className="text-white w-1/4 rounded-md p-2 mb-5 bg-slate-900 mx-1"
+                value={month}
+                onChange={(e) => setMonth(String(e.target.value))}
+              />
+              <div className="flex items-center">月</div>
+              <input
+                type="text"
+                className="text-white w-1/4 rounded-md p-2 mb-5 bg-slate-900 mx-1"
+                value={day}
+                onChange={(e) => setDay(String(e.target.value))}
+              />
+              <div className="flex items-center">日</div>
+            </div>
 
             <label htmlFor="">性別：</label>
             <select

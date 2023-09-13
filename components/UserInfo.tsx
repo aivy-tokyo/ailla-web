@@ -1,27 +1,107 @@
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaRegTimesCircle } from "react-icons/fa";
 import { Prefecture, UserGenderType } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
 import { useUserInfo } from "@/hooks/useUserInfo";
 import { useCallback, useState } from "react";
 import { HeaderLabel } from "./HeaderLabel";
+import * as Sentry from "@sentry/nextjs";
 
 const UserInfo = () => {
-  const { editUserInfo, deleteUserInfo, userInfo, isEditMode, setIsEditMode } =
+  const { editUserInfo, deleteUserInfo, userInfo} =
     useUserInfo();
+    
   const [name, setName] = useState<string>(userInfo?.name as string);
   const [prefecture, setPrefecture] = useState<Prefecture>(
     userInfo?.prefecture as Prefecture
   );
+
   const [birthdate, setBirthdate] = useState<string>(
     userInfo?.birthdate as string
   );
+
+  const [year, setYear] = useState<string>(
+    userInfo?.birthdate.split("/")[0] as string
+  );
+
+  const [month, setMonth] = useState<string>(
+    userInfo?.birthdate.split("/")[1] as string
+  );
+
+  const [day, setDay] = useState<string>(
+    userInfo?.birthdate.split("/")[2] as string
+  );
+
   const [gender, setGender] = useState<UserGenderType>(
     userInfo?.gender as UserGenderType
   );
 
-  const handleSubmit = (e: any) => {
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [isSendingRequest, setIsSendingRequest] = useState(false);
+  const [isResultError, setIsResultError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const handleSubmit = async (e: any) => {
+
     e.preventDefault();
-    editUserInfo(name, prefecture, birthdate, gender);
+
+    try {
+
+      // month, dayが1桁の場合は0埋め
+      const paddedMonth = month.padStart(2, '0');
+      const paddedDay = day.padStart(2, '0');
+
+      setMonth(paddedMonth);
+      setDay(paddedDay);
+
+      await setMonth(paddedMonth);
+      await setDay(paddedDay);
+
+      const birthdate = `${year}/${paddedMonth}/${paddedDay}`;
+      setBirthdate(birthdate);
+
+      let errors = [];
+
+      if (!name) {
+        errors.push("ユーザー名が未入力です");
+      }
+
+      // nameが英数字のみかどうかチェック
+      const nameRegex = /^[a-zA-Z0-9]+$/;
+      if (!nameRegex.test(name)) {
+        errors.push("ユーザー名は英数字のみ入力してください");
+      }
+
+      // birthdateが正しい日付かどうかチェック
+      const inputBirthdate = new Date(birthdate);
+      if (isNaN(inputBirthdate.getTime())) {
+        errors.push("誕生日が正しい日付ではありません");
+      }
+
+      if (errors.length > 0) {
+        setIsResultError(true);
+        throw new Error(`${errors.join(", ")}`);
+      }
+
+      setIsSendingRequest(true);
+
+      await editUserInfo(name, prefecture, birthdate, gender);
+      setIsEditMode(false);
+
+    } catch (error: unknown) {
+      Sentry.captureException(error);
+      setIsResultError(true);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Error occurred.");
+      }
+
+    } finally {
+      setTimeout(() => {
+        setIsResultError(false);
+      }, 3000);
+      setIsSendingRequest(false);
+    }
   };
 
   const handleUserDelete = useCallback(() => {
@@ -33,6 +113,18 @@ const UserInfo = () => {
 
   return (
     <div className="w-full">
+      {isSendingRequest && (
+        <button className="btn fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <span className="loading loading-spinner"></span>
+          登録中...
+        </button>
+      )}
+      {isResultError && (
+        <div className="alert alert-error fixed top-2 left-1/2 w-[40vw] transform -translate-x-1/2">
+          <FaRegTimesCircle className="text-black text-[34px] " />
+          <span>{errorMessage}</span>
+        </div>
+      )}
       {isEditMode ? (
         <form onSubmit={handleSubmit}>
           <div className="flex justify-between items-center mb-5">
@@ -49,6 +141,7 @@ const UserInfo = () => {
             </label>
             <input
               id="name"
+              name="name"
               type="text"
               className="input"
               pattern="[A-Za-z0-9]+"
@@ -82,15 +175,39 @@ const UserInfo = () => {
             <label htmlFor="birthdate">
               <HeaderLabel>生年月日：</HeaderLabel>
             </label>
+            <div className="flex">
             <input
-              id="birthdate"
-              type="text"
-              className="input"
-              pattern="\d{4}/\d{2}/\d{2}"
-              title="yyyy/mm/ddの形式で入力してください"
-              value={birthdate}
-              onChange={(e) => setBirthdate(e.target.value)}
+              id="year"
+              name="year"
+              type="number"
+              className="input w-1/3 mr-1 px-1"
+              pattern="\d{4}"
+              title="数字のみ入力してください"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
             />
+            <div className="flex items-center">年</div>
+            <input
+              id="month"
+              name="month"
+              type="string"
+              className="input w-1/4 mr-1 px-1"
+              pattern="\d{1,2}"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+            />
+            <div className="flex items-center">月</div>
+            <input
+              id="day"
+              name="day"
+              type="string"
+              className="input w-1/4 mr-1 padding-x-1"
+              pattern="\d{1,2}"
+              value={day}
+              onChange={(e) => setDay(e.target.value)}
+            />
+            <div className="flex items-center">日</div>
+            </div>
           </div>
 
           <div className="flex flex-col mb-5">

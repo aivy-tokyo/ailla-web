@@ -5,8 +5,18 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
-import { Situation, situationCheckIn } from "../features/situations";
+import { Situation } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
+
+const situationFileNames = [
+  // public/Situationsフォルダ内のファイル名を指定"
+  "checkIn.json",
+  "checkIn2.json",
+  "checkOut.json",
+  "reserveRestaurant.json",
+  "earlyArrivalInquiry.json",
+  "recommendPlacesAroundTheHotel.json",
+];
 
 export const useSituationTalk = () => {
   const viewer = useViewer();
@@ -18,12 +28,7 @@ export const useSituationTalk = () => {
 
   const [situation, setSituation] = useState<Situation | null>();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
-  const [situationList, setSituationList] = useState<Situation[]>([
-    situationCheckIn,
-    situationCheckIn,
-    situationCheckIn,
-    situationCheckIn,
-  ]);
+  const [situationList, setSituationList] = useState<Situation[]>([]);
   const [stepStatus, setStepStatus] = useState<
     Array<Situation["steps"][number] & { isClear: boolean }>
   >([]);
@@ -34,6 +39,14 @@ export const useSituationTalk = () => {
       ),
     [situation]
   );
+
+  useEffect(() => {
+    Promise.all(
+      situationFileNames.map((fileName) =>
+        fetch(`Situations/${fileName}`).then((res) => res.json())
+      )
+    ).then((dataArray) => setSituationList(dataArray));
+  }, []);
 
   const startSituationTalk = useCallback(
     async (selectedSituation: Situation) => {

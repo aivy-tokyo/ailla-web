@@ -1,0 +1,38 @@
+{
+  "title": "Check-in at the Airport2",
+  "description": "空港でチェックインするシーンです。顧客の預け荷物が重量制限を超えていた場合の会話です。顧客は超過料金を払うだけの現金を持ち合わせていません。預け荷物から手荷物へ、所持品を移動させる選択肢を選ぶことになります。",
+  "roleOfAi": "Passenger",
+  "roleOfUser": "JAL Staff",
+  "steps": [
+    {
+      "keySentences": ["passport", "ticket"],
+      "description": "まずはパスポートとチケットを確認しよう",
+      "hint": "May I have your passport and flight ticket, please?"
+    },
+    {
+      "keySentences": ["baggage"],
+      "description": "予約の確認・チェックイン手続きを開始する旨を伝え、荷物の確認をさせてもらおう",
+      "hint": "Thank you. I'll check your reservation and get you checked in. Could you also provide me with your baggage?"
+    },
+    {
+      "keySentences": ["overweight"],
+      "description": "荷物が重量制限を超えていることを伝えよう",
+      "hint": "I'm sorry, but your baggage is overweight. It exceeds the allowed limit by 5 kilograms."
+    },
+    {
+      "keySentences": ["excess", "fee"],
+      "description": "超過料金について伝えよう",
+      "hint": "Let me explain the options to you. We do have an excess baggage fee for overweight bags. The fee for the extra 5 kilograms would be ¥10,000. Would you like to proceed with paying the excess baggage fee?"
+    },
+    {
+      "keySentences": ["reduce"],
+      "description": "超過料金を減らす為の提案をしてみよう",
+      "hint": "We can reduce the excess weight of your bag by transferring some items to your carry-on luggage, as long as it complies with the carry-on size and weight limits."
+    },
+    {
+      "keySentences": ["within"],
+      "description": "制限内に収まったことを伝えよう",
+      "hint": "Alright, we have reduced the weight of your checked bag. It now falls within the allowed limit."
+    }
+  ]
+}
