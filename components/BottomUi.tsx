@@ -50,7 +50,6 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
   const submit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log("inputValue", inputValue);
       sendChat(inputValue);
       setInputValue("");
     },
