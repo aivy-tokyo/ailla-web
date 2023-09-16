@@ -28,7 +28,7 @@ export default function LoginPage() {
 
   // useCallback: signin
   const signin = useCallback(() => {
-    signIn("line");
+    signIn("line", { callbackUrl: "/" });
   }, []);
 
   return (
