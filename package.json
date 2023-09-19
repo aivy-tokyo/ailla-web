@@ -1,11 +1,12 @@
 {
   "name": "ailla-web-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 0.0.0.0",
+    "start:local": "next start",
     "lint": "next lint"
   },
   "dependencies": {
