@@ -1,5 +1,9 @@
 import { useAtomValue, useSetAtom } from "jotai";
-import { chatLogAtom, isCharactorSpeakingAtom, textToSpeechApiTypeAtom } from "../utils/atoms";
+import {
+  chatLogAtom,
+  isCharactorSpeakingAtom,
+  textToSpeechApiTypeAtom,
+} from "../utils/atoms";
 import { ChatCompletionRequestMessage } from "openai";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
@@ -92,7 +96,6 @@ export const useSituationTalk = () => {
       if (!viewer.model || !situation || !message.trim()) return;
 
       try {
-
         setIsCharactorSpeaking(true);
 
         // TODO 各stepのkeySentencesを確認して、クリアしたstepを記録する
@@ -124,14 +127,14 @@ export const useSituationTalk = () => {
         });
       } catch (error) {
         console.error(error);
-      }finally
-      {
+      } finally {
         setIsCharactorSpeaking(false);
       }
     },
     [
       viewer.model,
       situation,
+      setIsCharactorSpeaking,
       setChatLog,
       messages,
       roleOfAi,

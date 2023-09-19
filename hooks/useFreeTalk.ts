@@ -13,24 +13,21 @@ import { useViewer } from "./useViewer";
 import * as Sentry from "@sentry/nextjs";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
-
 export const useFreeTalk = () => {
   const viewer = useViewer();
   const userInfo = useAtomValue(userInfoAtom);
   const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
   const setChatLog = useSetAtom(chatLogAtom);
-  const {speakCharactor} = useCharactorSpeaking();
+  const { speakCharactor } = useCharactorSpeaking();
 
   const [topic, setTopic] = useState<string>("");
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
-  
 
   const startFreeTalk = useCallback(async () => {
     if (!viewer.model) return;
 
     try {
-
       setIsCharactorSpeaking(true);
 
       setMessages([]);
@@ -51,11 +48,17 @@ export const useFreeTalk = () => {
       });
     } catch (error) {
       Sentry.captureException(error);
-    }finally
-    {
+    } finally {
       setIsCharactorSpeaking(false);
     }
-  }, [setChatLog, speakCharactor, textToSpeechApiType, userInfo?.name, viewer.model]);
+  }, [
+    setChatLog,
+    setIsCharactorSpeaking,
+    speakCharactor,
+    textToSpeechApiType,
+    userInfo?.name,
+    viewer.model,
+  ]);
 
   const sendMessage = useCallback(
     async (message: string) => {
@@ -87,7 +90,14 @@ export const useFreeTalk = () => {
         Sentry.captureException(error);
       }
     },
-    [viewer.model, setChatLog, userInfo?.name, messages, speakCharactor, textToSpeechApiType]
+    [
+      viewer.model,
+      setChatLog,
+      userInfo?.name,
+      messages,
+      speakCharactor,
+      textToSpeechApiType,
+    ]
   );
 
   return {
