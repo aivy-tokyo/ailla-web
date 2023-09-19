@@ -1,6 +1,7 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import {
   chatLogAtom,
+  isCharactorSpeakingAtom,
   textToSpeechApiTypeAtom,
   userInfoAtom,
 } from "../utils/atoms";
@@ -12,6 +13,7 @@ import { useViewer } from "./useViewer";
 import * as Sentry from "@sentry/nextjs";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
+
 export const useFreeTalk = () => {
   const viewer = useViewer();
   const userInfo = useAtomValue(userInfoAtom);
@@ -21,11 +23,16 @@ export const useFreeTalk = () => {
 
   const [topic, setTopic] = useState<string>("");
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
+  
 
   const startFreeTalk = useCallback(async () => {
     if (!viewer.model) return;
 
     try {
+
+      setIsCharactorSpeaking(true);
+
       setMessages([]);
       const response = await axios.post("/api/chat/free-talk", {
         userName: userInfo?.name,
@@ -44,6 +51,9 @@ export const useFreeTalk = () => {
       });
     } catch (error) {
       Sentry.captureException(error);
+    }finally
+    {
+      setIsCharactorSpeaking(false);
     }
   }, [setChatLog, speakCharactor, textToSpeechApiType, userInfo?.name, viewer.model]);
 
