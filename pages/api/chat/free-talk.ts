@@ -45,18 +45,20 @@ const generatePromptText = async ({
     topic,
     userName,
   });
-  let conversation = messages.map((message) => {
-    if (message.role === "user") {
-      return `${userName}: ${message.content}`;
-    }
-    if (message.role === "system") {
-      return `SYSTEM: ${message.content}`;
-    }
-    if (message.role === "assistant") {
-      return `Ailla: ${message.content}`;
-    }
-    return "";
-  }).join("\n");
+  let conversation = messages
+    .map((message) => {
+      if (message.role === "user") {
+        return `${userName}: ${message.content}`;
+      }
+      if (message.role === "system") {
+        return `SYSTEM: ${message.content}`;
+      }
+      if (message.role === "assistant") {
+        return `Ailla: ${message.content}`;
+      }
+      return "";
+    })
+    .join("\n");
   // if (end) {
   //   conversation += `\n And start lesson, please`;
   // }
@@ -80,19 +82,19 @@ export const extractTextBeforeUserName = (text: string, userName: string) => {
 
 // MEMO:【バグ対策】2役の返答が帰ってきた場合にAilla側の返答のみを取得する処理
 const avoidReturnTwoRoles = (responseMessage: string) => {
-  console.log('responseMessage->', responseMessage);
+  console.log("responseMessage->", responseMessage);
 
   //"Ailla: XXXXXX User: XXXXXX ~~~"のパターン
   const matchPattern1 = responseMessage.match(/Ailla:\s*([^]+?)\s*User:/);
-  if(matchPattern1 && matchPattern1[1]) {
-    console.log("[!WARNING!]:Two roles responded (matchPattern1))")
+  if (matchPattern1 && matchPattern1[1]) {
+    console.log("[!WARNING!]:Two roles responded (matchPattern1))");
     return matchPattern1[1];
   }
 
   //"XXXXXX User: XXXXXX ~~~"のパターン
   const matchPattern2 = responseMessage.match(/^([^]+?)\s*User:/);
-  if(matchPattern2 && matchPattern2[1]) {
-    console.log("[!WARNING!]:Two roles responded (matchPattern2))")
+  if (matchPattern2 && matchPattern2[1]) {
+    console.log("[!WARNING!]:Two roles responded (matchPattern2))");
     return matchPattern2[1];
   }
   return responseMessage;
@@ -121,7 +123,7 @@ export default async function handler(
 ) {
   try {
     const topic = (req.body as Parameter).topic ?? getRandomPickupTopic();
-    const userName = ((req.body as Parameter).userName ?? "you");
+    const userName = (req.body as Parameter).userName ?? "you";
     const messages = (req.body as Parameter).messages ?? [];
     const promptText = await generatePromptText({
       topic,

@@ -1,6 +1,7 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import {
   chatLogAtom,
+  isCharactorSpeakingAtom,
   textToSpeechApiTypeAtom,
   userInfoAtom,
 } from "../utils/atoms";
@@ -17,15 +18,18 @@ export const useFreeTalk = () => {
   const userInfo = useAtomValue(userInfoAtom);
   const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
   const setChatLog = useSetAtom(chatLogAtom);
-  const {speakCharactor} = useCharactorSpeaking();
+  const { speakCharactor } = useCharactorSpeaking();
 
   const [topic, setTopic] = useState<string>("");
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
 
   const startFreeTalk = useCallback(async () => {
     if (!viewer.model) return;
 
     try {
+      setIsCharactorSpeaking(true);
+
       setMessages([]);
       const response = await axios.post("/api/chat/free-talk", {
         userName: userInfo?.name,
@@ -44,8 +48,17 @@ export const useFreeTalk = () => {
       });
     } catch (error) {
       Sentry.captureException(error);
+    } finally {
+      setIsCharactorSpeaking(false);
     }
-  }, [setChatLog, speakCharactor, textToSpeechApiType, userInfo?.name, viewer.model]);
+  }, [
+    setChatLog,
+    setIsCharactorSpeaking,
+    speakCharactor,
+    textToSpeechApiType,
+    userInfo?.name,
+    viewer.model,
+  ]);
 
   const sendMessage = useCallback(
     async (message: string) => {
@@ -77,7 +90,14 @@ export const useFreeTalk = () => {
         Sentry.captureException(error);
       }
     },
-    [viewer.model, setChatLog, userInfo?.name, messages, speakCharactor, textToSpeechApiType]
+    [
+      viewer.model,
+      setChatLog,
+      userInfo?.name,
+      messages,
+      speakCharactor,
+      textToSpeechApiType,
+    ]
   );
 
   return {
