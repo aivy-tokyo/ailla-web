@@ -3,8 +3,8 @@ import { useCallback, useEffect } from "react";
 import { TextToSpeechApiType } from "../utils/types";
 import { tts } from "../features/tts";
 import * as Sentry from "@sentry/nextjs";
-import { useSetAtom } from "jotai";
-import { isCharactorSpeakingAtom } from "../utils/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import { currentAvatarAtom, isCharactorSpeakingAtom } from "../utils/atoms";
 import { useViewer } from "./useViewer";
 
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
 
 export const useCharactorSpeaking = () => {
   const viewer = useViewer();
+  const currentAvatar = useAtomValue(currentAvatarAtom);
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ export const useCharactorSpeaking = () => {
       setIsCharactorSpeaking(true);
       try {
         viewerModel.resumeAudio();
-        const buffer = await tts({ text, textToSpeechApiType, lang });
+        const buffer = await tts({ text, textToSpeechApiType, lang, currentAvatar });
         if (!buffer) {
           return;
         }
@@ -65,7 +66,7 @@ export const useCharactorSpeaking = () => {
         }, 500);
       }
     },
-    [setIsCharactorSpeaking]
+    [currentAvatar, setIsCharactorSpeaking]
   );
 
   return {

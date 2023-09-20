@@ -5,6 +5,7 @@ import { MdClose } from "react-icons/md";
 import {
   avatarPathAtom,
   backgroundImagePathAtom,
+  currentAvatarAtom,
   textToSpeechApiTypeAtom,
 } from "../utils/atoms";
 import {
@@ -24,6 +25,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
   onClose,
 }) => {
   const [avatarPath, setAvatarPath] = useAtom(avatarPathAtom);
+  const setCurrentAvatar = useSetAtom(currentAvatarAtom);
   const [backgroundImagePath, setBackgroundImagePath] = useAtom(
     backgroundImagePathAtom
   );
@@ -32,6 +34,9 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
   );
 
   const handleChangeAvatar = (e: ChangeEvent<HTMLSelectElement>) => {
+    const currentAvatar = avatars.find(avatar => avatar.path === e.target.value);
+    if(!currentAvatar)return;
+    setCurrentAvatar(currentAvatar);
     setAvatarPath(e.target.value);
   };
 

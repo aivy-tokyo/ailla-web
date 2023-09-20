@@ -1,5 +1,7 @@
 // 複数の箇所で使用する型やインターフェースを定義
 
+import { type } from "os";
+
 export type FortuneTellingType = "OVERVIEW" | "SUCCESS" | "TALENT" | "DEPRESSED" | "VOCATION" | "TODAY";
 export type FortuneTellingLabel = "あなたの本質" | "あなたの成功方法" | "あなたの才能" | "落ち込んだ時の対処法" | "あなたの適職" | "今日のアドバイス" 
 
@@ -33,9 +35,47 @@ export type Prefecture =
   | '宮崎県' | '鹿児島県' | '沖縄県' | '選択しない';
 
 
+export type CharactersOfClovaVoice = 
+'shinji' | 
+'ntomoko' | 
+'nnaomi' | 
+'dnaomi_joyful' |
+'dnaomi_formal' | 
+'driko' |
+'deriko' | 
+'nsayuri' |
+'dhajime' |
+'ddaiki' |
+ 'dayumu' |
+ 'dmio' |
+ 'dsayuri' |
+ 'dtomoko' |
+ 'dnaomi';
+
+ export type CharactersOfGoogleTts = 
+ 'en-GB-Standard-A' |
+ 'en-GB-Standard-B' |
+ 'en-GB-Standard-C' |
+ 'en-GB-Standard-D' |
+ 'en-GB-Standard-F' |
+ 'en-US-Polyglot-1' |
+ 'en-US-Standard-A' |
+ 'en-US-Standard-B' |
+ 'en-US-Standard-C' |
+ 'en-US-Standard-D' |
+ 'en-US-Standard-E' |
+ 'en-US-Standard-F' |
+ 'en-US-Standard-G' |
+ 'en-US-Standard-H' |
+ 'en-US-Standard-I' |
+ 'en-US-Standard-J';
+
+
 export interface Avatar {
   label: string,
   path: string,
+  ttsEnglish: CharactersOfGoogleTts,
+  ttsJapanese: CharactersOfClovaVoice,
 };
 export interface BackgroundImage {
   label: string,
@@ -44,7 +84,7 @@ export interface BackgroundImage {
 
 export type UserGenderType = '男性' | '女性' | '選択しない'
 
-export type TextToSpeechApiType = 'koeiroMap' | 'voiceVox' | 'clovaVoice' | 'googleTextToSpeech'
+export type TextToSpeechApiType = 'clovaVoice' | 'googleTextToSpeech'
 
 export type ChatMode = 'mic' | 'text' | 'none';
 

@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { TextToSpeechClient } from "@google-cloud/text-to-speech";
 import * as Sentry from "@sentry/nextjs";
+import { CharactersOfGoogleTts } from "@/utils/types";
 
 const client = new TextToSpeechClient({
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
@@ -27,7 +28,7 @@ const synthesizeJapaneseSpeech = async (text: string) => {
 };
 
 // for English
-const synthesizeEnglishSpeech = async (text: string) => {
+const synthesizeEnglishSpeech = async (text: string, voiceName: CharactersOfGoogleTts) => {
   const request = {
     audioConfig: {
       audioEncoding: "MP3" as const,
@@ -40,7 +41,7 @@ const synthesizeEnglishSpeech = async (text: string) => {
     },
     voice: {
       languageCode: "en-US",
-      name: "en-US-Neural2-F",
+      name: voiceName,
     },
   };
   return await client.synthesizeSpeech(request);
@@ -50,21 +51,11 @@ const synthesizeEnglishSpeech = async (text: string) => {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
-  const { text, lang = 'en' } = req.body;
+  const { text, voiceName } = req.body;
   try {
     // sythesize text
     let response;
-    switch (lang) {
-      case "ja":
-        [response] = await synthesizeJapaneseSpeech(text);
-        break;
-      case "en":
-        [response] = await synthesizeEnglishSpeech(text);
-        break;
-      default:
-        throw new Error("Unsupported language");
-    }
-
+    [response] = await synthesizeEnglishSpeech(text, voiceName);
     // send audio
     res.setHeader("Content-Type", "audio/mpeg");
     res.send(response.audioContent);

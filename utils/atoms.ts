@@ -1,7 +1,7 @@
 import { Message } from "@/features/messages/messages";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { TextToSpeechApiType } from "./types";
+import { Avatar, TextToSpeechApiType } from "./types";
 import { avatars, backgroundImages } from "./constants";
 import { UserInfo } from "../entities/UserInfo";
 import { Viewer } from "../features/vrmViewer/viewer";
@@ -31,6 +31,13 @@ export const avatarPathAtom = atomWithStorage<string>(
   "avatar",
   avatars[0].path
 );
+
+// 表示するアバターのアトム
+export const currentAvatarAtom = atomWithStorage<Avatar>(
+  "currentAvatar",
+  avatars[0]
+);
+
 // 表示する背景画像のパスのアトム
 export const backgroundImagePathAtom = atomWithStorage<string>(
   "backgroundImagePath",
