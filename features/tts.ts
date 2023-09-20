@@ -1,23 +1,21 @@
 import axios, { AxiosResponse } from "axios";
-import { Avatar, TextToSpeechApiType } from "../utils/types";
+import { Avatar } from "../utils/types";
 import * as Sentry from "@sentry/nextjs";
 
 type Params = {
   text: string;
-  textToSpeechApiType: TextToSpeechApiType;
   lang?: 'ja' | 'en' | string;
   currentAvatar: Avatar;
 };
 
 export const tts = async ({
   text,
-  textToSpeechApiType,
   lang = 'en',
   currentAvatar,
 }: Params): Promise<ArrayBuffer | undefined> => {
   try {
-    console.log('現在のアバター→',currentAvatar);
     let response: AxiosResponse<ArrayBuffer>;
+
     if(lang === 'en'){ //英語ならGoogleTextToSpeechAPI
       const voiceName = currentAvatar.ttsEnglish
       response = await axios.post('/api/synthesize', {
@@ -44,7 +42,6 @@ export const tts = async ({
       console.error('Unsupported language');
         return undefined;
     }
-    // console.log('Synthesis succeeded:', textToSpeechApiType);
   } catch (error) {
     Sentry.captureException(error);
   }

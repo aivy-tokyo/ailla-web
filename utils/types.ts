@@ -84,8 +84,6 @@ export interface BackgroundImage {
 
 export type UserGenderType = '男性' | '女性' | '選択しない'
 
-export type TextToSpeechApiType = 'clovaVoice' | 'googleTextToSpeech'
-
 export type ChatMode = 'mic' | 'text' | 'none';
 
 export type ButtonProps = {

@@ -2,7 +2,6 @@ import { useAtomValue, useSetAtom } from "jotai";
 import {
   chatLogAtom,
   isCharactorSpeakingAtom,
-  textToSpeechApiTypeAtom,
   userInfoAtom,
 } from "../utils/atoms";
 import { ChatCompletionRequestMessage } from "openai";
@@ -16,7 +15,6 @@ import { useCharactorSpeaking } from "./useCharactorSpeaking";
 export const useFreeTalk = () => {
   const viewer = useViewer();
   const userInfo = useAtomValue(userInfoAtom);
-  const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
   const setChatLog = useSetAtom(chatLogAtom);
   const { speakCharactor } = useCharactorSpeaking();
 
@@ -43,8 +41,7 @@ export const useFreeTalk = () => {
       setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
       await speakCharactor({
         text: newMessages[newMessages.length - 1].content,
-        viewerModel: viewer.model,
-        textToSpeechApiType,
+        viewerModel: viewer.model
       });
     } catch (error) {
       Sentry.captureException(error);
@@ -55,7 +52,6 @@ export const useFreeTalk = () => {
     setChatLog,
     setIsCharactorSpeaking,
     speakCharactor,
-    textToSpeechApiType,
     userInfo?.name,
     viewer.model,
   ]);
@@ -84,7 +80,6 @@ export const useFreeTalk = () => {
         await speakCharactor({
           text: newMessages[newMessages.length - 1].content,
           viewerModel: viewer.model,
-          textToSpeechApiType,
         });
       } catch (error) {
         Sentry.captureException(error);
@@ -96,7 +91,6 @@ export const useFreeTalk = () => {
       userInfo?.name,
       messages,
       speakCharactor,
-      textToSpeechApiType,
     ]
   );
 

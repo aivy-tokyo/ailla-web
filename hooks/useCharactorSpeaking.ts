@@ -1,6 +1,5 @@
 import { Model } from "../features/vrmViewer/model";
 import { useCallback, useEffect } from "react";
-import { TextToSpeechApiType } from "../utils/types";
 import { tts } from "../features/tts";
 import * as Sentry from "@sentry/nextjs";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -10,7 +9,6 @@ import { useViewer } from "./useViewer";
 type Props = {
   text: string;
   viewerModel: Model;
-  textToSpeechApiType: TextToSpeechApiType;
   lang?: string;
   onSpeaking?: (text: string) => void;
   onSpeakingEnd?: () => void;
@@ -35,7 +33,6 @@ export const useCharactorSpeaking = () => {
     async ({
       text,
       viewerModel,
-      textToSpeechApiType,
       lang = "en",
       onSpeaking,
       onSpeakingEnd,
@@ -44,7 +41,7 @@ export const useCharactorSpeaking = () => {
       setIsCharactorSpeaking(true);
       try {
         viewerModel.resumeAudio();
-        const buffer = await tts({ text, textToSpeechApiType, lang, currentAvatar });
+        const buffer = await tts({ text, lang, currentAvatar });
         if (!buffer) {
           return;
         }

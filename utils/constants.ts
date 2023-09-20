@@ -1,4 +1,4 @@
-import { Avatar, BackgroundImage, Prefecture, TextToSpeechApiType } from "./types";
+import { Avatar, BackgroundImage, Prefecture } from "./types";
 
 export const TableNames = {
   users: 'AILLA',
@@ -96,28 +96,4 @@ export const prefectures: Prefecture[] = [
   '香川県', '愛媛県', '高知県', '福岡県', 
   '佐賀県', '長崎県', '熊本県', '大分県', 
   '宮崎県', '鹿児島県', '沖縄県'
-];
-
-interface TextToSpeechApi {
-  label: string,
-  value: TextToSpeechApiType,
-};
-
-export const textToSpeechApiTypeList: TextToSpeechApi[] = [
-  // {
-  //   label: 'koeiro map',
-  //   value: 'koeiroMap'
-  // },
-  // {
-  //   label: 'VOICEVOX',
-  //   value: 'voiceVox'
-  // },
-  {
-    label: 'CLOVA Voice',
-    value: 'clovaVoice'
-  },
-  {
-    label: 'Google/Text-to-Speech Ai',
-    value: 'googleTextToSpeech'
-  },
 ];

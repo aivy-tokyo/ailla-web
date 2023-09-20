@@ -1,11 +1,10 @@
-import { useAtomValue, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import {
   chatLogAtom,
   isCharactorSpeakingAtom,
-  textToSpeechApiTypeAtom,
 } from "../utils/atoms";
 import { ChatCompletionRequestMessage } from "openai";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
@@ -25,7 +24,6 @@ const situationFileNames = [
 export const useSituationTalk = () => {
   const viewer = useViewer();
   const { speakCharactor } = useCharactorSpeaking();
-  const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
   const setChatLog = useSetAtom(chatLogAtom);
   const [roleOfAi, setRoleOfAi] = useState<string>("");
   const [roleOfUser, setRoleOfUser] = useState<string>("");
@@ -81,14 +79,13 @@ export const useSituationTalk = () => {
         // キャラクター発話
         await speakCharactor({
           text: newMessages[newMessages.length - 1].content,
-          viewerModel: viewer.model,
-          textToSpeechApiType,
+          viewerModel: viewer.model
         });
       } catch (error) {
         console.error(error);
       }
     },
-    [setChatLog, speakCharactor, textToSpeechApiType, viewer.model]
+    [setChatLog, speakCharactor, viewer.model]
   );
 
   const sendMessage = useCallback(
@@ -123,7 +120,6 @@ export const useSituationTalk = () => {
         await speakCharactor({
           text: newMessages[newMessages.length - 1].content,
           viewerModel: viewer.model,
-          textToSpeechApiType,
         });
       } catch (error) {
         console.error(error);
@@ -139,7 +135,6 @@ export const useSituationTalk = () => {
       messages,
       roleOfAi,
       speakCharactor,
-      textToSpeechApiType,
     ]
   );
 

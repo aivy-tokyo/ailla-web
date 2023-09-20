@@ -1,7 +1,7 @@
 import { Message } from "@/features/messages/messages";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { Avatar, TextToSpeechApiType } from "./types";
+import { Avatar } from "./types";
 import { avatars, backgroundImages } from "./constants";
 import { UserInfo } from "../entities/UserInfo";
 import { Viewer } from "../features/vrmViewer/viewer";
@@ -42,11 +42,6 @@ export const currentAvatarAtom = atomWithStorage<Avatar>(
 export const backgroundImagePathAtom = atomWithStorage<string>(
   "backgroundImagePath",
   backgroundImages[0].path
-);
-// テキスト読み上げAPIの種類のアトム
-export const textToSpeechApiTypeAtom = atomWithStorage<TextToSpeechApiType>(
-  "textToSpeechApiType",
-  "googleTextToSpeech"
 );
 // ボタンの使い方を説明したかどうかのアトム
 export const isButtonUsageExplainedAtom = atomWithStorage<boolean>(
