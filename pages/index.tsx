@@ -29,10 +29,10 @@ export default function Home() {
     <>
       <AppHead />
       <AuthGuard>
-          <VrmViewer />
-          <FirstGreeting>
-            <SwitchContainer mode={mode as ContainerMode} />
-          </FirstGreeting>
+        <VrmViewer />
+        <FirstGreeting>
+          <SwitchContainer mode={mode as ContainerMode} />
+        </FirstGreeting>
       </AuthGuard>
     </>
   );
