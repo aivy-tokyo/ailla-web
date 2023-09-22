@@ -1,5 +1,9 @@
 import { useAtomValue, useSetAtom } from "jotai";
-import { chatLogAtom, textToSpeechApiTypeAtom } from "../utils/atoms";
+import {
+  chatLogAtom,
+  isCharactorSpeakingAtom,
+  textToSpeechApiTypeAtom,
+} from "../utils/atoms";
 import { ChatCompletionRequestMessage } from "openai";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
@@ -25,6 +29,8 @@ export const useSituationTalk = () => {
   const setChatLog = useSetAtom(chatLogAtom);
   const [roleOfAi, setRoleOfAi] = useState<string>("");
   const [roleOfUser, setRoleOfUser] = useState<string>("");
+
+  const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
 
   const [situation, setSituation] = useState<Situation | null>();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
@@ -90,6 +96,8 @@ export const useSituationTalk = () => {
       if (!viewer.model || !situation || !message.trim()) return;
 
       try {
+        setIsCharactorSpeaking(true);
+
         // TODO 各stepのkeySentencesを確認して、クリアしたstepを記録する
 
         // Userメッセージを送信
@@ -119,11 +127,14 @@ export const useSituationTalk = () => {
         });
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsCharactorSpeaking(false);
       }
     },
     [
       viewer.model,
       situation,
+      setIsCharactorSpeaking,
       setChatLog,
       messages,
       roleOfAi,
