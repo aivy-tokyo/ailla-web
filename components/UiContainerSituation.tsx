@@ -8,6 +8,7 @@ import { useSituationTalk } from "../hooks/useSituationTalk";
 import { useSetAtom } from "jotai";
 import { backgroundImagePathAtom, chatLogAtom } from "../utils/atoms";
 import { backgroundImages } from "../utils/constants";
+import { ButtonUsageModal } from "./ButtonUsageModal";
 
 export const UiContainerSituation: React.FC = () => {
   const router = useRouter();
@@ -76,6 +77,7 @@ export const UiContainerSituation: React.FC = () => {
           roleOfUser={roleOfUser}
         />
       )}
+      <ButtonUsageModal />
     </>
   );
 };

@@ -1,6 +1,6 @@
-import { FormEvent, use, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { chatLogAtom, isCharactorSpeakingAtom } from "@/utils/atoms";
-import { useAtomValue, useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { SpeechTextArea } from "./SpeechTextArea";
 import { ChatMode } from "../utils/types";
 import { ButtonMic } from "./ButtonMic";
@@ -8,7 +8,6 @@ import { ButtonSendMessage } from "./ButtonSendMessage";
 import { ButtonHelp } from "./ButtonHelp";
 import { ButtonChat } from "./ButtonChat";
 import { useVoiceInput } from "../hooks/useVoiceInput";
-import { isButtonUsageExplainedAtom } from "@/utils/atoms";
 import { ButtonClose } from "./ButtonClose";
 
 type Props = {
@@ -20,19 +19,15 @@ type Props = {
 
 const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
   const isCharacterSpeaking = useAtomValue(isCharactorSpeakingAtom);
-  const [isButtonUsageExplained, setIsButtonUsageExplained] = useAtom(
-    isButtonUsageExplainedAtom
-  );
   const [chatMode, setChatMode] = useState<ChatMode>("mic");
-
+  
   // VoiceInputの状態管理とロジックを取得
   const { startRecording, stopRecording, isMicRecording } = useVoiceInput({
     onStopRecording: useCallback(
       (message: string) => {
-        setIsButtonUsageExplained(true);
         sendChat(message);
       },
-      [sendChat, setIsButtonUsageExplained]
+      [sendChat]
     ),
   });
   // isCharacterSpeakingがtrueの間はRecordingを止める
@@ -127,14 +122,6 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
               <div className="w-full max-w-md mx-auto flex justify-center items-center gap-3 px-3">
                 <ButtonHelp onClick={toggleHint} disabled={!toggleHint} />
                 <div className="relative flex justify-center items-center">
-                  {!isButtonUsageExplained && (
-                    <span
-                      className={`absolute top-0 tooltip tooltip-top tooltip-info ${
-                        isButtonUsageExplained ? "" : "tooltip-open"
-                      }`}
-                      data-tip="マイクを使用するにはボタンを押し続けてください"
-                    ></span>
-                  )}
                   {isMicRecording && (
                     <span className="absolute w-[65%] h-[65%] bg-white rounded-full animate-ping"></span>
                   )}
