@@ -5,6 +5,7 @@ import { useFreeTalk } from "../hooks/useFreeTalk";
 import { useRouter } from "next/router";
 import { useSetAtom } from "jotai";
 import { chatLogAtom } from "@/utils/atoms";
+import { ButtonUsageModal } from "./ButtonUsageModal";
 
 export const UiContainerFreeTalk: React.FC = () => {
   const router = useRouter();
@@ -26,6 +27,7 @@ export const UiContainerFreeTalk: React.FC = () => {
     <>
       <HeaderUi onClickEndTalk={endTalk} />
       <BottomUi sendChat={sendMessage} />
+      <ButtonUsageModal />
     </>
   );
 };
