@@ -3,8 +3,9 @@ import BottomUi from "./BottomUi";
 import { HeaderUi } from "./HeaderUi";
 import { useFreeTalk } from "../hooks/useFreeTalk";
 import { useRouter } from "next/router";
-import { useSetAtom } from "jotai";
-import { chatLogAtom } from "@/utils/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import { chatLogAtom, isButtonUsageExplainedAtom } from "@/utils/atoms";
+import { ButtonUsageModal } from "./ButtonUsageModal";
 
 export const UiContainerFreeTalk: React.FC = () => {
   const router = useRouter();
@@ -16,16 +17,20 @@ export const UiContainerFreeTalk: React.FC = () => {
   }, [router, setChatLog]);
 
   // FreeTalkの状態管理とロジックを取得
+  const isButtonUsageExplained = useAtomValue(isButtonUsageExplainedAtom);
   const { sendMessage, startFreeTalk } = useFreeTalk();
   useEffect(() => {
-    startFreeTalk();
-  }, [startFreeTalk]);
+    if (isButtonUsageExplained) {
+      startFreeTalk();
+    }
+  }, [startFreeTalk, isButtonUsageExplained]);
 
 
   return (
     <>
       <HeaderUi onClickEndTalk={endTalk} />
       <BottomUi sendChat={sendMessage} />
+      <ButtonUsageModal />
     </>
   );
 };
