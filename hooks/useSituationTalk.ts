@@ -13,7 +13,7 @@ import { Situation } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
 const situationFileNames = [
-  // public/Situationsフォルダ内のファイル名を指定"
+  // public/situations フォルダ内のファイル名を指定"
   "checkIn.json",
   "checkIn2.json",
   "checkOut.json",
@@ -49,7 +49,7 @@ export const useSituationTalk = () => {
   useEffect(() => {
     Promise.all(
       situationFileNames.map((fileName) =>
-        fetch(`Situations/${fileName}`).then((res) => res.json())
+        fetch(`situations/${fileName}`).then((res) => res.json())
       )
     ).then((dataArray) => setSituationList(dataArray));
   }, []);
