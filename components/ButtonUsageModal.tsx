@@ -12,9 +12,14 @@ export function ButtonUsageModal() {
     if (!isButtonUsageExplained) {
       // @ts-ignore
       modal_button_usage.showModal();
-      setIsButtonUsageExplained(true);
     }
   }, [isButtonUsageExplained, setIsButtonUsageExplained]);
+  useEffect(() => {
+    // @ts-ignore
+    modal_button_usage.addEventListener("close", () => {
+      setIsButtonUsageExplained(true);
+    });
+  }, [setIsButtonUsageExplained]);
 
   const [recordingText, setRecordingText] = useState<string>("");
   const { startRecording, stopRecording, isMicRecording } = useVoiceInput({

@@ -1,6 +1,6 @@
 {
   "title": "recommended places around the hotel",
-  "description": "ホテル周辺のおすすめの場所を聞かれた時の会話です。皇居、銀座、東京ミッドタウン日比谷を案内します。",
+  "description": "ホテルの周りのおすすめの場所を案内しているシーンです。",
   "roleOfAi": "Customer",
   "roleOfUser": "Staff",
   "steps": [
