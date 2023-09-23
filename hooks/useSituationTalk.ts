@@ -49,7 +49,7 @@ export const useSituationTalk = () => {
   useEffect(() => {
     Promise.all(
       situationFileNames.map((fileName) =>
-        fetch(`situations/${fileName}`).then((res) => res.json())
+        fetch(`situation_data/${fileName}`).then((res) => res.json())
       )
     ).then((dataArray) => setSituationList(dataArray));
   }, []);
