@@ -2,10 +2,7 @@ import * as Sentry from "@sentry/nextjs";
 import { useAtomValue } from "jotai";
 import { useContext, useCallback, useRef } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
-import {
-  userInfoAtom,
-  textToSpeechApiTypeAtom,
-} from "../utils/atoms";
+import { userInfoAtom } from "../utils/atoms";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
 const introductionGreeting = `Hi {UserName}! I'm Ailla, your English conversation partner. Let's have a fun and engaging chat together!`;
@@ -59,7 +56,6 @@ export const useFirstConversation = (props: {
 }) => {
   const { viewer } = useContext(ViewerContext);
   const userInfo = useAtomValue(userInfoAtom);
-  const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
   const { speakCharactor } = useCharactorSpeaking();
   // speakを継続するかどうかのフラグ
   const isSpeaking = useRef(true);
@@ -84,7 +80,6 @@ export const useFirstConversation = (props: {
         await speakCharactor({
           text: replaceUserName(introductionGreeting, userName),
           viewerModel,
-          textToSpeechApiType,
           onSpeaking,
           onSpeakingEnd,
         });
@@ -96,7 +91,6 @@ export const useFirstConversation = (props: {
         await speakCharactor({
           text: replaceUserName(appExplanation, userName),
           viewerModel,
-          textToSpeechApiType,
           lang: "ja",
           onSpeaking,
           onSpeakingEnd,
@@ -114,7 +108,6 @@ export const useFirstConversation = (props: {
         await speakCharactor({
           text: replaceUserName(comeBackGreetingList[randomIndex], userName),
           viewerModel,
-          textToSpeechApiType,
           onSpeaking,
           onSpeakingEnd,
         });
@@ -126,7 +119,6 @@ export const useFirstConversation = (props: {
         await speakCharactor({
           text: lessonsStartPhrases[randomIndex],
           viewerModel,
-          textToSpeechApiType,
           lang: "ja",
           onSpeaking,
           onSpeakingEnd,
@@ -135,7 +127,7 @@ export const useFirstConversation = (props: {
     } catch (error) {
       Sentry.captureException(error);
     }
-  }, [viewer.model, userInfo, props, speakCharactor, textToSpeechApiType]);
+  }, [viewer.model, userInfo, props, speakCharactor]);
 
   const stopSpeaking = useCallback(() => {
     viewer.model?.stopSpeak();

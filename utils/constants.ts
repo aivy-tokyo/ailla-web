@@ -1,4 +1,4 @@
-import { Avatar, BackgroundImage, Prefecture, TextToSpeechApiType } from "./types";
+import { Avatar, BackgroundImage, Prefecture } from "./types";
 
 export const TableNames = {
   users: 'AILLA',
@@ -10,35 +10,45 @@ export const GPT_MODEL="gpt-3.5-turbo";
 export const avatars: Avatar[]= [
   {
     label: '響狐リク',
-    path: '/vrm/Liqu.vrm'
+    path: '/vrm/Liqu.vrm',
+    ttsEnglish: 'en-US-Standard-H',
+    ttsJapanese: 'driko',
   },
   {
     label: '安穏こころ',
     path: '/vrm/Cocoro.vrm',
+    ttsEnglish: 'en-GB-Standard-A',
+    ttsJapanese: 'dtomoko',
   },
   {
     label: '九条フレカ私服',
     path: '/vrm/Fureka_shifuku.vrm',
+    ttsEnglish: 'en-GB-Standard-A',
+    ttsJapanese: 'dmio'
   },
   {
     label: 'URARA',
-    path: '/vrm/AvatarSample_A2.vrm'
+    path: '/vrm/AvatarSample_A2.vrm',
+    ttsEnglish: 'en-US-Standard-F',
+    ttsJapanese: 'dtomoko',
   },
   {
     label: 'URARA_BOY',
     path: '/vrm/URARA_BOY.vrm',
+    ttsEnglish:'en-US-Standard-J',
+    ttsJapanese: 'ddaiki'
   },
   {
     label: 'URARA_BOY_Hoodie',
     path: '/vrm/URARA_BOY_Hoodie.vrm',
-  },
-  {
-    label: 'AvatarSample2',
-    path: '/vrm/AvatarSample_A.vrm',
+    ttsEnglish:'en-US-Standard-J',
+    ttsJapanese: 'ddaiki'
   },
   {
     label: 'AvatarSample3',
-    path: '/vrm/AvatarSample_B.vrm'
+    path: '/vrm/AvatarSample_B.vrm',
+    ttsEnglish: 'en-GB-Standard-A',
+    ttsJapanese: 'dnaomi_joyful',
   }
 ];
 
@@ -86,28 +96,4 @@ export const prefectures: Prefecture[] = [
   '香川県', '愛媛県', '高知県', '福岡県', 
   '佐賀県', '長崎県', '熊本県', '大分県', 
   '宮崎県', '鹿児島県', '沖縄県'
-];
-
-interface TextToSpeechApi {
-  label: string,
-  value: TextToSpeechApiType,
-};
-
-export const textToSpeechApiTypeList: TextToSpeechApi[] = [
-  // {
-  //   label: 'koeiro map',
-  //   value: 'koeiroMap'
-  // },
-  // {
-  //   label: 'VOICEVOX',
-  //   value: 'voiceVox'
-  // },
-  {
-    label: 'CLOVA Voice',
-    value: 'clovaVoice'
-  },
-  {
-    label: 'Google/Text-to-Speech Ai',
-    value: 'googleTextToSpeech'
-  },
 ];

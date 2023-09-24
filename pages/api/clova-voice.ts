@@ -9,11 +9,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const { text, lang = "en" } = req.body;
+    const { text, speaker } = req.body;
     const response = await axios.post(
       ENDPOINT_URL,
       {
-        speaker: lang === "en" ? "danna" : "driko",
+        speaker: speaker,
         text: text,
         format: "mp3",
         speed: 0,

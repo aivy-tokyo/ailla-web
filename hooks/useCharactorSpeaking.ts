@@ -1,16 +1,14 @@
 import { Model } from "../features/vrmViewer/model";
 import { useCallback, useEffect } from "react";
-import { TextToSpeechApiType } from "../utils/types";
 import { tts } from "../features/tts";
 import * as Sentry from "@sentry/nextjs";
-import { useSetAtom } from "jotai";
-import { isCharactorSpeakingAtom } from "../utils/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import { currentAvatarAtom, isCharactorSpeakingAtom } from "../utils/atoms";
 import { useViewer } from "./useViewer";
 
 type Props = {
   text: string;
   viewerModel: Model;
-  textToSpeechApiType: TextToSpeechApiType;
   lang?: string;
   onSpeaking?: (text: string) => void;
   onSpeakingEnd?: () => void;
@@ -18,6 +16,7 @@ type Props = {
 
 export const useCharactorSpeaking = () => {
   const viewer = useViewer();
+  const currentAvatar = useAtomValue(currentAvatarAtom);
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
 
   useEffect(() => {
@@ -34,7 +33,6 @@ export const useCharactorSpeaking = () => {
     async ({
       text,
       viewerModel,
-      textToSpeechApiType,
       lang = "en",
       onSpeaking,
       onSpeakingEnd,
@@ -43,7 +41,7 @@ export const useCharactorSpeaking = () => {
       setIsCharactorSpeaking(true);
       try {
         viewerModel.resumeAudio();
-        const buffer = await tts({ text, textToSpeechApiType, lang });
+        const buffer = await tts({ text, lang, currentAvatar });
         if (!buffer) {
           return;
         }
@@ -65,7 +63,7 @@ export const useCharactorSpeaking = () => {
         }, 500);
       }
     },
-    [setIsCharactorSpeaking]
+    [currentAvatar, setIsCharactorSpeaking]
   );
 
   return {

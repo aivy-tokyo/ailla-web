@@ -5,14 +5,12 @@ import { MdClose } from "react-icons/md";
 import {
   avatarPathAtom,
   backgroundImagePathAtom,
-  textToSpeechApiTypeAtom,
+  currentAvatarAtom,
 } from "../utils/atoms";
 import {
   avatars,
   backgroundImages,
-  textToSpeechApiTypeList,
 } from "../utils/constants";
-import { TextToSpeechApiType } from "../utils/types";
 import UserInfo from "./UserInfo";
 import { HeaderLabel } from "./HeaderLabel";
 
@@ -24,14 +22,15 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
   onClose,
 }) => {
   const [avatarPath, setAvatarPath] = useAtom(avatarPathAtom);
+  const setCurrentAvatar = useSetAtom(currentAvatarAtom);
   const [backgroundImagePath, setBackgroundImagePath] = useAtom(
     backgroundImagePathAtom
   );
-  const [textToSpeechApiType, setTextToSpeechApiType] = useAtom(
-    textToSpeechApiTypeAtom
-  );
 
   const handleChangeAvatar = (e: ChangeEvent<HTMLSelectElement>) => {
+    const currentAvatar = avatars.find(avatar => avatar.path === e.target.value);
+    if(!currentAvatar)return;
+    setCurrentAvatar(currentAvatar);
     setAvatarPath(e.target.value);
   };
 
@@ -39,9 +38,6 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
     setBackgroundImagePath(e.target.value);
   };
 
-  const handleChangeVoiceApi = (e: ChangeEvent<HTMLSelectElement>) => {
-    setTextToSpeechApiType(e.target.value as TextToSpeechApiType);
-  };
 
   return (
     <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed overflow-y-scroll">
@@ -88,22 +84,6 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
                 return (
                   <option key={index} value={image.path}>
                     {image.label}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          <div className="w-full">
-            <HeaderLabel>合成音声の種類を選ぶ</HeaderLabel>
-            <select
-              className="select select-bordered w-full max-w-xs"
-              onChange={(e) => handleChangeVoiceApi(e)}
-              value={textToSpeechApiType}
-            >
-              {textToSpeechApiTypeList.map((textToSpeechApi, index) => {
-                return (
-                  <option key={index} value={textToSpeechApi.value}>
-                    {textToSpeechApi.label}
                   </option>
                 );
               })}
