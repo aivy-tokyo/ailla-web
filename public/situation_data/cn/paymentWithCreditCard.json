@@ -1,0 +1,28 @@
+{
+    "title": "付款",
+    "description": "飲食店でお会計をするシーンです。顧客はクレジットカードでの支払いを希望します。",
+    "roleOfAi": "Customer",
+    "roleOfUser": "Staff",
+    "steps": [
+        {
+            "keySentences": ["账单"],
+            "description": "まずは伝票を渡し、中身を確認してもらおう",
+            "hint": "这是您的账单，请您确认。"
+        },
+        {
+            "keySentences": ["付款"],
+            "description": "次に支払い方法を確認しよう",
+            "hint": "您希望如何结算付款？"
+        },
+        {
+            "keySentences": ["信用卡"],
+            "description": "クレジットカードで支払う場合、カードを渡してもらおう",
+            "hint": "请问我可以拿你的信用卡吗？"
+        },
+        {
+            "keySentences": ["成功"],
+            "description": "支払いが完了したことを伝え、レシートを渡そう",
+            "hint": "您的付款已成功处理。这是您的收据。还有其他我可以帮助您的吗？"
+        }
+    ]
+}
