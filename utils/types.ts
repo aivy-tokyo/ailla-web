@@ -70,11 +70,27 @@ export type CharactersOfClovaVoice =
  'en-US-Standard-I' |
  'en-US-Standard-J';
 
+ export type CharactersOfGoogleChineseTts = 
+ 'cmn-CN-Standard-A' |
+ 'cmn-CN-Standard-B' |
+ 'cmn-CN-Standard-C' |
+ 'cmn-CN-Standard-D' |
+ 'cmn-CN-Wavenet-A' |
+ 'cmn-CN-Wavenet-B' |
+ 'cmn-CN-Wavenet-C' |
+ 'cmn-CN-Wavenet-D' |
+ 'cmn-TW-Standard-A' |
+ 'cmn-TW-Standard-B' |
+ 'cmn-TW-Standard-C'|
+ 'cmn-TW-Wavenet-A' |
+ 'cmn-TW-Wavenet-B' |
+ 'cmn-TW-Wavenet-C';
+
 
 export interface Avatar {
   label: string,
   path: string,
-  ttsEnglish: CharactersOfGoogleTts,
+  ttsChinese: CharactersOfGoogleChineseTts,
   ttsJapanese: CharactersOfClovaVoice,
 };
 export interface BackgroundImage {

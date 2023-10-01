@@ -54,7 +54,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
           <div className="p-10">
             {startButtonClicked ? (
               currentText && (
-                <p className="whitespace-pre-wrap text-white text-center text-xs font-bold bg-black bg-opacity-60 p-3 rounded">
+                <p className="whitespace-pre-wrap font-chinese text-white text-center text-xs font-bold bg-black bg-opacity-60 p-3 rounded">
                   {currentText}
                 </p>
               )
