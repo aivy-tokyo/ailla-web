@@ -47,7 +47,8 @@ export const useSituationTalk = () => {
   useEffect(() => {
     Promise.all(
       situationFileNames.map((fileName) =>
-        fetch(`situation_data/${fileName}`).then((res) => res.json())
+        // TODO: 言語ごとに処理を分ける
+        fetch(`situation_data/cn/${fileName}`).then((res) => res.json())
       )
     ).then((dataArray) => setSituationList(dataArray));
   }, []);

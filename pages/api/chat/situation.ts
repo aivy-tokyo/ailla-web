@@ -59,7 +59,10 @@ const generatePromptText = async ({
 const avoidReturnTwoRoles = (responseMessage: string) => {
   console.log('responseMessage->', responseMessage);
 
-  const matchPattern1 = responseMessage.match(/Customer:\s*([^]+?)\s*Staff:/);
+  // TODO: 言語ごとに処理を分ける
+  const matchPattern1 = responseMessage.match(
+    /フロントスタッフ:\s*([^]+?)\s*Staff:/
+  );
   if(matchPattern1 && matchPattern1[1]) {
     console.log("[!WARNING!]:Two roles responded.(matchPattern1))")
     return matchPattern1[1];

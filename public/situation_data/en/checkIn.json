@@ -7,34 +7,34 @@
     {
       "keySentences": ["reservation", "name"],
       "description": "まずは名前を確認しよう",
-      "hint": "请问您的预订姓名可以吗？"
+      "hint": "May I have your reservation name, please?"
     },
     {
       "keySentences": ["type", "room"],
       "description": "次に部屋のタイプを確認しよう",
-      "hint": "您预订什么类型的房间？"
+      "hint": "What type of room did you book?"
     },
     {
       "keySentences": ["passport", "identification"],
       "description": "次に身分証明書を確認しよう",
-      "hint": "办理入住手续时，我们需要护照或身份证。你有吗？"
+      "hint": "For check-in, we require either a passport or identification card. Do you have it with you?"
     },
     {
       "keySentences": ["payment"],
       "description": "次に支払い方法を確認しよう",
-      "hint": "您想如何付款？"
+      "hint": "How would you like to settle the payment?"
     },
     {
       "keySentences": ["room", "number"],
       "description": "最後に部屋番号を伝えよう",
-      "hint": "您的房间号是1234。电梯在那边。"
+      "hint": "Your room number is 1234. The elevator is over there."
     },
     {
       "keyPhrases": [
         "Thank you! Enjoy your stay."
       ],
       "description": "最後の挨拶をしよう",
-      "hint": "谢谢你！入住愉快。"
+      "hint": "Thank you! Enjoy your stay."
     }
   ]
 }
