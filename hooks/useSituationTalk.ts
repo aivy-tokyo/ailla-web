@@ -33,6 +33,7 @@ export const useSituationTalk = () => {
   const [situation, setSituation] = useState<Situation | null>();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const [situationList, setSituationList] = useState<Situation[]>([]);
+  const [endPhrase, setEndPhrase] = useState<string>("");
   const [stepStatus, setStepStatus] = useState<
     Array<Situation["steps"][number] & { isClear: boolean }>
   >([]);
@@ -75,6 +76,12 @@ export const useSituationTalk = () => {
         console.log("newMessages->", newMessages);
         setMessages(newMessages);
         setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
+        setEndPhrase(selectedSituation?.endPhrase?.description)
+
+        await speakCharactor({
+          text: await selectedSituation?.endPhrase?.description,
+          viewerModel: viewer.model
+        });
 
         // キャラクター発話
         await speakCharactor({

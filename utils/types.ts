@@ -117,10 +117,16 @@ export type SituationStep = {
   hint: string; // ヒント
 }
 
+export type EndPhrase = {
+  sentence: string
+  description: string
+}
+
 export type Situation = {
   title: string; // シチュエーションのタイトル
   description: string; // シチュエーションの説明
   roleOfAi: string; // AIの役割
   roleOfUser: string; // ユーザーの役割
   steps: SituationStep[];
+  endPhrase: EndPhrase
 };

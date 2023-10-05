@@ -3,8 +3,9 @@ import { Situation, SituationStep } from "@/utils/types";
 type ChatHintProps = {
   situation: Situation;
   steps: SituationStep[];
+  endPhrase: string
 };
-export const ChatHint: React.FC<ChatHintProps> = ({ steps, situation }) => (
+export const ChatHint: React.FC<ChatHintProps> = ({ steps, situation, endPhrase }) => (
   <div className="hint-container opacity-80 w-screen h-screen z-0 top-0 pt-5 px-3 flex fixed">
     <div className="overflow-y-auto w-full h-3/5 max-w-2xl mx-auto bg-black text-white rounded-3xl">
       <div className="flex flex-col justify-center items-center w-full px-5 py-3">
@@ -22,6 +23,8 @@ export const ChatHint: React.FC<ChatHintProps> = ({ steps, situation }) => (
             <p className="text-sm italic">Hint: {hint}</p>
           </div>
         ))}
+        <h3 className="text-lg font-bold mt-8">会話の終了</h3>
+        <p className="text-sm mt-1">終了フレーズは {endPhrase} です</p>
       </div>
     </div>
   </div>

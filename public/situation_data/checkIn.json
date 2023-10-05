@@ -36,5 +36,9 @@
       "description": "最後の挨拶をしよう",
       "hint": "Thank you! Enjoy your stay."
     }
-  ]
+  ],
+  "endPhrase": {
+    "sentence": "end",
+    "description":  "We will begin the check-in situation. <UserName> is in the role of staff. The closing phrase is 'end Talk'."
+  }
 }

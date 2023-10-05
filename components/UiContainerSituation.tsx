@@ -57,11 +57,40 @@ export const UiContainerSituation: React.FC = () => {
     [setBackgroundImagePath, situationList, startSituation]
   );
 
+  // situation開始時の会話を管理する
+  const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false)
+  // 始まりのボタンを押したかどうかの状態管理
+  const [startButtonClicked, setStartButtonClicked] = useState<boolean>(false);
+  const handleSkipFirstGreeting = useCallback(() => {
+    setFirstGreetingDone(true);
+  }, []);
+
   return (
     <>
+      {!firstGreetingDone && situation && (
+        <>
+          <div
+            className={`
+            fixed top-0 flex flex-col justify-end items-center h-screen w-full pb-52 bg-opacity-60
+            ${startButtonClicked ? "bg-transparent" : "bg-black"}
+            `}
+          >
+          <div className="p-10">
+          </div>
+          <div className="flex flex-col justify-end items-center">
+            <button
+              className="btn btn-primary btn-xs"
+              onClick={() => handleSkipFirstGreeting()}
+            >
+              スキップする
+          </button>
+          </div>
+        </div>
+        </>
+      )}
       <HeaderUi onClickEndTalk={endTalk} />
       {showHint && situation && (
-        <ChatHint situation={situation} steps={stepStatus} />
+        <ChatHint situation={situation} steps={stepStatus} endPhrase="test" />
       )}
       {!situation && (
         <ChatMenu
