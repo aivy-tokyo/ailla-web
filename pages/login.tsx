@@ -57,12 +57,13 @@ export default function LoginPage() {
         <button
           className="
         bg-green-500 hover:bg-green-700
-        text-white font-bold py-2 px-4 rounded
-        mt-4
+        text-white font-bold py-2 px-4 rounded-[10px]
+        mt-4 flex items-center justify-center
       "
           onClick={() => signin()}
         >
-          LINEログイン
+          <img src="/line_icon.svg" className="mr-3" alt="line_icon" />
+          LINEでログイン
         </button>
       </div>
     </>
