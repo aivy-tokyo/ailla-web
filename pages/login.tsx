@@ -40,7 +40,9 @@ export default function LoginPage() {
       justify-center items-center
       w-screen h-screen
       bg-white
+      bg-center bg-cover
     "
+        style={{ backgroundImage: "url('/background/login_background.png')" }}
       >
         <h1 className="text-4xl font-bold text-center">
           <img src="/logo_h.png" alt="AILLA" className="w-60 mx-auto" />
