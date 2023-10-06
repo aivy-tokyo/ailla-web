@@ -45,7 +45,7 @@ export default function LoginPage() {
         style={{ backgroundImage: "url('/background/login_background.png')" }}
       >
         <h1 className="text-4xl font-bold text-center">
-          <img src="/logo_h.png" alt="AILLA" className="w-60 mx-auto" />
+          <img src="/AILLA_logo_b.png" alt="AILLA" className="w-60 mx-auto" />
         </h1>
         <p className="p-3 mx-auto text-center">
           AI英会話サービス<strong>「AILLA」</strong>へようこそ!
