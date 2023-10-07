@@ -36,6 +36,7 @@ export const UiContainerSituation: React.FC = () => {
     situationList,
     sendMessage,
     startSituation,
+    stopSpeaking,
     roleOfAi,
     roleOfUser,
   } = useSituationTalk();
@@ -63,6 +64,7 @@ export const UiContainerSituation: React.FC = () => {
   const [startButtonClicked, setStartButtonClicked] = useState<boolean>(false);
   const handleSkipFirstGreeting = useCallback(() => {
     setFirstGreetingDone(true);
+    stopSpeaking()
   }, []);
 
   return (
@@ -71,7 +73,7 @@ export const UiContainerSituation: React.FC = () => {
         <>
           <div
             className={`
-            fixed top-0 flex flex-col justify-end items-center h-screen w-full pb-52 bg-opacity-60
+            fixed top-0 flex flex-col justify-end items-center h-screen w-full pb-52 bg-opacity-60 z-50
             ${startButtonClicked ? "bg-transparent" : "bg-black"}
             `}
           >
@@ -79,7 +81,7 @@ export const UiContainerSituation: React.FC = () => {
           </div>
           <div className="flex flex-col justify-end items-center">
             <button
-              className="btn btn-primary btn-xs"
+              className="btn btn-primary btn-xs z-50"
               onClick={() => handleSkipFirstGreeting()}
             >
               スキップする

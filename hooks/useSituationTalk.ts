@@ -145,12 +145,18 @@ export const useSituationTalk = () => {
     ]
   );
 
+  const stopSpeaking = useCallback(() => {
+    viewer.model?.stopSpeak()
+  }, [viewer.model])
+
   return {
     situation,
     stepStatus,
     situationList,
     messages,
-    startSituation: startSituationTalk,
+    startSituation: 
+    startSituationTalk,
+    stopSpeaking,
     sendMessage,
     roleOfAi,
     roleOfUser,
