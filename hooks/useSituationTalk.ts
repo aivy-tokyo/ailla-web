@@ -33,6 +33,9 @@ export const useSituationTalk = () => {
   const [situation, setSituation] = useState<Situation | null>();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const [situationList, setSituationList] = useState<Situation[]>([]);
+  // situation開始時の会話を管理する
+  const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false)
+  const [firstTalkText, setFirstTalkText] = useState<string>("")
   const [endPhrase, setEndPhrase] = useState<string>("");
   const [stepStatus, setStepStatus] = useState<
     Array<Situation["steps"][number] & { isClear: boolean }>
@@ -78,10 +81,12 @@ export const useSituationTalk = () => {
         setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
         setEndPhrase(selectedSituation?.endPhrase?.description)
 
+        setFirstTalkText(await selectedSituation.endPhrase.description)
         await speakCharactor({
           text: await selectedSituation?.endPhrase?.description,
           viewerModel: viewer.model
         });
+        await setFirstGreetingDone(true)
 
         // キャラクター発話
         await speakCharactor({
@@ -158,6 +163,9 @@ export const useSituationTalk = () => {
     startSituationTalk,
     stopSpeaking,
     sendMessage,
+    firstGreetingDone,
+    setFirstGreetingDone,
+    firstTalkText,
     roleOfAi,
     roleOfUser,
   };
