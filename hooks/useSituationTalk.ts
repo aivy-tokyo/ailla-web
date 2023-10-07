@@ -10,6 +10,8 @@ import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
 import { Situation } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
+import { userInfoAtom } from "../utils/atoms";
+import { useAtomValue } from "jotai";
 
 const situationFileNames = [
   // public/situations フォルダ内のファイル名を指定"
@@ -23,6 +25,7 @@ const situationFileNames = [
 
 export const useSituationTalk = () => {
   const viewer = useViewer();
+  const userInfo = useAtomValue(userInfoAtom);
   const { speakCharactor } = useCharactorSpeaking();
   const setChatLog = useSetAtom(chatLogAtom);
   const [roleOfAi, setRoleOfAi] = useState<string>("");
@@ -79,9 +82,12 @@ export const useSituationTalk = () => {
         console.log("newMessages->", newMessages);
         setMessages(newMessages);
         setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
-        setEndPhrase(selectedSituation?.endPhrase?.description)
+        setEndPhrase(await selectedSituation?.endPhrase.sentence)
 
-        setFirstTalkText(await selectedSituation.endPhrase.description)
+        processedFirstTalkText({
+          description: await selectedSituation.endPhrase.description,
+          sentence: await selectedSituation?.endPhrase.sentence,
+        })
         await speakCharactor({
           text: await selectedSituation?.endPhrase?.description,
           viewerModel: viewer.model
@@ -149,6 +155,16 @@ export const useSituationTalk = () => {
       speakCharactor,
     ]
   );
+
+  // JSONの <UserName>, <EndPhrase> の箇所に、適切な値を入れ込む
+  const processedFirstTalkText = useCallback((params: {
+    description: string,
+    sentence: string
+  }) => {
+    const { description, sentence } = params
+    const originalFirstTalkText = description.replace("<UserName>", userInfo?.name ?? "").replace("<EndPhrase>", sentence)
+    setFirstTalkText(originalFirstTalkText)
+  }, [])
 
   const stopSpeaking = useCallback(() => {
     viewer.model?.stopSpeak()

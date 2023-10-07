@@ -39,6 +39,6 @@
   ],
   "endPhrase": {
     "sentence": "end",
-    "description":  "We will begin the check-in situation. <UserName> is in the role of staff. The closing phrase is 'end Talk'."
+    "description":  "We will begin the check-in situation. <UserName> is in the role of staff. The closing phrase is <EndPhrase>."
   }
 }
