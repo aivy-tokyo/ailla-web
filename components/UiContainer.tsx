@@ -87,9 +87,9 @@ export const UiContainer = () => {
         <div className="modal-box">
           <h3 className="font-bold text-lg">使い方</h3>
           <p className="py-4">
-            このアプリでは、Aillaと英語で会話をすることができます。
+            このアプリでは、Aillaと中国語で会話をすることができます。
             <br />
-            英会話の練習には3つのモードがあります。
+            中国語の練習には3つのモードがあります。
             <br />
             <br />
             <strong>1. フリートークモード</strong>
@@ -106,7 +106,7 @@ export const UiContainer = () => {
             では、シチュエーションに沿った会話をすることができます。
             <br />
             <strong>リピートプラクティスモード</strong>
-            では、Aillaが英語を話すので、それを聞いてリピートすることで発音の練習をすることができます。
+            では、Aillaが中国語を話すので、それを聞いてリピートすることで発音の練習をすることができます。
             <br />
             <br />
             モードを選択すると、会話が始まります。

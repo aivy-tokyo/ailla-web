@@ -33,7 +33,7 @@ export const useCharactorSpeaking = () => {
     async ({
       text,
       viewerModel,
-      lang = "en",
+      lang = "cn",
       onSpeaking,
       onSpeakingEnd,
     }: Props) => {

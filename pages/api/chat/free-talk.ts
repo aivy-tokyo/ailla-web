@@ -11,13 +11,13 @@ const chat = new ChatOpenAI({
 });
 // TOPICのリスト
 const topics = [
-  "Hobbies", // Talking about favorite hobbies or interests.
-  "Travel", // Sharing experiences from places you've been or want to visit.
-  "Food", // Conversations about favorite dishes or restaurants.
-  "Movies and Music", // Discussing recent movies watched or favorite musicians.
-  "Sports", // Talking about favorite sports or teams.
-  "Family", // Light conversation about family members or pets.
-  "Recent Events", // Sharing what you did on the last holiday or weekend.
+  "爱好", // Talking about favorite hobbies or interests.
+  "旅行", // Sharing experiences from places you've been or want to visit.
+  "食物", // Conversations about favorite dishes or restaurants.
+  "电影和音乐", // Discussing recent movies watched or favorite musicians.
+  "运动的", // Talking about favorite sports or teams.
+  "家庭", // Light conversation about family members or pets.
+  "最近发生的事件", // Sharing what you did on the last holiday or weekend.
 ];
 const getRandomPickupTopic = () => {
   return topics[Math.floor(Math.random() * topics.length)];
@@ -25,7 +25,7 @@ const getRandomPickupTopic = () => {
 
 // IceBreakの会話をするためのSYSTEMのメッセージテンプレート
 const promptTemplateForIceBreak = new PromptTemplate({
-  template: `あなたは英会話の教師です。あなたの名前はAilla。生徒の名前は{userName}。英会話の授業を始める前のアイスブレイク会話をしてください。トピックは{topic}です。会話は100文字におさめてください。会話はかならず英語で行ってください。`,
+  template: `あなたは中国語会話の教師です。あなたの名前は艾拉。生徒の名前は{userName}。北京語会話の授業を始める前のアイスブレイク会話をしてください。トピックは{topic}です。会話は100文字におさめてください。会話はかならず中国語で行ってください。`,
   inputVariables: ["topic", "userName"],
 });
 

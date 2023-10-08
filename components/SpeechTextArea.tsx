@@ -33,8 +33,8 @@ export const SpeechTextArea: React.FC<SpeechTextAreaProps> = ({
             <p
               className={`${
                 chatLog.role === "user"
-                  ? "chat-bubble bg-gray-100 text-gray-600"
-                  : "chat-bubble bg-gray-800 text-white"
+                  ? "chat-bubble font-chinese bg-gray-100 text-gray-600 font-family-source-han-sans"
+                  : "chat-bubble font-chinese bg-gray-800 text-white font-family-source-han-sans"
               } max-w-[80vw] w-fit`}
             >
               {chatLog.content}

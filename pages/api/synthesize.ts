@@ -20,7 +20,7 @@ const synthesizeSpeech = async (text: string, voiceName: CharactersOfGoogleTts) 
       text: text,
     },
     voice: {
-      languageCode: "en-US",
+      languageCode: "zh-CN",
       name: voiceName,
     },
   };

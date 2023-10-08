@@ -4,20 +4,20 @@ import * as Sentry from "@sentry/nextjs";
 
 type Params = {
   text: string;
-  lang?: 'ja' | 'en' | string;
+  lang?: 'ja' | 'cn' | string;
   currentAvatar: Avatar;
 };
 
 export const tts = async ({
   text,
-  lang = 'en',
+  lang = 'cn',
   currentAvatar,
 }: Params): Promise<ArrayBuffer | undefined> => {
   try {
     let response: AxiosResponse<ArrayBuffer>;
 
-    if(lang === 'en'){ //英語ならGoogleTextToSpeechAPI
-      const voiceName = currentAvatar.ttsEnglish
+    if(lang === 'cn'){ //中国語ならGoogleTextToSpeechAPI
+      const voiceName = currentAvatar.ttsChinese;
       response = await axios.post('/api/synthesize', {
         text,
         voiceName,
