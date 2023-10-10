@@ -1,3 +1,4 @@
+import Image  from "next/image"
 import { useAtom } from "jotai";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -40,27 +41,35 @@ export default function LoginPage() {
       justify-center items-center
       w-screen h-screen
       bg-white
+      bg-center bg-cover
     "
+        style={{ backgroundImage: "url('/background/login_background.png')" }}
       >
         <h1 className="text-4xl font-bold text-center">
-          <img src="/logo_h.png" alt="AILLA" className="w-60 mx-auto" />
+          <Image width={215} height={132} src="/AILLA_logo_b.png" alt="AILLA" className="mx-auto" />
         </h1>
-        <p className="p-3 mx-auto text-center">
-          AI英会話サービス<strong>「AILLA」</strong>へようこそ!
+        <p className="mt-7 p-3 mx-auto text-center text-[#47556d]">
+          AI英会話サービス「AILLA」へようこそ！
           <br />
           LINEアカウントでログインして
           <br />
-          AILLAと<strong>「Let&apos;s talk English!」</strong>
+          サービスを開始しましょう！
         </p>
         <button
           className="
         bg-green-500 hover:bg-green-700
-        text-white font-bold py-2 px-4 rounded
-        mt-4
+        text-white font-bold py-2 rounded-[10px]
+        mt-9 grid grid-cols-[2fr,7fr] items-center gap-3
+        w-[270px]
       "
           onClick={() => signin()}
         >
-          LINEログイン
+          <div className="mr-3 border-r border-[#00000014] w-[100%] flex justify-center">
+            <Image width={40} height={40} src="/line_icon.svg"  alt="line_icon" />
+          </div>
+          <p className="text-[19px]">
+            LINEでログイン
+          </p>
         </button>
       </div>
     </>
