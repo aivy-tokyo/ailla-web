@@ -108,15 +108,16 @@ export const UiContainer = () => {
               {currentText}
             </p>
           )}
-          <button
-            className="btn btn-primary btn-xs"
-            onClick={() => handleSkipFirstGreeting()}
-          >
-            スキップする
-          </button>
+            <div className="flex justify-center bg-white bg-opacity-20 w-[8rem] h-[2.3rem] rounded-[7rem] absolute left-1/2 transform -translate-x-1/2 bottom-[3rem]">
+              <button className="text-[1rem]" onClick={() => handleSkipFirstGreeting()}>
+                スキップする
+              </button>
+            </div>
         </div>
       )}
       {/* Open the modal using document.getElementById('ID').showModal() method */}
+
+
       <dialog id="modal_comming_soon" className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Coming Soon</h3>
