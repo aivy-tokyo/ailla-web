@@ -1,6 +1,16 @@
 import Image from "next/image";
 import { PropsWithChildren, useContext, useState, useCallback } from "react";
-import { ViewerContext } from "../features/vrmViewer/viewerContext";
+import { FirstGreetingContext } from "@/features/firstGreetingContext";
+
+export const FirstGreetingProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false);
+
+  return (
+    <FirstGreetingContext.Provider value={{ firstGreetingDone, setFirstGreetingDone }}>
+      {children}
+    </FirstGreetingContext.Provider>
+  );
+};
 
 export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
 
@@ -78,6 +88,6 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
       </>
     );
   } else {
-    return <>{children}</>;
+    return <FirstGreetingProvider>{children}</FirstGreetingProvider>;
   }
 };

@@ -7,6 +7,7 @@ import { chatLogAtom, isVoiceInputAllowedAtom } from "../utils/atoms";
 import { useVoiceInput } from "../hooks/useVoiceInput";
 import * as Sentry from "@sentry/nextjs";
 import { useFirstConversation } from "../hooks/useFirstConversation";
+import { FirstGreetingContext } from "@/features/firstGreetingContext";
 
 export const UiContainer = () => {
   const router = useRouter();
@@ -14,7 +15,8 @@ export const UiContainer = () => {
   const isVoiceInputAllowed = useAtomValue(isVoiceInputAllowedAtom);
   const setChatLog = useSetAtom(chatLogAtom);
   // 最初の挨拶をしたかどうかの状態管理
-  const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false);
+  const { firstGreetingDone, setFirstGreetingDone } =
+    useContext(FirstGreetingContext);
   // 話しているテキストの状態管理
   const [currentText, setCurrentText] = useState<string>("");
   // 最初の挨拶をする関数
@@ -34,16 +36,17 @@ export const UiContainer = () => {
         Sentry.captureException(error);
       }
     }
-  }, [firstGreetingDone, speak, viewer.model]);
+  }, [firstGreetingDone, setFirstGreetingDone, speak, viewer.model]);
 
-  useEffect(() => {
-    greet();
-  }, []);
+  useEffect(() => {    
+    if (!firstGreetingDone) greet();
+  }, [firstGreetingDone]);
+
   const handleSkipFirstGreeting = useCallback(() => {
     viewer.model?.stopSpeak();
     setFirstGreetingDone(true);
     stopSpeaking();
-  }, [stopSpeaking, viewer.model]);
+  }, [stopSpeaking, setFirstGreetingDone, viewer.model]);
 
   useEffect(() => {
     viewer.model?.stopSpeak();
@@ -69,7 +72,7 @@ export const UiContainer = () => {
         englishTitle: "Situation talk",
         onClick: () => router.push("/?mode=situation"),
       },
-      
+
       {
         title: "リピートプラクティス",
         englishTitle: "Repeat practice",
@@ -114,16 +117,22 @@ export const UiContainer = () => {
       <HeaderUi />
       {firstGreetingDone ? (
         <div className="flex justify-center">
-          <div className="fixed bottom-6 flex flex-col items-center gap-4 p-2">
+          <div className="fixed bottom-[2rem] flex flex-col items-center gap-4 p-2">
             <Buttons />
           </div>
         </div>
       ) : (
         <div>
           {currentText && (
-            <p className="whitespace-pre-wrap text-white text-center text-xs font-bold bg-black bg-opacity-60 p-3 rounded">
-              {currentText}
-            </p>
+            <div className="flex justify-center">
+              <div className="fixed bottom-[11rem]">
+                <div className="bg-white flex w-[342px] text-center p-4 justify-center items-center padding-[1rem] gap-2.5 rounded-xl">
+                  <p className="whitespace-pre-wrap text-black  text-[0.8rem] font-[30rem]  ">
+                    {currentText}
+                  </p>
+                </div>
+              </div>
+            </div>
           )}
           <div className="flex justify-center bg-white bg-opacity-20 w-[8rem] h-[2.3rem] rounded-[7rem] absolute left-1/2 transform -translate-x-1/2 bottom-[3rem]">
             <button

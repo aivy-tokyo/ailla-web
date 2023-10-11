@@ -42,8 +42,8 @@ export default function LoginPage() {
       w-screen h-screen
       bg-white
       bg-center bg-cover
+      bg-[url('/background/login_background.png')]
     "
-        style={{ backgroundImage: "url('/background/login_background.png')" }}
       >
         <h1 className="text-4xl font-bold text-center">
           <Image width={215} height={132} src="/AILLA_logo_b.png" alt="AILLA" className="mx-auto" />
