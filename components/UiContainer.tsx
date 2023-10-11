@@ -60,41 +60,31 @@ export const UiContainer = () => {
   return (
     <>
       <HeaderUi />
-
       {firstGreetingDone ? (
-        <div
-          className="max-w-2xl mx-auto fixed bottom-0 flex flex-col gap-2 p-2"
-        >
-          <button
-            className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
-            onClick={() => router.push("/?mode=free-talk")}
-          >
-            フリートーク
-          </button>
-          <button
-            className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
-            onClick={() => router.push("/?mode=situation")}
-          >
-            シチュエーショントーク
-          </button>
-          <button
-            className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
-            onClick={() => {
-              // @ts-ignore
-              modal_comming_soon.showModal();
-            }}
-          >
-            リピートプラクティス
-          </button>
-          <button
-            className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
-            onClick={() => {
-              // @ts-ignore
-              modal_help.showModal();
-            }}
-          >
-            使い方を見る
-          </button>
+        <div className="flex justify-center">
+          <div className="fixed bottom-0 flex flex-col items-center gap-2 p-2">
+            <button
+              className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
+              onClick={() => router.push("/?mode=free-talk")}
+            >
+              フリートーク
+            </button>
+            <button
+              className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
+              onClick={() => router.push("/?mode=situation")}
+            >
+              シチュエーショントーク
+            </button>
+            <button
+              className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
+              onClick={() => {
+                // @ts-ignore
+                modal_comming_soon.showModal();
+              }}
+            >
+              リピートプラクティス
+            </button>
+          </div>
         </div>
       ) : (
         <div>
