@@ -36,11 +36,9 @@ export const UiContainer = () => {
     }
   }, [firstGreetingDone, speak, viewer.model]);
 
-  useEffect(
-    () => {
-      greet()
-    }, []
-  )
+  useEffect(() => {
+    greet();
+  }, []);
   const handleSkipFirstGreeting = useCallback(() => {
     viewer.model?.stopSpeak();
     setFirstGreetingDone(true);
@@ -104,12 +102,19 @@ export const UiContainer = () => {
           </button>
         </div>
       ) : (
-        <button
-          className="btn btn-primary btn-xs"
-          onClick={() => handleSkipFirstGreeting()}
-        >
-          スキップする
-        </button>
+        <div>
+          {currentText && (
+            <p className="whitespace-pre-wrap text-white text-center text-xs font-bold bg-black bg-opacity-60 p-3 rounded">
+              {currentText}
+            </p>
+          )}
+          <button
+            className="btn btn-primary btn-xs"
+            onClick={() => handleSkipFirstGreeting()}
+          >
+            スキップする
+          </button>
+        </div>
       )}
       {/* Open the modal using document.getElementById('ID').showModal() method */}
       <dialog id="modal_comming_soon" className="modal">
