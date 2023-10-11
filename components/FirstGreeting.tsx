@@ -62,11 +62,20 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
           bg-cover
           `}
         >
-          <h4 className="text-[#47556D] text-[1.5rem] font-semibold my-[1.5rem] text-center">
-            AILLAと
-            <br />
-            英会話を始めましょう！
-          </h4>
+          {startButtonClicked ? (
+            <button
+              className="btn btn-primary btn-xs"
+              onClick={() => handleSkipFirstGreeting()}
+            >
+              スキップする
+            </button>
+          ) : (
+              <h4 className="text-[#47556D] text-[1.5rem] font-semibold my-[1.5rem] text-center">
+                AILLAと
+                <br />
+                英会話を始めましょう！
+              </h4>
+          )}
           <div className="relative w-45 h-45" onClick={greet}>
             <Image
               src="/start_sphere.svg"
@@ -74,7 +83,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
               width={180}
               height={180}
             />
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center cursor-pointer">
               <span className="text-white tracking-[.2em] text-[1.2rem] font-[200]">
                 START
               </span>
