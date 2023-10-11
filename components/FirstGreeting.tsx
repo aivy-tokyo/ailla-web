@@ -61,7 +61,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
             英会話を始めましょう！
           </h4>
           <div
-            className="w-[160px] h-[160px] bg-gradient-46.5 rounded-full border border-solid border-white-80 flex items-center justify-center"
+            className="w-[160px] h-[160px] bg-gradient-sphere rounded-full border border-solid border-white-80 flex items-center justify-center"
             onClick={greet} >
             <p className="text-base font-light 
               tracking-[4px]
