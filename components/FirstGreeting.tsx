@@ -47,10 +47,26 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
       <>
         <div
           className={`
-          fixed top-0 flex flex-col justify-end items-center h-screen w-full pb-52 bg-opacity-60
+          fixed flex flex-col justify-center items-center h-screen w-full bg-opacity-60
           ${startButtonClicked ? "bg-transparent" : "bg-black"}
+          bg-[url('/background/login_background.png')]
           `}
         >
+          <h4 className="text-[#47556D] text-[20px] font-semibold my-[20px] text-center">
+            AILLAと<br />
+            英会話を始めましょう！
+          </h4>
+          <div
+            className="w-[160px] h-[160px] bg-gradient-46.5 rounded-full border border-solid border-white-80 flex items-center justify-center"
+            onClick={greet} >
+            <p className="font-inter text-base font-light 
+              leading-6 tracking-wider 
+              text-white text-center 
+              text-[20px] font-[200]
+              ">
+              START
+            </p>
+          </div>
           <div className="p-10">
             {startButtonClicked ? (
               currentText && (
@@ -59,27 +75,20 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
                 </p>
               )
             ) : (
-              <p className="text-white text-center text-xs font-bold">
-                マナーモード設定してる場合は
-                <br />
-                音声が発音されません
-              </p>
+                <div className="
+              border border-opacity-20
+              shadow-[0px_4px_16px_0px_rgba(0,0,0,0.15)]
+              flex justify-center items-center
+              border-white w-[342px] h-[116px]
+              absolute top-[554px] left-[24px] rounded-[24px]">
+                <p className="text-white text-center text-xs font-bold text-[#7B8392] text-[14px] font-weight-200">
+                  マナーモード設定してる場合は
+                  <br />
+                  音声が発音されません
+                </p>
+              </div>
             )}
-          </div>
-          <div className="flex flex-col justify-end items-center">
-            {startButtonClicked ? (
-              <button
-                className="btn btn-primary btn-xs"
-                onClick={() => handleSkipFirstGreeting()}
-              >
-                スキップする
-              </button>
-            ) : (
-              <button className="btn btn-primary" onClick={greet}>
-                AILLAと英会話を始めましょう！
-              </button>
-            )}
-          </div>
+          </div>             
         </div>
       </>
     );
