@@ -57,33 +57,65 @@ export const UiContainer = () => {
     }
   }, [getUserMediaPermission, isVoiceInputAllowed]);
 
+  const Buttons = () => {
+    return [
+      {
+        title: "フリートーク",
+        englishTitle: "Free talk",
+        onClick: () => () => router.push("/?mode=free-talk"),
+      },
+      {
+        title: "シチュエーション",
+        englishTitle: "Situation talk",
+        onClick: () => router.push("/?mode=situation"),
+      },
+      
+      {
+        title: "フリートーク",
+        englishTitle: "Repeat practice",
+        // @ts-ignore
+        onClick: () => modal_comming_soon.showModal(),
+      },
+    ].map((item, index) => {
+      return (
+        <button
+          className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
+          onClick={item.onClick}
+          key={index}
+        >
+          <div className="flex justify-start ml-6">
+            <div className="flex flex-col justify-center items-start gap-1">
+              <span className="text-[#47556D] text-[1.1rem] font-[700]">
+                {item.title}
+              </span>
+              <span
+                className="
+                  bg-gradient-to-r
+                  from-primary to-danger
+                  bg-clip-text text-transparent
+                  text-[.8rem]
+                  from-[#F4A26E]
+                  via-[#EF858C] via-33%
+                  via-[#BA79B1] via-66%
+                  to-[#9070AF] to-100%
+                  "
+              >
+                {item.englishTitle}
+              </span>
+            </div>
+          </div>
+        </button>
+      );
+    });
+  };
+
   return (
     <>
       <HeaderUi />
       {firstGreetingDone ? (
         <div className="flex justify-center">
-          <div className="fixed bottom-0 flex flex-col items-center gap-2 p-2">
-            <button
-              className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
-              onClick={() => router.push("/?mode=free-talk")}
-            >
-              フリートーク
-            </button>
-            <button
-              className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
-              onClick={() => router.push("/?mode=situation")}
-            >
-              シチュエーショントーク
-            </button>
-            <button
-              className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
-              onClick={() => {
-                // @ts-ignore
-                modal_comming_soon.showModal();
-              }}
-            >
-              リピートプラクティス
-            </button>
+          <div className="fixed bottom-6 flex flex-col items-center gap-4 p-2">
+            <Buttons />
           </div>
         </div>
       ) : (
