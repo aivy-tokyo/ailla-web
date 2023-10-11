@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { PropsWithChildren, useContext, useState, useCallback } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import * as Sentry from "@sentry/nextjs";
@@ -45,6 +46,9 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
   if (!firstGreetingDone) {
     return (
       <>
+        <div className="absolute top-[31px] left-[24px] z-10">
+          <Image src="/AILLA_logo_c.png" alt="AILLA Logo" width={140} height={25} />
+        </div>
         <div
           className={`
           fixed flex flex-col justify-center items-center h-screen w-full bg-opacity-60
@@ -59,10 +63,11 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
           <div
             className="w-[160px] h-[160px] bg-gradient-46.5 rounded-full border border-solid border-white-80 flex items-center justify-center"
             onClick={greet} >
-            <p className="font-inter text-base font-light 
+            <p className="text-base font-light 
+              tracking-[4px]
               leading-6 tracking-wider 
               text-white text-center 
-              text-[20px] font-[200]
+              text-[20px] font-[200px]
               ">
               START
             </p>
