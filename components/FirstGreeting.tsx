@@ -46,7 +46,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
   if (!firstGreetingDone) {
     return (
       <>
-        <div className="absolute top-[31px] left-[24px] z-10">
+        <div className="absolute top-[2rem] left-[1.5rem] z-10">
           <Image
             src="/AILLA_logo_c.png"
             alt="AILLA Logo"
@@ -62,12 +62,12 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
           bg-cover
           `}
         >
-          <h4 className="text-[#47556D] text-[20px] font-semibold my-[20px] text-center">
+          <h4 className="text-[#47556D] text-[1.5rem] font-semibold my-[1.5rem] text-center">
             AILLAと
             <br />
             英会話を始めましょう！
           </h4>
-          <div className="relative w-45 h-45">
+          <div className="relative w-45 h-45" onClick={greet}>
             <Image
               src="/start_sphere.svg"
               alt="start sphere"
@@ -88,7 +88,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
                 </p>
               )
             ) : (
-              <div className="border border-opacity-20 border-white backdrop-blur shadow-manner-mode flex flex-col justify-center items-center w-[342px] h-[116px] rounded-[24px] mt-5">
+              <div className="border border-opacity-20 border-white backdrop-blur shadow-manner-mode flex flex-col justify-center items-center w-[22rem] h-[8rem] rounded-[1.6rem] mt-5">
                 <div className="flex flex-col items-center justify-center">
                   <svg
                     className="mb-2"
@@ -105,7 +105,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
                       />
                     </g>
                   </svg>
-                  <p className="text-center font-normal font-bold text-[#7B8392] text-[14px] font-weight-200">
+                  <p className="text-center font-normal font-bold text-[#7B8392] text-[1rem] font-weight-200">
                     マナーモード設定してる場合は
                     <br />
                     音声が発音されません
