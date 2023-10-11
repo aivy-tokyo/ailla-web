@@ -1,16 +1,51 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useCallback, useEffect, useState } from "react";
 import { HeaderUi } from "./HeaderUi";
 import { useRouter } from "next/router";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { useAtomValue, useSetAtom } from "jotai";
 import { chatLogAtom, isVoiceInputAllowedAtom } from "../utils/atoms";
 import { useVoiceInput } from "../hooks/useVoiceInput";
+import * as Sentry from "@sentry/nextjs";
+import { useFirstConversation } from "../hooks/useFirstConversation";
 
 export const UiContainer = () => {
   const router = useRouter();
   const { viewer } = useContext(ViewerContext);
   const isVoiceInputAllowed = useAtomValue(isVoiceInputAllowedAtom);
   const setChatLog = useSetAtom(chatLogAtom);
+  // 最初の挨拶をしたかどうかの状態管理
+  const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false);
+  // 話しているテキストの状態管理
+  const [currentText, setCurrentText] = useState<string>("");
+  // 最初の挨拶をする関数
+  const { speak, stopSpeaking } = useFirstConversation({
+    onSpeaking: useCallback((text: string) => setCurrentText(text), []),
+    onSpeakingEnd: useCallback(() => setCurrentText(""), []),
+  });
+
+  const greet = useCallback(async () => {
+    if (viewer.model && !firstGreetingDone) {
+      try {
+        await viewer.model.resumeAudio(); //MEMO:iOSだとAudioContextのstateが'suspended'になり、音声が再生できないことへの対策。
+        // Characterの挨拶
+        await speak();
+        setFirstGreetingDone(true);
+      } catch (error) {
+        Sentry.captureException(error);
+      }
+    }
+  }, [firstGreetingDone, speak, viewer.model]);
+
+  useEffect(
+    () => {
+      greet()
+    }, []
+  )
+  const handleSkipFirstGreeting = useCallback(() => {
+    viewer.model?.stopSpeak();
+    setFirstGreetingDone(true);
+    stopSpeaking();
+  }, [stopSpeaking, viewer.model]);
 
   useEffect(() => {
     viewer.model?.stopSpeak();
@@ -27,45 +62,55 @@ export const UiContainer = () => {
   return (
     <>
       <HeaderUi />
-      <div
-        className="
+
+      {firstGreetingDone ? (
+        <div
+          className="
         max-w-2xl mx-auto
       fixed bottom-0 left-0 right-0
       grid grid-cols-2 gap-2
       p-2
       "
-      >
-        <button
-          className="btn btn-primary text-xs"
-          onClick={() => router.push("/?mode=free-talk")}
         >
-          フリートーク
-        </button>
+          <button
+            className="btn btn-primary text-xs"
+            onClick={() => router.push("/?mode=free-talk")}
+          >
+            フリートーク
+          </button>
+          <button
+            className="btn btn-primary text-xs"
+            onClick={() => router.push("/?mode=situation")}
+          >
+            シチュエーショントーク
+          </button>
+          <button
+            className="btn btn-primary text-xs"
+            onClick={() => {
+              // @ts-ignore
+              modal_comming_soon.showModal();
+            }}
+          >
+            リピートプラクティス
+          </button>
+          <button
+            className="btn btn-info text-xs"
+            onClick={() => {
+              // @ts-ignore
+              modal_help.showModal();
+            }}
+          >
+            使い方を見る
+          </button>
+        </div>
+      ) : (
         <button
-          className="btn btn-primary text-xs"
-          onClick={() => router.push("/?mode=situation")}
+          className="btn btn-primary btn-xs"
+          onClick={() => handleSkipFirstGreeting()}
         >
-          シチュエーショントーク
+          スキップする
         </button>
-        <button
-          className="btn btn-primary text-xs"
-          onClick={() => {
-            // @ts-ignore
-            modal_comming_soon.showModal();
-          }}
-        >
-          リピートプラクティス
-        </button>
-        <button
-          className="btn btn-info text-xs"
-          onClick={() => {
-            // @ts-ignore
-            modal_help.showModal();
-          }}
-        >
-          使い方を見る
-        </button>
-      </div>
+      )}
       {/* Open the modal using document.getElementById('ID').showModal() method */}
       <dialog id="modal_comming_soon" className="modal">
         <div className="modal-box">
