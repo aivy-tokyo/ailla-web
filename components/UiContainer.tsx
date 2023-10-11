@@ -62,7 +62,7 @@ export const UiContainer = () => {
       {
         title: "フリートーク",
         englishTitle: "Free talk",
-        onClick: () => () => router.push("/?mode=free-talk"),
+        onClick: () => router.push("/?mode=free-talk"),
       },
       {
         title: "シチュエーション",
@@ -71,7 +71,7 @@ export const UiContainer = () => {
       },
       
       {
-        title: "フリートーク",
+        title: "リピートプラクティス",
         englishTitle: "Repeat practice",
         // @ts-ignore
         onClick: () => modal_comming_soon.showModal(),
