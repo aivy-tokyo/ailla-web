@@ -38,8 +38,9 @@ export const UiContainer = () => {
     }
   }, [firstGreetingDone, setFirstGreetingDone, speak, viewer.model]);
 
-  useEffect(() => {    
+  useEffect(() => {
     if (!firstGreetingDone) greet();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstGreetingDone]);
 
   const handleSkipFirstGreeting = useCallback(() => {
