@@ -63,27 +63,22 @@ export const UiContainer = () => {
 
       {firstGreetingDone ? (
         <div
-          className="
-        max-w-2xl mx-auto
-      fixed bottom-0 left-0 right-0
-      grid grid-cols-2 gap-2
-      p-2
-      "
+          className="max-w-2xl mx-auto fixed bottom-0 flex flex-col gap-2 p-2"
         >
           <button
-            className="btn btn-primary text-xs"
+            className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
             onClick={() => router.push("/?mode=free-talk")}
           >
             フリートーク
           </button>
           <button
-            className="btn btn-primary text-xs"
+            className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
             onClick={() => router.push("/?mode=situation")}
           >
             シチュエーショントーク
           </button>
           <button
-            className="btn btn-primary text-xs"
+            className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
             onClick={() => {
               // @ts-ignore
               modal_comming_soon.showModal();
@@ -92,7 +87,7 @@ export const UiContainer = () => {
             リピートプラクティス
           </button>
           <button
-            className="btn btn-info text-xs"
+            className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
             onClick={() => {
               // @ts-ignore
               modal_help.showModal();
@@ -108,16 +103,17 @@ export const UiContainer = () => {
               {currentText}
             </p>
           )}
-            <div className="flex justify-center bg-white bg-opacity-20 w-[8rem] h-[2.3rem] rounded-[7rem] absolute left-1/2 transform -translate-x-1/2 bottom-[3rem]">
-              <button className="text-[1rem]" onClick={() => handleSkipFirstGreeting()}>
-                スキップする
-              </button>
-            </div>
+          <div className="flex justify-center bg-white bg-opacity-20 w-[8rem] h-[2.3rem] rounded-[7rem] absolute left-1/2 transform -translate-x-1/2 bottom-[3rem]">
+            <button
+              className="text-[1rem]"
+              onClick={() => handleSkipFirstGreeting()}
+            >
+              スキップする
+            </button>
+          </div>
         </div>
       )}
       {/* Open the modal using document.getElementById('ID').showModal() method */}
-
-
       <dialog id="modal_comming_soon" className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Coming Soon</h3>
