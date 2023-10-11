@@ -60,20 +60,11 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
             AILLAと<br />
             英会話を始めましょう！
           </h4>
-          <div
-            className="
-            w-[160px] h-[160px] bg-gradient-sphere rounded-full
-            drop-shadow-start-sphere
-            flex items-center justify-center"
-            onClick={greet} >
-            <p className="text-base font-light 
-              tracking-[4px]
-              leading-6 tracking-wider 
-              text-white text-center 
-              text-[20px] font-[200px]
-              ">
-              START
-            </p>
+          <div className="relative w-45 h-45">
+            <Image src="/start_sphere.svg" alt="start sphere" width={180} height={180} />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-white tracking-[.2em] text-[1.2rem] font-[200]">START</span>
+            </div>
           </div>
           <div className="p-10">
             {startButtonClicked ? (
