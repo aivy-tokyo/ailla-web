@@ -3,7 +3,7 @@ import { useAtom, useSetAtom } from "jotai";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { PropsWithChildren, useEffect, useState } from "react";
-import { userIdAtom, userInfoAtom } from "../utils/atoms";
+import { clientInfoAtom, userIdAtom, userInfoAtom } from "../utils/atoms";
 import { fetchUserId } from "../features/fetchUserId";
 import * as Sentry from "@sentry/nextjs";
 import { UserInfo } from "@/entities/UserInfo";
@@ -13,8 +13,9 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
   const session = useSession();
   const [userId, setUserId] = useAtom(userIdAtom);
   const setUserInfo = useSetAtom(userInfoAtom);
+  const setClientInfo = useSetAtom(clientInfoAtom);
   const [canShowContents, setCanShowContents] = useState<boolean>(false);
-  
+
   useEffect(() => {
     let timerId: NodeJS.Timeout;
     if (session?.status === "unauthenticated") {
@@ -22,44 +23,51 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
         router.push("/login");
       }, 1000);
     } else {
-      fetchUserId().then((userId) => {
-        setUserId(userId);
-      }).catch((error) => {
-        Sentry.captureException(error);
-      });
+      fetchUserId()
+        .then((userId) => {
+          setUserId(userId);
+        })
+        .catch((error) => {
+          Sentry.captureException(error);
+        });
     }
 
     return () => {
       clearTimeout(timerId);
-    }
+    };
   }, [router, session, setUserId]);
 
   useEffect(() => {
     if (!userId) {
       return;
     }
-    axios
-      .get(`/api/user?id=${userId}`)
-      .then((response) => {
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/user?id=${userId}`);
+
         if (!response.data.name) {
-          console.log('ユーザー情報がないので登録画面に遷移します');
+          console.log("ユーザー情報がないので登録画面に遷移します");
           router.push("/register");
           return;
         }
 
         setCanShowContents(true);
-        const userInfo: UserInfo= {
+
+        const userInfo: UserInfo = {
           name: response.data.name.S,
           prefecture: response.data.prefecture.S,
           birthdate: response.data.birthdate.S,
           gender: response.data.gender.S,
         };
         setUserInfo(userInfo);
-      })
-      .catch((error) => {
+      } catch (error) {
         Sentry.captureException(error);
-      });
-  }, [router, setUserInfo, userId]);
+      }
+    };
+
+    fetchData();
+  }, [router, setUserInfo, userId, setClientInfo]);
 
   if (!canShowContents) {
     return <></>;

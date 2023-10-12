@@ -76,7 +76,7 @@ export const useFirstConversation = (props: {
         if (!isSpeaking.current) {
           return;
         }
-        
+
         await speakCharactor({
           text: replaceUserName(introductionGreeting, userName),
           viewerModel,

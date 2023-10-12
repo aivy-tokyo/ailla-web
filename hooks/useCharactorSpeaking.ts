@@ -3,7 +3,11 @@ import { useCallback, useEffect } from "react";
 import { tts } from "../features/tts";
 import * as Sentry from "@sentry/nextjs";
 import { useAtomValue, useSetAtom } from "jotai";
-import { currentAvatarAtom, isCharactorSpeakingAtom } from "../utils/atoms";
+import {
+  currentAvatarAtom,
+  isCharactorSpeakingAtom,
+  clientInfoAtom,
+} from "../utils/atoms";
 import { useViewer } from "./useViewer";
 
 type Props = {
@@ -18,6 +22,7 @@ export const useCharactorSpeaking = () => {
   const viewer = useViewer();
   const currentAvatar = useAtomValue(currentAvatarAtom);
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
 
   useEffect(() => {
     document.addEventListener(
@@ -33,7 +38,7 @@ export const useCharactorSpeaking = () => {
     async ({
       text,
       viewerModel,
-      lang = "en",
+      lang = clientInfo?.language ?? "en",
       onSpeaking,
       onSpeakingEnd,
     }: Props) => {
@@ -41,7 +46,8 @@ export const useCharactorSpeaking = () => {
       setIsCharactorSpeaking(true);
       try {
         viewerModel.resumeAudio();
-        const buffer = await tts({ text, lang, currentAvatar });
+        const languageCode = lang === "en" ? "en-US" : "zh-CN";
+        const buffer = await tts({ text, lang, languageCode, currentAvatar });
         if (!buffer) {
           return;
         }
@@ -63,7 +69,7 @@ export const useCharactorSpeaking = () => {
         }, 500);
       }
     },
-    [currentAvatar, setIsCharactorSpeaking]
+    [currentAvatar, clientInfo, setIsCharactorSpeaking]
   );
 
   return {

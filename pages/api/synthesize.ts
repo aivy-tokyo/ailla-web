@@ -8,7 +8,11 @@ const client = new TextToSpeechClient({
   credentials: JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS as string),
 });
 
-const synthesizeSpeech = async (text: string, voiceName: CharactersOfGoogleTts) => {
+const synthesizeSpeech = async (
+  text: string,
+  voiceName: CharactersOfGoogleTts,
+  languageCode: string
+) => {
   const request = {
     audioConfig: {
       audioEncoding: "MP3" as const,
@@ -20,7 +24,8 @@ const synthesizeSpeech = async (text: string, voiceName: CharactersOfGoogleTts) 
       text: text,
     },
     voice: {
-      languageCode: "en-US",
+      // languageCode: "en-US",
+      languageCode: languageCode,
       name: voiceName,
     },
   };
@@ -28,12 +33,11 @@ const synthesizeSpeech = async (text: string, voiceName: CharactersOfGoogleTts) 
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-
-  const { text, voiceName } = req.body;
+  const { text, voiceName, languageCode } = req.body;
   try {
     // sythesize text
     let response;
-    [response] = await synthesizeSpeech(text, voiceName);
+    [response] = await synthesizeSpeech(text, voiceName, languageCode);
     // send audio
     res.setHeader("Content-Type", "audio/mpeg");
     res.send(response.audioContent);

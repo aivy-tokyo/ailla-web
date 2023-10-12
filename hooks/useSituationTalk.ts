@@ -1,6 +1,7 @@
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import {
   chatLogAtom,
+  clientInfoAtom,
   isCharactorSpeakingAtom,
 } from "../utils/atoms";
 import { ChatCompletionRequestMessage } from "openai";
@@ -11,22 +12,18 @@ import { useViewer } from "./useViewer";
 import { Situation } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
-const situationFileNames = [
-  // public/situations フォルダ内のファイル名を指定"
-  "checkIn.json",
-  "checkIn2.json",
-  "checkOut.json",
-  "reserveRestaurant.json",
-  "earlyArrivalInquiry.json",
-  "recommendPlacesAroundTheHotel.json",
-];
+const situationFileNames: string[] = [];
 
 export const useSituationTalk = () => {
   const viewer = useViewer();
   const { speakCharactor } = useCharactorSpeaking();
   const setChatLog = useSetAtom(chatLogAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
   const [roleOfAi, setRoleOfAi] = useState<string>("");
   const [roleOfUser, setRoleOfUser] = useState<string>("");
+
+  const clientLanguage = clientInfo?.language;
+  const clientSituationList = clientInfo?.situationList ?? [];
 
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
 
@@ -46,8 +43,11 @@ export const useSituationTalk = () => {
 
   useEffect(() => {
     Promise.all(
-      situationFileNames.map((fileName) =>
-        fetch(`situation_data/${fileName}`).then((res) => res.json())
+      clientSituationList.map((fileName) =>
+        // fetch(`situation_data/${clientLanguage}/${fileName}`).then((res) =>
+        //   res.json()
+        // )
+        fetch(`situation_data/${fileName}.json`).then((res) => res.json())
       )
     ).then((dataArray) => setSituationList(dataArray));
   }, []);
@@ -79,7 +79,7 @@ export const useSituationTalk = () => {
         // キャラクター発話
         await speakCharactor({
           text: newMessages[newMessages.length - 1].content,
-          viewerModel: viewer.model
+          viewerModel: viewer.model,
         });
       } catch (error) {
         console.error(error);

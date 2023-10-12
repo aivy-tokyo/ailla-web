@@ -1,17 +1,12 @@
-import axios from "axios";
-import { useSetAtom, useAtomValue } from "jotai";
 import { useRouter } from "next/router";
 import { useState, useCallback, FormEvent } from "react";
 import { FaRegTimesCircle } from "react-icons/fa";
-import { userInfoAtom, userIdAtom } from "../utils/atoms";
 import { prefectures } from "../utils/constants";
 import { Prefecture, UserGenderType } from "../utils/types";
-import { UserInfo } from "../entities/UserInfo";
 import { useUserInfo } from "@/hooks/useUserInfo";
 
 export const RegisterContainer: React.FC = () => {
-  const { registerUserInfo, userInfo} =
-    useUserInfo();
+  const { registerUserInfo, userInfo } = useUserInfo();
 
   const [name, setName] = useState("");
   const [prefecture, setPrefecture] = useState<Prefecture>("選択しない");
@@ -21,21 +16,19 @@ export const RegisterContainer: React.FC = () => {
   const [day, setDay] = useState<string>("");
 
   const [gender, setGender] = useState<UserGenderType>("選択しない");
-  const setUserInfo = useSetAtom(userInfoAtom);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
   const [isResultError, setIsResultError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const router = useRouter();
-  const userId = useAtomValue(userIdAtom);
 
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
       // month, dayが1桁の場合は0埋め
-      const paddedMonth = month.padStart(2, '0');
-      const paddedDay = day.padStart(2, '0');
+      const paddedMonth = month.padStart(2, "0");
+      const paddedDay = day.padStart(2, "0");
       setMonth(paddedMonth);
       setDay(paddedDay);
 
@@ -47,7 +40,6 @@ export const RegisterContainer: React.FC = () => {
 
       try {
         let errors = [];
-
         if (!name) {
           errors.push("ユーザー名が未入力です");
         }
@@ -77,7 +69,7 @@ export const RegisterContainer: React.FC = () => {
           setIsResultError(true);
           throw new Error(`${errors.join(", ")}`);
         }
-        
+
         setIsSendingRequest(true);
         await registerUserInfo(name, prefecture, birthdate, gender);
         router.push("/");
