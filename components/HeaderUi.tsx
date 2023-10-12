@@ -1,4 +1,4 @@
-import { FaRegSun } from "react-icons/fa";
+import { FaRegQuestionCircle, FaRegSun } from "react-icons/fa";
 import EndTalkButton from "./EndTalkButton";
 // import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SettingContainer } from "./SettingContainer";
@@ -19,12 +19,19 @@ export const HeaderUi: React.FC<HeaderUiProps> = ({ onClickEndTalk }) => {
           {onClickEndTalk ? (
             <EndTalkButton onClick={onClickEndTalk} />
           ) : (
-            <button
-              className="btn btn-icon btn-ghost btn-sm"
-              onClick={() => setShowSetting(true)}
-            >
-              <FaRegSun className="text-white" size={24} />
-            </button>
+            <div className="flex justify-end gap-2">
+              <button>
+                <FaRegQuestionCircle
+                  className="opacity-60 text-white" size={28}
+                />
+              </button>
+              <button
+                className="btn btn-icon btn-ghost btn-sm"
+                onClick={() => setShowSetting(true)}
+              >
+                <FaRegSun className="opacity-60 text-white" size={28} />
+              </button>
+            </div>
           )}
         </div>
       </div>
