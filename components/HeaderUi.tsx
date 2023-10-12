@@ -14,7 +14,7 @@ export const HeaderUi: React.FC<HeaderUiProps> = ({ onClickEndTalk }) => {
 
   return (
     <>
-      <div className="z-1 fixed top-0 w-full flex h-12 justify-between items-center my-2 px-2">
+      <div className="z-1 fixed top-5 w-full flex justify-between items-center my-2 px-2 ">
         {/* 機能未実装のため */}
         <TranslateToggleSwitch />
         <div className="self-end ml-auto flex items-center gap-2">
