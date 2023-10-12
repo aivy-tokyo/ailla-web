@@ -13,7 +13,7 @@ const chat = new ChatOpenAI({
 
 // シチュエーションの会話をするためのSYSTEMのメッセージテンプレート
 const promptTemplate = new PromptTemplate({
-  template: `あなたは、英会話の教師です。次の設定に従って、役になりきって、英語を話してください。設定:[{title}]{situation}あなたは{role}です。{role}側の英語を話してください。会話の中で名前を名乗る時はAillaと名乗ってください。`,
+  template: `あなたは、中国語の教師です。次の設定に従って、役になりきって、中国語を話してください。設定:[{title}]{situation}あなたは{role}です。{role}側の中国語を話してください。会話の中で名前を名乗る時は艾拉と名乗ってください。`,
   inputVariables: ["title", "situation","role"],
 });
 
@@ -59,7 +59,10 @@ const generatePromptText = async ({
 const avoidReturnTwoRoles = (responseMessage: string) => {
   console.log('responseMessage->', responseMessage);
 
-  const matchPattern1 = responseMessage.match(/Customer:\s*([^]+?)\s*Staff:/);
+  // TODO: 言語ごとに処理を分ける
+  const matchPattern1 = responseMessage.match(
+    /フロントスタッフ:\s*([^]+?)\s*Staff:/
+  );
   if(matchPattern1 && matchPattern1[1]) {
     console.log("[!WARNING!]:Two roles responded.(matchPattern1))")
     return matchPattern1[1];

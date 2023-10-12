@@ -22,10 +22,12 @@ export const useFreeTalk = () => {
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
 
+  
   const startFreeTalk = useCallback(async () => {
     if (!viewer.model) return;
 
     try {
+
       setIsCharactorSpeaking(true);
 
       setMessages([]);
@@ -41,7 +43,7 @@ export const useFreeTalk = () => {
       setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
       await speakCharactor({
         text: newMessages[newMessages.length - 1].content,
-        viewerModel: viewer.model
+        viewerModel: viewer.model,
       });
     } catch (error) {
       Sentry.captureException(error);
@@ -85,13 +87,7 @@ export const useFreeTalk = () => {
         Sentry.captureException(error);
       }
     },
-    [
-      viewer.model,
-      setChatLog,
-      userInfo?.name,
-      messages,
-      speakCharactor,
-    ]
+    [viewer.model, setChatLog, userInfo?.name, messages, speakCharactor]
   );
 
   return {

@@ -35,7 +35,7 @@ export const useVoiceInput = ({
   const [currentTranscript, setCurrentTranscript] = useState<string>("");
 
   useEffect(() => {
-    recognition.lang = isTranslated ? "ja-JP" : "en-US"; // 言語を指定する
+    recognition.lang = isTranslated ? "ja-JP" : "zh-CN"; // 言語を指定する
     recognition.interimResults = true; // 途中経過を取得する
     recognition.continuous = true; // 連続的に音声認識を行う
     recognition.maxAlternatives = 1; // 1つの認識結果のみを取得する

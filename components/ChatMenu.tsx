@@ -17,7 +17,7 @@ export const ChatMenu: React.FC<ChatMenuProps> = ({
         {options.map((option) => (
           <button
             key={option.value}
-            className="btn btn-neutral"
+            className="btn btn-neutral font-chinese"
             onClick={() => onClickOption(option.value)}
           >
             {option.label}

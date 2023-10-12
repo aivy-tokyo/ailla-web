@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { TextToSpeechClient } from "@google-cloud/text-to-speech";
 import * as Sentry from "@sentry/nextjs";
-import { CharactersOfGoogleTts } from "@/utils/types";
+import { CharactersOfGoogleEnglishTts } from "@/utils/types";
 
 const client = new TextToSpeechClient({
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
@@ -10,7 +10,7 @@ const client = new TextToSpeechClient({
 
 const synthesizeSpeech = async (
   text: string,
-  voiceName: CharactersOfGoogleTts,
+  voiceName: CharactersOfGoogleEnglishTts,
   languageCode: string
 ) => {
   const request = {
@@ -24,7 +24,6 @@ const synthesizeSpeech = async (
       text: text,
     },
     voice: {
-      // languageCode: "en-US",
       languageCode: languageCode,
       name: voiceName,
     },

@@ -5,11 +5,11 @@ import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { userInfoAtom } from "../utils/atoms";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
-const introductionGreeting = `Hi {UserName}! I'm Ailla, your English conversation partner. Let's have a fun and engaging chat together!`;
+const introductionGreeting = `你好 {UserName}! 我是艾拉, 你的中文对话伙伴。让我们一起来一场有趣又有趣的聊天吧！`;
 const appExplanation = `
 このアプリでは、
-Aillaと英語で会話をすることができます。
-英会話の練習には3つのモードがあります。
+Aillaと中国語で会話をすることができます。
+中国語会話の練習には3つのモードがあります。
 
 1. フリートークモード。
 2. シチュエーションモード。
@@ -21,7 +21,7 @@ Aillaと英語で会話をすることができます。
 シチュエーションに沿った会話をすることができます。
 
 リピートプラクティスモードでは、
-Aillaが英語を話すので、
+Aillaが中国語を話すので、
 それを聞いてリピートすることで発音の練習をすることができます。
 モードを選択すると、
 会話が始まります。
@@ -30,11 +30,11 @@ Aillaが英語を話すので、
 `;
 
 const comeBackGreetingList = [
-  "Welcome back! It's great to see you again. Ready for another exciting lesson?",
-  "Hi {UserName}! I hope you had a great week. Let's continue our English journey together!",
-  "Good to see you again, {UserName}! I'm looking forward to hearing about your progress.",
-  "Hello {UserName}! How have you been? Let's make today's lesson another success!",
-  "Welcome back, {UserName}! Your hard work is really paying off. Let's keep it up!",
+  "欢迎回来！很高兴再次见到你。准备好学习另一堂激动人心的课程了吗？",
+  "你好 {UserName}! 我希望你度过了愉快的一周。让我们一起继续我们的中国之旅！",
+  "很高兴再次见到你, {UserName}! 我期待听到您的进展。",
+  "你好 {UserName}! 你最近怎么样？让我们今天的课程再创成功吧！",
+  "欢迎回来, {UserName}! 你的努力确实得到了回报。让我们继续努力吧！",
 ];
 const lessonsStartPhrases = [
   "今日は何から始めたいと思いますか？どのレッスンにしましょうか？",

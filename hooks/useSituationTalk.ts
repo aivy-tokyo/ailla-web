@@ -44,10 +44,9 @@ export const useSituationTalk = () => {
   useEffect(() => {
     Promise.all(
       clientSituationList.map((fileName) =>
-        // fetch(`situation_data/${clientLanguage}/${fileName}`).then((res) =>
-        //   res.json()
-        // )
-        fetch(`situation_data/${fileName}.json`).then((res) => res.json())
+        fetch(`situation_data/${clientLanguage}/${fileName}`).then((res) =>
+          res.json()
+        )
       )
     ).then((dataArray) => setSituationList(dataArray));
   }, []);
