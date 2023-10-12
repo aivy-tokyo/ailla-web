@@ -1,20 +1,22 @@
 import { FaRegQuestionCircle, FaRegSun } from "react-icons/fa";
 import EndTalkButton from "./EndTalkButton";
-// import TranslateToggleSwitch from "./TranslateToggleSwitch";
+import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SettingContainer } from "./SettingContainer";
 import { useState } from "react";
+import { HelpDialog } from "./HelpDialog";
 
 type HeaderUiProps = {
   onClickEndTalk?: () => void;
 };
 export const HeaderUi: React.FC<HeaderUiProps> = ({ onClickEndTalk }) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
+  const modalHelp = document.getElementById("modal_help") as HTMLDialogElement;  
 
   return (
     <>
       <div className="z-1 fixed top-0 w-full flex h-12 justify-between items-center my-2 px-2">
         {/* 機能未実装のため */}
-        {/* <TranslateToggleSwitch /> */}
+        <TranslateToggleSwitch />
         <div className="self-end ml-auto flex items-center gap-2">
           {onClickEndTalk ? (
             <EndTalkButton onClick={onClickEndTalk} />
@@ -22,7 +24,11 @@ export const HeaderUi: React.FC<HeaderUiProps> = ({ onClickEndTalk }) => {
             <div className="flex justify-end gap-2">
               <button>
                 <FaRegQuestionCircle
-                  className="opacity-60 text-white" size={28}
+                  className="opacity-60 text-white"
+                  size={28}
+                  onClick={() => {
+                    modalHelp.showModal();
+                  }}
                 />
               </button>
               <button
@@ -38,6 +44,7 @@ export const HeaderUi: React.FC<HeaderUiProps> = ({ onClickEndTalk }) => {
       {showSetting && (
         <SettingContainer onClose={() => setShowSetting(false)} />
       )}
+      <HelpDialog />
     </>
   );
 };
