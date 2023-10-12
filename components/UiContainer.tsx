@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useContext, useCallback, useEffect, useState } from "react";
 import { HeaderUi } from "./HeaderUi";
 import { useRouter } from "next/router";
@@ -82,8 +83,8 @@ export const UiContainer = () => {
       },
     ].map((item, index) => {
       return (
-        <button
-          className="bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
+        <div
+          className="flex justify-between items-center bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
           onClick={item.onClick}
           key={index}
         >
@@ -108,7 +109,32 @@ export const UiContainer = () => {
               </span>
             </div>
           </div>
-        </button>
+          <button className="relative mr-6" onClick={item.onClick}>
+            <div className="absolute font-[100] inset-0 flex items-center justify-center cursor-pointer">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M10 17L15 12L10 7"
+                  stroke="white"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <Image
+              src="/start_sphere.svg"
+              alt="start sphere"
+              width={42}
+              height={42}
+            />
+          </button>
+        </div>
       );
     });
   };
@@ -127,7 +153,7 @@ export const UiContainer = () => {
           {currentText && (
             <div className="flex justify-center">
               <div className="fixed bottom-[11rem]">
-                <div className="bg-white flex w-[342px] text-center p-4 justify-center items-center padding-[1rem] gap-2.5 rounded-xl">
+                <div className="bg-white flex w-[24rem] text-center p-4 justify-center items-center padding-[1rem] gap-2.5 rounded-xl">
                   <p className="whitespace-pre-wrap text-black  text-[0.8rem] font-[30rem]  ">
                     {currentText}
                   </p>
