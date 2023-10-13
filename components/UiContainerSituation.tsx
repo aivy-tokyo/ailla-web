@@ -61,6 +61,13 @@ export const UiContainerSituation: React.FC = () => {
   return (
     <>
       <HeaderUi onClickEndTalk={endTalk} />
+      {/* <div className="mt-[40rem] flex justify-center items-center">
+        <h1 className="text-[1.4rem] -z-0 text-[#47556D] text-center font-[700]">
+          シチュエーションを
+          <br />
+          選択してください
+        </h1>
+      </div>  */}
       {showHint && situation && (
         <ChatHint situation={situation} steps={stepStatus} />
       )}
