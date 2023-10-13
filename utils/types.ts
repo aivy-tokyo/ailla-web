@@ -119,6 +119,7 @@ export type SituationStep = {
 
 export type Situation = {
   title: string; // シチュエーションのタイトル
+  titleEnglish: string // シチュエーションのタイトル（英語）
   description: string; // シチュエーションの説明
   roleOfAi: string; // AIの役割
   roleOfUser: string; // ユーザーの役割

@@ -44,6 +44,7 @@ export const UiContainerSituation: React.FC = () => {
   const situationListOptions = useMemo(() => {
     return situationList.map((situation, index) => ({
       label: situation.title,
+      english: situation.titleEnglish,
       value: index.toString(),
     }));
   }, [situationList]);
