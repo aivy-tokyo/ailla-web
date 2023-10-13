@@ -1,5 +1,6 @@
 {
-  "title": "Asked for a Menu Recommendation",
+  "title": "おすすめのメニューを聞かれた時",
+  "titleEnglish": "Asked for a Menu Recommendation",
   "description": "居酒屋でメニューのおすすめを聞かれた時の会話です。おすすめのメニューが２回聞かれます。そのあと、海鮮系メニューのおすすめを一品、ベジタリアン向けのおすすめを一品、おすすめのカクテル(甘いお酒)が聞かれます。",
   "roleOfAi": "Customer",
   "roleOfUser": "Staff",
