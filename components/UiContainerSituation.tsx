@@ -36,6 +36,10 @@ export const UiContainerSituation: React.FC = () => {
     situationList,
     sendMessage,
     startSituation,
+    stopSpeaking,
+    firstGreetingDone,
+    setFirstGreetingDone,
+    firstTalkText,
     roleOfAi,
     roleOfUser,
   } = useSituationTalk();
@@ -57,12 +61,11 @@ export const UiContainerSituation: React.FC = () => {
     [setBackgroundImagePath, situationList, startSituation]
   );
 
-  // situation開始時の会話を管理する
-  const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false)
   // 始まりのボタンを押したかどうかの状態管理
   const [startButtonClicked, setStartButtonClicked] = useState<boolean>(false);
   const handleSkipFirstGreeting = useCallback(() => {
     setFirstGreetingDone(true);
+    stopSpeaking()
   }, []);
 
   return (
@@ -71,15 +74,20 @@ export const UiContainerSituation: React.FC = () => {
         <>
           <div
             className={`
-            fixed top-0 flex flex-col justify-end items-center h-screen w-full pb-52 bg-opacity-60
+            fixed top-0 flex flex-col justify-end items-center h-screen w-full pb-52 bg-opacity-60 z-50
             ${startButtonClicked ? "bg-transparent" : "bg-black"}
             `}
           >
           <div className="p-10">
+            {firstTalkText && (
+              <p className="whitespace-pre-wrap text-white text-center text-xs font-bold bg-black bg-opacity-60 p-3 rounded">
+                {firstTalkText}
+              </p>
+            )}
           </div>
           <div className="flex flex-col justify-end items-center">
             <button
-              className="btn btn-primary btn-xs"
+              className="btn btn-primary btn-xs z-50"
               onClick={() => handleSkipFirstGreeting()}
             >
               スキップする
@@ -98,7 +106,7 @@ export const UiContainerSituation: React.FC = () => {
           onClickOption={handleSelectSituation}
         />
       )}
-      {situation && (
+      {situation && firstGreetingDone && (
         <BottomUi
           sendChat={sendMessage}
           toggleHint={toggleHint}
