@@ -80,18 +80,20 @@ export const UiContainerSituation: React.FC = () => {
           >
           <div className="p-10">
             {firstTalkText && (
-              <p className="whitespace-pre-wrap text-white text-center text-xs font-bold bg-black bg-opacity-60 p-3 rounded">
-                {firstTalkText}
-              </p>
+              <div className="bg-white flex w-[24rem] text-center p-4 justify-center items-center padding-[1rem] gap-2.5 rounded-xl">
+                <p className="whitespace-pre-wrap text-black text-[0.8rem] font-[30rem]">
+                  {firstTalkText}
+                </p>
+              </div>
             )}
           </div>
-          <div className="flex flex-col justify-end items-center">
+          <div className="flex justify-center bg-white bg-opacity-20 w-[8rem] h-[2.3rem] rounded-[7rem] absolute left-1/2 transform -translate-x-1/2 bottom-[3rem]">
             <button
-              className="btn btn-primary btn-xs z-50"
+              className="text-[1rem]"
               onClick={() => handleSkipFirstGreeting()}
             >
               スキップする
-          </button>
+            </button>
           </div>
         </div>
         </>
