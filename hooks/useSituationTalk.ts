@@ -10,8 +10,6 @@ import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
 import { Situation } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
-import { userInfoAtom } from "../utils/atoms";
-import { useAtomValue } from "jotai";
 
 const situationFileNames = [
   // public/situations フォルダ内のファイル名を指定"
@@ -25,7 +23,6 @@ const situationFileNames = [
 
 export const useSituationTalk = () => {
   const viewer = useViewer();
-  const userInfo = useAtomValue(userInfoAtom);
   const { speakCharactor } = useCharactorSpeaking();
   const setChatLog = useSetAtom(chatLogAtom);
   const [roleOfAi, setRoleOfAi] = useState<string>("");
@@ -40,6 +37,8 @@ export const useSituationTalk = () => {
   const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false)
   const [firstTalkText, setFirstTalkText] = useState<string>("")
   const [endPhrase, setEndPhrase] = useState<string>("");
+  // シチュエーションが終了したかを判別する
+  const [isSituationTalkEnded, setIsSituationTalkEnded] = useState<boolean>(false);
   const [stepStatus, setStepStatus] = useState<
     Array<Situation["steps"][number] & { isClear: boolean }>
   >([]);
@@ -84,13 +83,11 @@ export const useSituationTalk = () => {
         setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
         setEndPhrase(await selectedSituation?.endPhrase.sentence)
 
-        processedFirstTalkText({
-          description: await selectedSituation.endPhrase.description,
-          sentence: await selectedSituation?.endPhrase.sentence,
-        })
+        setFirstTalkText(await selectedSituation.endPhrase.description)
         await speakCharactor({
           text: await selectedSituation?.endPhrase?.description,
-          viewerModel: viewer.model
+          viewerModel: viewer.model,
+          lang: "ja",
         });
         await setFirstGreetingDone(true)
 
@@ -122,6 +119,19 @@ export const useSituationTalk = () => {
         };
         console.log("userMessage->", userMessage);
         setChatLog((prev) => [...prev, userMessage]);
+        if (userMessage.content === endPhrase) {
+          setChatLog((prev) => [...prev, {
+            role:"assistant",
+            content: situation.endTalk
+          }]);
+          await speakCharactor({
+            text: situation.endTalk,
+            viewerModel: viewer.model,
+            lang: "ja",
+          });
+          setIsSituationTalkEnded(true)
+          return
+        }
         const response = await axios.post("/api/chat/situation", {
           title: situation.title,
           description: situation.description,
@@ -156,16 +166,6 @@ export const useSituationTalk = () => {
     ]
   );
 
-  // JSONの <UserName>, <EndPhrase> の箇所に、適切な値を入れ込む
-  const processedFirstTalkText = useCallback((params: {
-    description: string,
-    sentence: string
-  }) => {
-    const { description, sentence } = params
-    const originalFirstTalkText = description.replace("<UserName>", userInfo?.name ?? "").replace("<EndPhrase>", sentence)
-    setFirstTalkText(originalFirstTalkText)
-  }, [])
-
   const stopSpeaking = useCallback(() => {
     viewer.model?.stopSpeak()
   }, [viewer.model])
@@ -182,6 +182,8 @@ export const useSituationTalk = () => {
     firstGreetingDone,
     setFirstGreetingDone,
     firstTalkText,
+    endPhrase,
+    isSituationTalkEnded,
     roleOfAi,
     roleOfUser,
   };

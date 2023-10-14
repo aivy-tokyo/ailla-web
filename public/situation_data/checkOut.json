@@ -24,5 +24,10 @@
       "description": "感謝を伝え、フィードバックを求めよう",
       "hint": "It was a pleasure having you as our guest. We hope you enjoyed your stay. If you have any feedback or suggestions, please feel free to let us know. We wish you a safe journey home!"
     }
-  ]
+  ],
+  "endPhrase": {
+    "sentence": "さようなら",
+    "description":  "「チェックアウト」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。"
+  },
+  "endTalk": "お疲れ様でした。チェックアウトのシチュエーショントークを終了します。"
 }

@@ -14,5 +14,10 @@
       "description": "到着をお待ちしていますという旨を伝えよう",
       "hint": "We look forward to welcoming you. If you have any other questions or requests, please feel free to let us know."
     }
-  ]
+  ],
+  "endPhrase": {
+    "sentence": "さようなら",
+    "description":  "「早期到着」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。"
+  },
+  "endTalk": "お疲れ様でした。早期到着のシチュエーショントークを終了します。"
 }

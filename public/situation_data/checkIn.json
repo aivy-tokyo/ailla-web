@@ -38,7 +38,8 @@
     }
   ],
   "endPhrase": {
-    "sentence": "end",
-    "description":  "We will begin the check-in situation. <UserName> is in the role of staff. The closing phrase is <EndPhrase>."
-  }
+    "sentence": "さようなら",
+    "description":  "「チェックイン」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。"
+  },
+  "endTalk": "お疲れ様でした。チェックインのシチュエーショントークを終了します。"
 }

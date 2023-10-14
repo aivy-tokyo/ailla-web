@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import BottomUi from "./BottomUi";
 import { ChatHint } from "./ChatHint";
 import { ChatMenu } from "./ChatMenu";
@@ -40,6 +40,8 @@ export const UiContainerSituation: React.FC = () => {
     firstGreetingDone,
     setFirstGreetingDone,
     firstTalkText,
+    endPhrase,
+    isSituationTalkEnded,
     roleOfAi,
     roleOfUser,
   } = useSituationTalk();
@@ -61,12 +63,16 @@ export const UiContainerSituation: React.FC = () => {
     [setBackgroundImagePath, situationList, startSituation]
   );
 
-  // 始まりのボタンを押したかどうかの状態管理
-  const [startButtonClicked, setStartButtonClicked] = useState<boolean>(false);
   const handleSkipFirstGreeting = useCallback(() => {
     setFirstGreetingDone(true);
     stopSpeaking()
   }, []);
+
+  useEffect(() => {
+    if (isSituationTalkEnded) {
+      endTalk()
+    }
+  }, [isSituationTalkEnded])
 
   return (
     <>
@@ -75,7 +81,6 @@ export const UiContainerSituation: React.FC = () => {
           <div
             className={`
             fixed top-0 flex flex-col justify-end items-center h-screen w-full pb-52 bg-opacity-60 z-50
-            ${startButtonClicked ? "bg-transparent" : "bg-black"}
             `}
           >
           <div className="p-10">
@@ -100,7 +105,7 @@ export const UiContainerSituation: React.FC = () => {
       )}
       <HeaderUi onClickEndTalk={endTalk} />
       {showHint && situation && (
-        <ChatHint situation={situation} steps={stepStatus} endPhrase="test" />
+        <ChatHint situation={situation} steps={stepStatus} endPhrase={endPhrase} />
       )}
       {!situation && (
         <ChatMenu

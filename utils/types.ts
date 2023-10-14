@@ -129,4 +129,5 @@ export type Situation = {
   roleOfUser: string; // ユーザーの役割
   steps: SituationStep[];
   endPhrase: EndPhrase
+  endTalk: string
 };
