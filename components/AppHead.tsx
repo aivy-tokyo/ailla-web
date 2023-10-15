@@ -3,7 +3,7 @@ import Head from "next/head";
 import { avatars } from "../utils/constants";
 export const AppHead = () => {
   const title = "AILLA";
-  const description = "中国語会話AI";
+  const description = "外国語会話AI";
   const imageUrl = `${process.env.NEXT_PUBLIC_SITE_DOMAIN}/ogp.png`;
   return (
     <Head>

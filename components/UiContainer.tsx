@@ -3,7 +3,11 @@ import { HeaderUi } from "./HeaderUi";
 import { useRouter } from "next/router";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { useAtomValue, useSetAtom } from "jotai";
-import { chatLogAtom, isVoiceInputAllowedAtom } from "../utils/atoms";
+import {
+  chatLogAtom,
+  clientInfoAtom,
+  isVoiceInputAllowedAtom,
+} from "../utils/atoms";
 import { useVoiceInput } from "../hooks/useVoiceInput";
 
 export const UiContainer = () => {
@@ -11,6 +15,18 @@ export const UiContainer = () => {
   const { viewer } = useContext(ViewerContext);
   const isVoiceInputAllowed = useAtomValue(isVoiceInputAllowedAtom);
   const setChatLog = useSetAtom(chatLogAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
+  const [clientLanguage, setClientLanguage] = useState("");
+  useEffect(() => {
+    const languages = {
+      en: "英語",
+      cn: "中国語",
+    };
+
+    if (clientInfo && clientInfo.language) {
+      setClientLanguage(languages[clientInfo.language]);
+    }
+  }, []);
 
   useEffect(() => {
     viewer.model?.stopSpeak();
@@ -87,9 +103,8 @@ export const UiContainer = () => {
         <div className="modal-box">
           <h3 className="font-bold text-lg">使い方</h3>
           <p className="py-4">
-            このアプリでは、Aillaと中国語で会話をすることができます。
-            <br />
-            中国語の練習には3つのモードがあります。
+            このアプリでは、Aillaと${clientLanguage}で会話をすることができます。
+            <br />${clientLanguage}の練習には3つのモードがあります。
             <br />
             <br />
             <strong>1. フリートークモード</strong>
@@ -106,7 +121,8 @@ export const UiContainer = () => {
             では、シチュエーションに沿った会話をすることができます。
             <br />
             <strong>リピートプラクティスモード</strong>
-            では、Aillaが中国語を話すので、それを聞いてリピートすることで発音の練習をすることができます。
+            では、Aillaが${clientLanguage}
+            を話すので、それを聞いてリピートすることで発音の練習をすることができます。
             <br />
             <br />
             モードを選択すると、会話が始まります。

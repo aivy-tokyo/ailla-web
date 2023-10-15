@@ -4,30 +4,30 @@ import * as Sentry from "@sentry/nextjs";
 
 type Params = {
   text: string;
-  lang?: "ja" | "en" | "cn" | string;
-  languageCode: string;
+  language: "ja" | "en" | "cn" | string;
+  formalLanguage: string;
   currentAvatar: Avatar;
 };
 
 export const tts = async ({
   text,
-  lang = "en",
-  languageCode,
+  language = "en",
+  formalLanguage = "en-US",
   currentAvatar,
 }: Params): Promise<ArrayBuffer | undefined> => {
   try {
     let response: AxiosResponse<ArrayBuffer>;
 
-    if (lang === "en" || lang === "cn") {
+    if (language === "en" || language === "cn") {
       const voiceName =
-        lang === "en" ? currentAvatar.ttsEnglish : currentAvatar.ttsChinese;
+        language === "en" ? currentAvatar.ttsEnglish : currentAvatar.ttsChinese;
 
       response = await axios.post(
         "/api/synthesize",
         {
           text,
           voiceName,
-          languageCode,
+          formalLanguage,
         },
         {
           headers: { "Content-Type": "application/json" },
@@ -36,7 +36,7 @@ export const tts = async ({
       );
 
       return response.data;
-    } else if (lang === "ja") {
+    } else if (language === "ja") {
       //日本語ならClovaVoiceAPI
       const speaker = currentAvatar.ttsJapanese;
       response = await axios.post(

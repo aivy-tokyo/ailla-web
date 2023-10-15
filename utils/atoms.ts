@@ -21,6 +21,9 @@ export const userInfoAtom = atom<UserInfo | null>(null);
 // Client情報のアトム
 export const clientInfoAtom = atom<ClientInfo | null>(null);
 
+// Client言語情報のアトム
+export const clientLanguageAtom = atom<string>("");
+
 // 最初の挨拶が終わったかどうかのアトム
 export const firstGreetingDoneAtom = atom<boolean>(false);
 // viewerのアトム

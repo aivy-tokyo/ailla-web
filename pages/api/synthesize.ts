@@ -32,11 +32,11 @@ const synthesizeSpeech = async (
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { text, voiceName, languageCode } = req.body;
+  const { text, voiceName, formalLanguage } = req.body;
   try {
     // sythesize text
     let response;
-    [response] = await synthesizeSpeech(text, voiceName, languageCode);
+    [response] = await synthesizeSpeech(text, voiceName, formalLanguage);
     // send audio
     res.setHeader("Content-Type", "audio/mpeg");
     res.send(response.audioContent);

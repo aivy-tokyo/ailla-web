@@ -13,7 +13,7 @@ import { useViewer } from "./useViewer";
 type Props = {
   text: string;
   viewerModel: Model;
-  lang?: string;
+  language: string;
   onSpeaking?: (text: string) => void;
   onSpeakingEnd?: () => void;
 };
@@ -23,6 +23,7 @@ export const useCharactorSpeaking = () => {
   const currentAvatar = useAtomValue(currentAvatarAtom);
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
   const clientInfo = useAtomValue(clientInfoAtom);
+  const formalLanguage = clientInfo?.formalLanguage || "";
 
   useEffect(() => {
     document.addEventListener(
@@ -38,16 +39,21 @@ export const useCharactorSpeaking = () => {
     async ({
       text,
       viewerModel,
-      lang = "cn",
+      language,
       onSpeaking,
       onSpeakingEnd,
     }: Props) => {
       console.log("speak:", text);
       setIsCharactorSpeaking(true);
+
       try {
         viewerModel.resumeAudio();
-        const languageCode = lang === "en" ? "en-US" : "zh-CN";
-        const buffer = await tts({ text, lang, languageCode, currentAvatar });
+        const buffer = await tts({
+          text,
+          language,
+          formalLanguage,
+          currentAvatar,
+        });
         if (!buffer) {
           return;
         }

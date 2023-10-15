@@ -8,12 +8,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+  const code = process.env.CLIENT_CODE;
   if (req.method === "GET") {
     const { Item } = await client.send(
       new GetItemCommand({
         TableName: TableNames.clients,
         Key: {
-          id: { S: req.query.id as string },
+          code: { S: code as string },
         },
       })
     );

@@ -1,15 +1,30 @@
 import * as Sentry from "@sentry/nextjs";
 import { useAtomValue } from "jotai";
-import { useContext, useCallback, useRef } from "react";
+import { useContext, useCallback, useRef, useState, useEffect } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
-import { userInfoAtom } from "../utils/atoms";
+import { clientInfoAtom, userInfoAtom } from "../utils/atoms";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
+import { LanguageKey } from "../utils/constants";
 
-const introductionGreeting = `你好 {UserName}! 我是艾拉, 你的中文对话伙伴。让我们一起来一场有趣又有趣的聊天吧！`;
-const appExplanation = `
+const isLanguageKey = (key: string): key is LanguageKey => {
+  return key === "en" || key === "cn";
+};
+
+const introductions: Record<LanguageKey, string> = {
+  en: `Hello {UserName}! I'm Ailla, your English conversation partner. Let's have a fun and interesting chat together!`,
+  cn: `你好 {UserName}！我是艾拉，你的中文对话伙伴。让我们一起来一场有趣又有趣的聊天吧！`,
+};
+
+const introductionGreeting = (language: LanguageKey) => {
+  console.log("language->", language);
+  return introductions[language] || ""; // Default to an empty string if the language is not found.
+};
+
+const appExplanation = (learningLanguage: string) => {
+  const explanation: string = `
 このアプリでは、
-Aillaと中国語で会話をすることができます。
-中国語会話の練習には3つのモードがあります。
+Aillaと${learningLanguage}で会話をすることができます。
+会話の練習には3つのモードがあります。
 
 1. フリートークモード。
 2. シチュエーションモード。
@@ -21,21 +36,38 @@ Aillaと中国語で会話をすることができます。
 シチュエーションに沿った会話をすることができます。
 
 リピートプラクティスモードでは、
-Aillaが中国語を話すので、
+Aillaが${learningLanguage}を話すので、
 それを聞いてリピートすることで発音の練習をすることができます。
 モードを選択すると、
 会話が始まります。
 
 さあ、はじめましょう！!
-`;
+  `;
 
-const comeBackGreetingList = [
-  "欢迎回来！很高兴再次见到你。准备好学习另一堂激动人心的课程了吗？",
-  "你好 {UserName}! 我希望你度过了愉快的一周。让我们一起继续我们的中国之旅！",
-  "很高兴再次见到你, {UserName}! 我期待听到您的进展。",
-  "你好 {UserName}! 你最近怎么样？让我们今天的课程再创成功吧！",
-  "欢迎回来, {UserName}! 你的努力确实得到了回报。让我们继续努力吧！",
-];
+  return explanation;
+};
+
+const comeBackGreetings: Record<LanguageKey, string[]> = {
+  en: [
+    "Welcome back! It's great to see you again. Are you ready for another exciting lesson?",
+    "Hello {UserName}! I hope you had a wonderful week. Let's continue our journey through China together!",
+    "Nice to see you again, {UserName}! I look forward to hearing about your progress.",
+    "Hello {UserName}! How have you been lately? Let's make today's lesson another success!",
+    "Welcome back, {UserName}! Your hard work is definitely paying off. Let's keep pushing forward!",
+  ],
+  cn: [
+    // 以下は例です。実際の挨拶を編集してください。
+    "欢迎回来！很高兴再次见到你。你准备好进行另一堂激动人心的课了吗？",
+    "你好，{UserName}！希望你过得愉快。让我们一起继续在中国的旅程吧！",
+    "很高兴再次见到你，{UserName}！期待听到你的进步。",
+    "你好，{UserName}！你最近过得怎样？让我们使今天的课程再次成功！",
+    "欢迎回来，{UserName}！你的努力肯定会得到回报。让我们继续努力前进！",
+  ],
+};
+
+const comeBackGreetingList = (language: LanguageKey) =>
+  comeBackGreetings[language];
+
 const lessonsStartPhrases = [
   "今日は何から始めたいと思いますか？どのレッスンにしましょうか？",
   "今日のレッスンはどれから手をつけましょうか？",
@@ -56,6 +88,14 @@ export const useFirstConversation = (props: {
 }) => {
   const { viewer } = useContext(ViewerContext);
   const userInfo = useAtomValue(userInfoAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
+  const language: string =
+    clientInfo && clientInfo.language ? clientInfo.language : "en";
+  const learningLanguage: string =
+    clientInfo && clientInfo.learningLanguage
+      ? clientInfo.learningLanguage
+      : "英語";
+
   const { speakCharactor } = useCharactorSpeaking();
   // speakを継続するかどうかのフラグ
   const isSpeaking = useRef(true);
@@ -66,6 +106,12 @@ export const useFirstConversation = (props: {
     const userName = userInfo.name;
     const viewerModel = viewer.model;
     const { onSpeaking, onSpeakingEnd } = props;
+
+    console.log("useFirstConversation language->", language);
+
+    if (!isLanguageKey(language)) {
+      return;
+    }
 
     try {
       // localStorageからisAppExplanationDoneを取得
@@ -78,8 +124,9 @@ export const useFirstConversation = (props: {
         }
 
         await speakCharactor({
-          text: replaceUserName(introductionGreeting, userName),
+          text: replaceUserName(introductionGreeting(language), userName),
           viewerModel,
+          language,
           onSpeaking,
           onSpeakingEnd,
         });
@@ -89,9 +136,9 @@ export const useFirstConversation = (props: {
         }
 
         await speakCharactor({
-          text: replaceUserName(appExplanation, userName),
+          text: replaceUserName(appExplanation(learningLanguage), userName),
           viewerModel,
-          lang: "ja",
+          language: "ja",
           onSpeaking,
           onSpeakingEnd,
         });
@@ -103,11 +150,16 @@ export const useFirstConversation = (props: {
         }
 
         const randomIndex = Math.floor(
-          Math.random() * comeBackGreetingList.length
+          Math.random() * comeBackGreetingList(language).length
         );
+
         await speakCharactor({
-          text: replaceUserName(comeBackGreetingList[randomIndex], userName),
+          text: replaceUserName(
+            comeBackGreetingList(language)[randomIndex],
+            userName
+          ),
           viewerModel,
+          language,
           onSpeaking,
           onSpeakingEnd,
         });
@@ -119,7 +171,7 @@ export const useFirstConversation = (props: {
         await speakCharactor({
           text: lessonsStartPhrases[randomIndex],
           viewerModel,
-          lang: "ja",
+          language: "ja",
           onSpeaking,
           onSpeakingEnd,
         });

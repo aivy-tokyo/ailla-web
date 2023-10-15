@@ -12,8 +12,6 @@ import { useViewer } from "./useViewer";
 import { Situation } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
-const situationFileNames: string[] = [];
-
 export const useSituationTalk = () => {
   const viewer = useViewer();
   const { speakCharactor } = useCharactorSpeaking();
@@ -22,7 +20,7 @@ export const useSituationTalk = () => {
   const [roleOfAi, setRoleOfAi] = useState<string>("");
   const [roleOfUser, setRoleOfUser] = useState<string>("");
 
-  const clientLanguage = clientInfo?.language;
+  const language = clientInfo?.language ?? "";
   const clientSituationList = clientInfo?.situationList ?? [];
 
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
@@ -44,7 +42,7 @@ export const useSituationTalk = () => {
   useEffect(() => {
     Promise.all(
       clientSituationList.map((fileName) =>
-        fetch(`situation_data/${clientLanguage}/${fileName}`).then((res) =>
+        fetch(`situation_data/${language}/${fileName}.json`).then((res) =>
           res.json()
         )
       )
@@ -68,6 +66,7 @@ export const useSituationTalk = () => {
           description: selectedSituation.description,
           messages: [],
           role: selectedSituation.roleOfAi,
+          speakLanguage: clientInfo?.speakLanguage,
         });
         console.log("response->", response);
         const { messages: newMessages } = response.data;
@@ -79,6 +78,7 @@ export const useSituationTalk = () => {
         await speakCharactor({
           text: newMessages[newMessages.length - 1].content,
           viewerModel: viewer.model,
+          language,
         });
       } catch (error) {
         console.error(error);
@@ -95,7 +95,6 @@ export const useSituationTalk = () => {
         setIsCharactorSpeaking(true);
 
         // TODO 各stepのkeySentencesを確認して、クリアしたstepを記録する
-
         // Userメッセージを送信
         const userMessage: Message = {
           role: "user",
@@ -103,11 +102,15 @@ export const useSituationTalk = () => {
         };
         console.log("userMessage->", userMessage);
         setChatLog((prev) => [...prev, userMessage]);
+
+        console.log("clientInfo?.language->", clientInfo?.language);
+
         const response = await axios.post("/api/chat/situation", {
           title: situation.title,
           description: situation.description,
           messages: [...messages, userMessage],
           role: roleOfAi,
+          language: clientInfo?.language,
         });
         console.log("response->", response);
         const { messages: newMessages } = response.data;
@@ -119,6 +122,7 @@ export const useSituationTalk = () => {
         await speakCharactor({
           text: newMessages[newMessages.length - 1].content,
           viewerModel: viewer.model,
+          language,
         });
       } catch (error) {
         console.error(error);

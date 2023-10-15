@@ -5,9 +5,6 @@ import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import * as Sentry from "@sentry/nextjs";
 import { useEffect } from "react";
-import { useRouter } from "next/router";
-import axios from "axios";
-import { ClientInfo } from "@/entities/ClientInfo";
 
 export default function App({
   Component,
@@ -44,38 +41,6 @@ export default function App({
   useEffect(() => {
     window.scrollTo(0, 1);
   }, []);
-
-  // クライアントごとに設定されたドメインでコンテンツ等を振りわける
-  const router = useRouter();
-  // const hostname = router.asPath.split(".")[0];
-  // TODO: ドメインをURLから取得する 一旦決め打ち
-  const code: string = "2";
-  useEffect(() => {
-    if (code === "ailla" || code === "/") {
-      return;
-    }
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/api/client?id=${code}`);
-        console.log("client response->", response);
-        const data = response.data;
-        if (data) {
-          const clientInfo: ClientInfo = {
-            language: data.language.S,
-            situationList: data.situations.SS,
-            speechApiKey: "",
-            speechEndpoint: "",
-          };
-          setClientInfo(clientInfo);
-
-          console.log("clientInfo->", clientInfo);
-        }
-      } catch (error) {
-        Sentry.captureException(error);
-      }
-    };
-    fetchData();
-  }, [code, setClientInfo]);
 
   return (
     <SessionProvider session={session}>

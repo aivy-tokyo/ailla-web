@@ -1,6 +1,10 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { isTranslatedAtom, isCharactorSpeakingAtom, isVoiceInputAllowedAtom } from "../utils/atoms";
+import {
+  isTranslatedAtom,
+  isCharactorSpeakingAtom,
+  isVoiceInputAllowedAtom,
+} from "../utils/atoms";
 import * as Sentry from "@sentry/nextjs";
 
 type Props = {
