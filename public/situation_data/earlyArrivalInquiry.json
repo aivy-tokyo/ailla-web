@@ -17,7 +17,8 @@
   ],
   "endPhrase": {
     "sentence": "さようなら",
-    "description":  "「早期到着」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。"
+    "description":  "「早期到着」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。",
+    "descriptionEn": "You begin the 'early-arrival' situation talk. You are playing the role of a staff member."
   },
   "endTalk": "お疲れ様でした。早期到着のシチュエーショントークを終了します。"
 }

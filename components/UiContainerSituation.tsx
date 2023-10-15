@@ -38,7 +38,6 @@ export const UiContainerSituation: React.FC = () => {
     startSituation,
     stopSpeaking,
     firstGreetingDone,
-    setFirstGreetingDone,
     firstTalkText,
     endPhrase,
     isSituationTalkEnded,
@@ -64,15 +63,14 @@ export const UiContainerSituation: React.FC = () => {
   );
 
   const handleSkipFirstGreeting = useCallback(() => {
-    setFirstGreetingDone(true);
-    stopSpeaking()
-  }, []);
+    stopSpeaking();
+  }, [stopSpeaking]);
 
   useEffect(() => {
     if (isSituationTalkEnded) {
-      endTalk()
+      endTalk();
     }
-  }, [isSituationTalkEnded])
+  }, [isSituationTalkEnded, endTalk])
 
   return (
     <>

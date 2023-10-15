@@ -81,15 +81,17 @@ export const useSituationTalk = () => {
         console.log("newMessages->", newMessages);
         setMessages(newMessages);
         setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
-        setEndPhrase(await selectedSituation?.endPhrase.sentence)
+        setEndPhrase(selectedSituation?.endPhrase.sentence)
 
-        setFirstTalkText(await selectedSituation.endPhrase.description)
-        await speakCharactor({
-          text: await selectedSituation?.endPhrase?.description,
-          viewerModel: viewer.model,
-          lang: "ja",
-        });
-        await setFirstGreetingDone(true)
+        setFirstTalkText(selectedSituation.endPhrase.description)
+
+        if (!firstGreetingDone) {
+          await speakCharactor({
+            text: await selectedSituation?.endPhrase?.descriptionEn,
+            viewerModel: viewer.model,
+          });
+          setFirstGreetingDone(true)
+        }
 
         // キャラクター発話
         await speakCharactor({
@@ -100,7 +102,7 @@ export const useSituationTalk = () => {
         console.error(error);
       }
     },
-    [setChatLog, speakCharactor, viewer.model]
+    [setChatLog, speakCharactor, viewer.model, firstGreetingDone, setFirstGreetingDone]
   );
 
   const sendMessage = useCallback(
@@ -119,6 +121,7 @@ export const useSituationTalk = () => {
         };
         console.log("userMessage->", userMessage);
         setChatLog((prev) => [...prev, userMessage]);
+
         if (userMessage.content === endPhrase) {
           setChatLog((prev) => [...prev, {
             role:"assistant",
@@ -132,6 +135,7 @@ export const useSituationTalk = () => {
           setIsSituationTalkEnded(true)
           return
         }
+
         const response = await axios.post("/api/chat/situation", {
           title: situation.title,
           description: situation.description,
@@ -163,12 +167,14 @@ export const useSituationTalk = () => {
       messages,
       roleOfAi,
       speakCharactor,
+      endPhrase,
     ]
   );
 
   const stopSpeaking = useCallback(() => {
-    viewer.model?.stopSpeak()
-  }, [viewer.model])
+    setFirstGreetingDone(true);
+    viewer.model?.stopSpeak();
+  }, [viewer.model]);
 
   return {
     situation,
@@ -180,7 +186,6 @@ export const useSituationTalk = () => {
     stopSpeaking,
     sendMessage,
     firstGreetingDone,
-    setFirstGreetingDone,
     firstTalkText,
     endPhrase,
     isSituationTalkEnded,

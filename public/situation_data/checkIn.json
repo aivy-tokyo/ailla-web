@@ -39,7 +39,8 @@
   ],
   "endPhrase": {
     "sentence": "さようなら",
-    "description":  "「チェックイン」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。"
+    "description":  "「チェックイン」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。",
+    "descriptionEn": "You begin the 'check-in' situation talk. You are playing the role of a staff member."
   },
   "endTalk": "お疲れ様でした。チェックインのシチュエーショントークを終了します。"
 }

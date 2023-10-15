@@ -39,5 +39,11 @@
       "description": "最後に予約を確認しよう",
       "hint": "Thank you for your reservation.  We have your reservation for tonight at <reserved time>"
     }
-  ]
+  ],
+  "endPhrase": {
+    "sentence": "さようなら",
+    "description":  "「レストランの予約シーン」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。",
+    "descriptionEn": "You begin the 'reserve-restaurant' situation talk. You are playing the role of a staff member."
+  },
+  "endTalk": "お疲れ様でした。レストランの予約シーンのシチュエーショントークを終了します。"
 }
