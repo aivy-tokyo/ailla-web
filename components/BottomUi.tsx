@@ -69,7 +69,7 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
     <>
       {/* チャットログを表示 */}
       <div className="fixed bottom-0 flex flex-col  justify-between w-full">
-        <div
+        <button
           onClick={() => toggleExpandChatLog()}
           className={`z-10 relative flex  transition-height ease-in-out duration-150 justify-center cursor-pointer ${
             isChatLogExpanded ? "h-screen" : "h-36"
@@ -89,7 +89,7 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
               roleOfUser={roleOfUser}
             />
           </div>
-        </div>
+        </button>
 
         {!isChatLogExpanded && (
           <div className="w-full h-18 z-20 py-3">

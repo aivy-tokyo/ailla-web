@@ -45,7 +45,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
             <br />
             英会話を始めましょう！
           </h4>
-          <div className="relative w-45 h-45" onClick={() => setStartButtonClicked(true)}>
+          <button className="relative w-45 h-45" onClick={() => setStartButtonClicked(true)}>
             <Image
               src="/start_sphere.svg"
               alt="start sphere"
@@ -57,7 +57,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
                 START
               </span>
             </div>
-          </div>
+          </button>
           <div className="pt-10">
               <div className="border border-opacity-20 border-white backdrop-blur shadow-manner-mode flex flex-col justify-center items-center w-[22rem] h-[8rem] rounded-[1.6rem] mt-5">
                 <div className="flex flex-col items-center justify-center">
