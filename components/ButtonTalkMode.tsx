@@ -34,7 +34,7 @@ export const ButtonTalkMode = ({ item }: { item: ButtonTalkModeProps }) => {
         </div>
       </div>
       <div className="relative mr-6">
-        <div className="absolute font-[100] inset-0 flex items-center justify-center cursor-pointer">
+        <div className="absolute font-[100] inset-0 flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
