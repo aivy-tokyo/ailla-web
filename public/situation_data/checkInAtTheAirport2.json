@@ -1,5 +1,6 @@
 {
-  "title": "Check-in at the Airport2",
+  "title": "空港でのチェックイン 2",
+  "titleEnglish": "Check-in at the Airport2",
   "description": "空港でチェックインするシーンです。顧客の預け荷物が重量制限を超えていた場合の会話です。顧客は超過料金を払うだけの現金を持ち合わせていません。預け荷物から手荷物へ、所持品を移動させる選択肢を選ぶことになります。",
   "roleOfAi": "Passenger",
   "roleOfUser": "JAL Staff",

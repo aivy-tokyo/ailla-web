@@ -1,5 +1,7 @@
 {
-  "title": "Early Arrival",
+
+  "title": "早めの到着",
+  "titleEnglish": "Early Arrival",
   "description": "宿泊予定のお客様から電話で、早めに到着しそうだがチェックイン前に荷物を預けたいという相談があった時の会話です。",
   "roleOfAi": "Customer",
   "roleOfUser": "Staff",
