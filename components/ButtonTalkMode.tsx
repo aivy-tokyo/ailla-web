@@ -8,7 +8,7 @@ interface ButtonTalkModeProps {
 
 export const ButtonTalkMode = ({ item }: { item: ButtonTalkModeProps }) => {
   return (
-    <div
+    <button
       className="flex justify-between items-center bg-white bg-opacity-80 h-[4rem] w-[24rem] text-xs rounded-[7.1rem]"
       onClick={item.onClick}
     >
@@ -33,8 +33,8 @@ export const ButtonTalkMode = ({ item }: { item: ButtonTalkModeProps }) => {
           </span>
         </div>
       </div>
-      <button className="relative mr-6" onClick={item.onClick}>
-        <div className="absolute font-[100] inset-0 flex items-center justify-center cursor-pointer">
+      <div className="relative mr-6">
+        <div className="absolute font-[100] inset-0 flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -57,7 +57,7 @@ export const ButtonTalkMode = ({ item }: { item: ButtonTalkModeProps }) => {
           width={42}
           height={42}
         />
-      </button>
-    </div>
+      </div>
+    </button>
   )
 }
