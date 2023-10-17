@@ -14,9 +14,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const origin = req.headers.origin;
-  console.log("req.headers.origin", origin);
-
   if (req.method === "PUT") {
     const Item = {
       id: { S: req.body.id },

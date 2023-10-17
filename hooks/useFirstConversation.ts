@@ -16,7 +16,6 @@ const introductions: Record<LanguageKey, string> = {
 };
 
 const introductionGreeting = (language: LanguageKey) => {
-  console.log("language->", language);
   return introductions[language] || ""; // Default to an empty string if the language is not found.
 };
 

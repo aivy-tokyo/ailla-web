@@ -103,8 +103,6 @@ export const useSituationTalk = () => {
         console.log("userMessage->", userMessage);
         setChatLog((prev) => [...prev, userMessage]);
 
-        console.log("clientInfo?.language->", clientInfo?.language);
-
         const response = await axios.post("/api/chat/situation", {
           title: situation.title,
           description: situation.description,

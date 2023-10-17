@@ -16,17 +16,7 @@ export const UiContainer = () => {
   const isVoiceInputAllowed = useAtomValue(isVoiceInputAllowedAtom);
   const setChatLog = useSetAtom(chatLogAtom);
   const clientInfo = useAtomValue(clientInfoAtom);
-  const [clientLanguage, setClientLanguage] = useState("");
-  useEffect(() => {
-    const languages = {
-      en: "英語",
-      cn: "中国語",
-    };
-
-    if (clientInfo && clientInfo.language) {
-      setClientLanguage(languages[clientInfo.language]);
-    }
-  }, []);
+  const learningLanguage = clientInfo?.learningLanguage;
 
   useEffect(() => {
     viewer.model?.stopSpeak();
@@ -103,8 +93,9 @@ export const UiContainer = () => {
         <div className="modal-box">
           <h3 className="font-bold text-lg">使い方</h3>
           <p className="py-4">
-            このアプリでは、Aillaと${clientLanguage}で会話をすることができます。
-            <br />${clientLanguage}の練習には3つのモードがあります。
+            このアプリでは、Aillaと${learningLanguage}
+            で会話をすることができます。
+            <br />${learningLanguage}の練習には3つのモードがあります。
             <br />
             <br />
             <strong>1. フリートークモード</strong>
@@ -121,7 +112,7 @@ export const UiContainer = () => {
             では、シチュエーションに沿った会話をすることができます。
             <br />
             <strong>リピートプラクティスモード</strong>
-            では、Aillaが${clientLanguage}
+            では、Aillaが${learningLanguage}
             を話すので、それを聞いてリピートすることで発音の練習をすることができます。
             <br />
             <br />
