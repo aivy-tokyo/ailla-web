@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
-import { Situation } from "@/utils/types";
+import { Situation, EndPhrase } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
 const situationFileNames = [
@@ -35,8 +35,7 @@ export const useSituationTalk = () => {
   const [situationList, setSituationList] = useState<Situation[]>([]);
   // situation開始時の会話を管理する
   const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false)
-  const [firstTalkText, setFirstTalkText] = useState<string>("")
-  const [endPhrase, setEndPhrase] = useState<string>("");
+  const [endPhrase, setEndPhrase] = useState<EndPhrase | null>();
   // シチュエーションが終了したかを判別する
   const [isSituationTalkEnded, setIsSituationTalkEnded] = useState<boolean>(false);
   const [stepStatus, setStepStatus] = useState<
@@ -81,9 +80,7 @@ export const useSituationTalk = () => {
         console.log("newMessages->", newMessages);
         setMessages(newMessages);
         setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
-        setEndPhrase(selectedSituation?.endPhrase.sentence)
-
-        setFirstTalkText(selectedSituation.endPhrase.description)
+        setEndPhrase(selectedSituation?.endPhrase)
 
         if (!firstGreetingDone) {
           await speakCharactor({
@@ -122,7 +119,8 @@ export const useSituationTalk = () => {
         console.log("userMessage->", userMessage);
         setChatLog((prev) => [...prev, userMessage]);
 
-        if (userMessage.content === endPhrase) {
+        const isContainsAllElements = endPhrase?.keySentences.every(sentence => userMessage.content.includes(sentence))
+        if (isContainsAllElements) {
           setChatLog((prev) => [...prev, {
             role:"assistant",
             content: situation.endTalk
@@ -186,7 +184,6 @@ export const useSituationTalk = () => {
     stopSpeaking,
     sendMessage,
     firstGreetingDone,
-    firstTalkText,
     endPhrase,
     isSituationTalkEnded,
     roleOfAi,

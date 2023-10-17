@@ -41,8 +41,9 @@
     }
   ],
   "endPhrase": {
-    "sentence": "さようなら",
-    "description":  "「レストランの予約シーン」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。",
+    "keySentences": ["looking", "forward", "to", "serving", "you", "tonight", "goodbye"],
+    "sentence": "Looking forward to serving you tonight. Goodbye!",
+    "description":  "「レストランの予約シーン」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'Looking forward to serving you tonight. Goodbye!'です。",
     "descriptionEn": "You begin the 'reserve-restaurant' situation talk. You are playing the role of a staff member."
   },
   "endTalk": "お疲れ様でした。レストランの予約シーンのシチュエーショントークを終了します。"

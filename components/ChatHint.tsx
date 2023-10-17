@@ -3,7 +3,7 @@ import { Situation, SituationStep } from "@/utils/types";
 type ChatHintProps = {
   situation: Situation;
   steps: SituationStep[];
-  endPhrase: string
+  endPhrase?: string
 };
 export const ChatHint: React.FC<ChatHintProps> = ({ steps, situation, endPhrase }) => (
   <div className="hint-container opacity-80 w-screen h-screen z-0 top-0 pt-5 px-3 flex fixed">

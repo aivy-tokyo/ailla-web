@@ -31,8 +31,9 @@
     }
   ],
   "endPhrase": {
-    "sentence": "さようなら",
-    "description":  "「チェックイン2」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。",
+    "keySentences": ["Thank you", "Enjoy", "your", "stay"],
+    "sentence": "Thank you! Enjoy your stay.",
+    "description":  "「チェックイン2」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'Thank you! Enjoy your stay.'です。",
     "descriptionEn": "You begin the 'check-in-2' situation talk. You are playing the role of a staff member."
   },
   "endTalk": "お疲れ様でした。チェックイン2のシチュエーショントークを終了します。"

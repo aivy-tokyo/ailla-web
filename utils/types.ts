@@ -118,6 +118,7 @@ export type SituationStep = {
 }
 
 export type EndPhrase = {
+  keySentences: string[]; // キーワード
   sentence: string
   description: string // チャットログに表示させる説明
   descriptionEn: string // AIに発音させる説明

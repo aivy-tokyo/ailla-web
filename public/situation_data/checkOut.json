@@ -26,8 +26,9 @@
     }
   ],
   "endPhrase": {
-    "sentence": "さようなら",
-    "description":  "「チェックアウト」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'さようなら'です。",
+    "keySentences": ["Goodbye", "andEnjoy", "take", "care"],
+    "sentence": "Goodbye and take care!",
+    "description":  "「チェックアウト」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'Goodbye and take care!'です。",
     "descriptionEn": "You begin the 'check-out' situation talk. You are playing the role of a staff member."
   },
   "endTalk": "お疲れ様でした。チェックアウトのシチュエーショントークを終了します。"

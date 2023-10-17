@@ -38,7 +38,6 @@ export const UiContainerSituation: React.FC = () => {
     startSituation,
     stopSpeaking,
     firstGreetingDone,
-    firstTalkText,
     endPhrase,
     isSituationTalkEnded,
     roleOfAi,
@@ -82,10 +81,10 @@ export const UiContainerSituation: React.FC = () => {
             `}
           >
           <div className="p-10">
-            {firstTalkText && (
+            {endPhrase?.description && (
               <div className="bg-white flex w-[24rem] text-center p-4 justify-center items-center padding-[1rem] gap-2.5 rounded-xl">
                 <p className="whitespace-pre-wrap text-black text-[0.8rem] font-[30rem]">
-                  {firstTalkText}
+                  {endPhrase.description}
                 </p>
               </div>
             )}
@@ -103,7 +102,7 @@ export const UiContainerSituation: React.FC = () => {
       )}
       <HeaderUi onClickEndTalk={endTalk} />
       {showHint && situation && (
-        <ChatHint situation={situation} steps={stepStatus} endPhrase={endPhrase} />
+        <ChatHint situation={situation} steps={stepStatus} endPhrase={endPhrase?.sentence} />
       )}
       {!situation && (
         <ChatMenu
