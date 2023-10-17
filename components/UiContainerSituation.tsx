@@ -59,7 +59,7 @@ export const UiContainerSituation: React.FC = () => {
   );
 
   return (
-    <>
+    <div className={!situation ? " h-full bg-[rgba(255,255,255,0.8)]" : "h-full"}>
       <HeaderUi onClickEndTalk={endTalk} />
       {showHint && situation && (
         <ChatHint situation={situation} steps={stepStatus} />
@@ -79,6 +79,6 @@ export const UiContainerSituation: React.FC = () => {
         />
       )}
       <ButtonUsageModal />
-    </>
+    </div>
   );
 };

@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { UiContainerFreeTalk } from "../components/UiContainerFreeTalk";
 import { UiContainerSituation } from "../components/UiContainerSituation";
 import { FirstGreeting } from "../components/FirstGreeting";
+import { PropsWithChildren, useContext, useState, useCallback } from "react";
 
 type ContainerMode = "repeat-practice" | "situation" | "free-talk" | undefined;
 const SwitchContainer: React.FC<{ mode: ContainerMode }> = ({ mode }) => {
@@ -21,6 +22,15 @@ const SwitchContainer: React.FC<{ mode: ContainerMode }> = ({ mode }) => {
   }
 };
 
+
+const FullscreenContainer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+  return (
+    <div className="fixed h-screen w-screen left-0 top-0">
+      {children}
+    </div>
+  );
+}
+
 export default function Home() {
   const router = useRouter();
   const { mode } = router.query;
@@ -30,9 +40,11 @@ export default function Home() {
       <AppHead />
       <AuthGuard>
         <VrmViewer />
-        <FirstGreeting>
-          <SwitchContainer mode={mode as ContainerMode} />
-        </FirstGreeting>
+        <FullscreenContainer>
+          <FirstGreeting>
+            <SwitchContainer mode={mode as ContainerMode} />
+          </FirstGreeting>
+        </FullscreenContainer>
       </AuthGuard>
     </>
   );
