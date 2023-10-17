@@ -24,5 +24,12 @@
       "description": "感謝を伝え、フィードバックを求めよう",
       "hint": "It was a pleasure having you as our guest. We hope you enjoyed your stay. If you have any feedback or suggestions, please feel free to let us know. We wish you a safe journey home!"
     }
-  ]
+  ],
+  "endPhrase": {
+    "keySentences": ["Goodbye", "andEnjoy", "take", "care"],
+    "sentence": "Goodbye and take care!",
+    "description":  "「チェックアウト」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'Goodbye and take care!'です。",
+    "descriptionEn": "You begin the 'check-out' situation talk. You are playing the role of a staff member."
+  },
+  "endTalk": "お疲れ様でした。チェックアウトのシチュエーショントークを終了します。"
 }

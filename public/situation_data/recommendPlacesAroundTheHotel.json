@@ -29,5 +29,12 @@
       "description": "最後の挨拶をしよう",
       "hint": "Please enjoy your stay."
     }
-  ]
+  ],
+  "endPhrase": {
+    "keySentences": ["enjoy", "exploring", "area", "goodbye"],
+    "sentence": "Enjoy exploring the area! Goodbye.",
+    "description":  "「ホテル周辺のおすすめスポット」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'Enjoy exploring the area! Goodbye.'です。",
+    "descriptionEn": "You begin the 'recommended-places-around-the-hotel' situation talk. You are playing the role of a staff member."
+  },
+  "endTalk": "お疲れ様でした。ホテル周辺のおすすめスポットのシチュエーショントークを終了します。"
 }
