@@ -28,24 +28,6 @@ const clientEnv: Record<LanguageKey, ClientEnvValue> = {
   },
 };
 
-const comeBackGreetings: Record<LanguageKey, string[]> = {
-  en: [
-    "Welcome back! It's great to see you again. Are you ready for another exciting lesson?",
-    "Hello {UserName}! I hope you had a wonderful week. Let's continue our journey through China together!",
-    "Nice to see you again, {UserName}! I look forward to hearing about your progress.",
-    "Hello {UserName}! How have you been lately? Let's make today's lesson another success!",
-    "Welcome back, {UserName}! Your hard work is definitely paying off. Let's keep pushing forward!",
-  ],
-  cn: [
-    // 以下は例です。実際の挨拶を編集してください。
-    "欢迎回来！很高兴再次见到你。你准备好进行另一堂激动人心的课了吗？",
-    "你好，{UserName}！希望你过得愉快。让我们一起继续在中国的旅程吧！",
-    "很高兴再次见到你，{UserName}！期待听到你的进步。",
-    "你好，{UserName}！你最近过得怎样？让我们使今天的课程再次成功！",
-    "欢迎回来，{UserName}！你的努力肯定会得到回报。让我们继续努力前进！",
-  ],
-};
-
 export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const session = useSession();
