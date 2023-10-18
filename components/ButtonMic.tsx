@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
-import { IoMicOutline } from 'react-icons/io5';
+import { IoMicOutline } from "react-icons/io5";
+import { RiVoiceprintFill } from "react-icons/ri";
 import { ButtonProps } from "../utils/types";
 
 export const ButtonMic = forwardRef<
@@ -35,7 +36,11 @@ export const ButtonMic = forwardRef<
       onTouchEnd={handleButtonUp}
       {...props}
     >
-      <IoMicOutline size={40} />
+      {isMicRecording ? (
+        <RiVoiceprintFill size={40} className="border-0" />
+      ) : (
+        <IoMicOutline size={40} />
+      )}
     </button>
   );
 });
