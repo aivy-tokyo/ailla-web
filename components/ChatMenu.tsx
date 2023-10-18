@@ -19,6 +19,9 @@ export const ChatMenu: React.FC<ChatMenuProps> = ({
 }) => {
   useEffect(() => {
     setIsSituationSelection(true);
+    return () => {
+      setIsSituationSelection(false);
+    };
   });
 
   return (
