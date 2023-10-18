@@ -1,13 +1,19 @@
+import {AiOutlineCloseCircle} from 'react-icons/ai';
+
 //シチュエーション会話終了ボタン
 const endTalkButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   return (
-    <button className="
-    btn btn-outline text-white
-    hover:bg-white
-    hover:bg-opacity-40
-    "
-    onClick={onClick}>
-      <span>会話を終了</span>
+    <button
+      className="
+        flex
+        items-center
+        justify-center
+        bg-transparent
+        text-[#47556D]
+      "
+      onClick={onClick}
+    >
+      <AiOutlineCloseCircle className="w-[2rem] h-[2rem] mr-[1rem]" />
     </button>
   );
 };
