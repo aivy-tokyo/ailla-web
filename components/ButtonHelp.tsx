@@ -8,11 +8,9 @@ export const ButtonHelp = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={`
-    relative    
-    border-0
-    bg-transparent
-    btn
-    ${`btn-${size}`}
+        relative    
+        border-0
+        bg-transparent
   `}
         {...props}
       >

@@ -1,19 +1,22 @@
 import React, { forwardRef } from "react";
-import { FaRegComments } from "react-icons/fa";
+import { IoMdChatbubbles } from "react-icons/io";
 import { ButtonProps } from "../utils/types";
 
-export const ButtonChat = forwardRef<HTMLButtonElement, ButtonProps>(function ChatIcon(
-  {size, ...props},
-  ref
-) {
-  return (
-    <button ref={ref} className={`
-      relative
-      btn btn-circle shadow
-      btn-neutral
-      ${`btn-${size}`}
-    `} {...props}>
-      <FaRegComments size={24} />
-    </button>
-  );
-});
+export const ButtonChat = forwardRef<HTMLButtonElement, ButtonProps>(
+  function ChatIcon({ size, ...props }, ref) {
+    return (
+      <button
+        ref={ref}
+        className={`
+        relative    
+        border-0
+        bg-transparent
+
+    `}
+        {...props}
+      >
+        <IoMdChatbubbles className="text-white/60 text-[2rem]" />
+      </button>
+    );
+  },
+);
