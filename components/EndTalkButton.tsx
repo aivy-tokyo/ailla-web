@@ -1,7 +1,10 @@
-import {AiOutlineCloseCircle} from 'react-icons/ai';
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 //シチュエーション会話終了ボタン
-const endTalkButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+const endTalkButton: React.FC<{
+  onClick: () => void;
+  isSituationSelection?: boolean;
+}> = ({ onClick, isSituationSelection }) => {
   return (
     <button
       className="
@@ -13,7 +16,13 @@ const endTalkButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
       "
       onClick={onClick}
     >
-      <AiOutlineCloseCircle className="w-[2rem] h-[2rem] mr-[1rem]" />
+      <AiOutlineCloseCircle
+        className={
+          isSituationSelection
+            ? "w-[2rem] h-[2rem] mr-[1rem]"
+            : "w-[2rem] h-[2rem] mr-[1rem] text-white"
+        }
+      />
     </button>
   );
 };

@@ -3,18 +3,20 @@ import { isTranslatedAtom } from "@/utils/atoms";
 import { useAtom } from "jotai";
 
 const TranslateToggleSwitch = ({
-  isSituation,
+  isSituationSelection,
 }: {
-  isSituation: Situation | undefined | null;
+    isSituationSelection?: boolean;
 }) => {
   const [isTranslated, setIsTranslated] = useAtom(isTranslatedAtom);
   const handleTranslate = () => {
     setIsTranslated((prev) => !prev);
   };
 
+  console.log("isSituationSelection", isSituationSelection)
+
   return (
     <div className="ml-4 flex justify-start w-[40%]">
-      <span className={isSituation ? "text-[#7B8392] mr-2" : "text-white mr-2"}>
+      <span className={isSituationSelection ? "text-[#7B8392] mr-2" : "text-white mr-2"}>
         日本語で入力
       </span>
       <button onClick={handleTranslate}>

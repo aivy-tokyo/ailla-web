@@ -15,6 +15,7 @@ export const UiContainerSituation: React.FC = () => {
 
   const setBackgroundImagePath = useSetAtom(backgroundImagePathAtom);
   const setChatLog = useSetAtom(chatLogAtom);
+  const [isSituationSelection, setIsSituationSelection] = useState<boolean>(false)
 
   // Hintの表示状態管理
   const [showHint, setShowHint] = useState<boolean>(false);
@@ -76,7 +77,7 @@ export const UiContainerSituation: React.FC = () => {
     <div
       className={!situation ? " h-full bg-[rgba(255,255,255,0.8)]" : "h-full"}
     >
-      <HeaderUi onClickEndTalk={endTalk} isSituation={situation} />
+      <HeaderUi onClickEndTalk={endTalk} isSituationSelection={isSituationSelection} />
       {!firstGreetingDone && situation && (
         <>
           <div
@@ -115,6 +116,7 @@ export const UiContainerSituation: React.FC = () => {
         <ChatMenu
           options={situationListOptions}
           onClickOption={handleSelectSituation}
+          setIsSituationSelection={setIsSituationSelection}
         />
       )}
       {situation && firstGreetingDone && (

@@ -8,11 +8,11 @@ import { Situation } from "@/utils/types";
 
 type HeaderUiProps = {
   onClickEndTalk?: () => void;
-  isSituation?: Situation | null | undefined;
+  isSituationSelection?: boolean;
 };
 export const HeaderUi: React.FC<HeaderUiProps> = ({
   onClickEndTalk,
-  isSituation,
+  isSituationSelection,
 }) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
   const modalHelp = document.getElementById("modal_help") as HTMLDialogElement;
@@ -21,10 +21,10 @@ export const HeaderUi: React.FC<HeaderUiProps> = ({
     <>
       <div className="z-1 fixed top-5 w-full flex justify-between items-center my-2 px-2 ">
         {/* 機能未実装のため */}
-        <TranslateToggleSwitch isSituation={isSituation} />
+        <TranslateToggleSwitch isSituationSelection={isSituationSelection} />
         <div className="self-end ml-auto flex items-center gap-2">
           {onClickEndTalk ? (
-            <EndTalkButton onClick={onClickEndTalk} />
+            <EndTalkButton onClick={onClickEndTalk} isSituationSelection={isSituationSelection}  />
           ) : (
             <div className="flex justify-end gap-2">
               <button>
