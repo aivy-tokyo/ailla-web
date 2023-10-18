@@ -2,7 +2,11 @@ import { Situation } from "@/utils/types";
 import { isTranslatedAtom } from "@/utils/atoms";
 import { useAtom } from "jotai";
 
-const TranslateToggleSwitch = (isSituation: Situation | undefined | null) => {
+const TranslateToggleSwitch = ({
+  isSituation,
+}: {
+  isSituation: Situation | undefined | null;
+}) => {
   const [isTranslated, setIsTranslated] = useAtom(isTranslatedAtom);
   const handleTranslate = () => {
     setIsTranslated((prev) => !prev);

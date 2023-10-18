@@ -8,7 +8,7 @@ import { Situation } from "@/utils/types";
 
 type HeaderUiProps = {
   onClickEndTalk?: () => void;
-  isSituation: Situation | null | undefined;
+  isSituation?: Situation | null | undefined;
 };
 export const HeaderUi: React.FC<HeaderUiProps> = ({
   onClickEndTalk,
