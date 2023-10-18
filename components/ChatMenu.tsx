@@ -17,7 +17,7 @@ export const ChatMenu: React.FC<ChatMenuProps> = ({
   <div className="hint-container text-white w-screen h-screen -z-0 top-12 flex fixed">
     {/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
     <div className="w-full flex flex-col items-center max-w-[900px] justify-center m-auto">
-      <h1 className="text-[1.4rem] -z-0 text-[#47556D] text-center font-[700] mb-4">
+      <h1 className="text-[1.4rem] -z-0 text-[#47556D] text-center font-[700] mb-7">
         シチュエーションを
         <br/>
         選択してください
