@@ -44,7 +44,6 @@ export const UiContainerSituation: React.FC = () => {
     roleOfUser,
   } = useSituationTalk();
 
-  console.log("endPhrase: ", endPhrase);
   // Situationの選択肢を作成
   const situationListOptions = useMemo(() => {
     return situationList.map((situation, index) => ({
