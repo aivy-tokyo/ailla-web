@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { FaMicrophone } from "react-icons/fa";
+import { IoMicOutline } from 'react-icons/io5';
 import { ButtonProps } from "../utils/types";
 
 export const ButtonMic = forwardRef<
@@ -35,7 +35,7 @@ export const ButtonMic = forwardRef<
       onTouchEnd={handleButtonUp}
       {...props}
     >
-      <FaMicrophone size={24} />
+      <IoMicOutline size={40} />
     </button>
   );
 });
