@@ -20,7 +20,7 @@ type Props = {
 const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
   const isCharacterSpeaking = useAtomValue(isCharactorSpeakingAtom);
   const [chatMode, setChatMode] = useState<ChatMode>("mic");
-  
+
   // VoiceInputの状態管理とロジックを取得
   const { startRecording, stopRecording, isMicRecording } = useVoiceInput({
     onStopRecording: useCallback(
@@ -48,7 +48,7 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
       sendChat(inputValue);
       setInputValue("");
     },
-    [inputValue, sendChat]
+    [inputValue, sendChat],
   );
 
   // ChatLogの状態管理とロジックを取得
@@ -60,7 +60,7 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
     setTimeout(() => {
       chatLogScrollRef.current?.scrollTo(
         0,
-        chatLogScrollRef.current?.scrollHeight
+        chatLogScrollRef.current?.scrollHeight,
       );
     }, 150);
   }, []);
@@ -119,9 +119,15 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
                 />
               </form>
             ) : (
-              <div className="w-full max-w-md mx-auto flex justify-center items-center gap-3 px-3">
+              <div
+                className="
+              w-[17rem] max-w-md mx-auto flex justify-center items-center 
+              gap-3 px-3 shadow-[0px_10px_24px_0px_rgba(0, 0, 0, 0.25)]
+              bg-white/20 rounded-[7rem] blur-[0.06rem]
+              "
+              >
                 <ButtonHelp onClick={toggleHint} disabled={!toggleHint} />
-                <div className="relative flex justify-center items-center">
+                <div className="relative flex justify-center items-center z-10">
                   {isMicRecording && (
                     <span className="absolute w-[65%] h-[65%] bg-white rounded-full animate-ping"></span>
                   )}
