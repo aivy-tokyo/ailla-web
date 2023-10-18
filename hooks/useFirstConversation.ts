@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import { useAtomValue } from "jotai";
-import { useContext, useCallback, useRef } from "react";
+import { useContext, useCallback, useRef, useState } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { userInfoAtom } from "../utils/atoms";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";

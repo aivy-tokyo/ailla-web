@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import BottomUi from "./BottomUi";
 import { ChatHint } from "./ChatHint";
 import { ChatMenu } from "./ChatMenu";
@@ -36,10 +36,15 @@ export const UiContainerSituation: React.FC = () => {
     situationList,
     sendMessage,
     startSituation,
+    stopSpeaking,
+    firstGreetingDone,
+    endPhrase,
+    isSituationTalkEnded,
     roleOfAi,
     roleOfUser,
   } = useSituationTalk();
 
+  console.log("endPhrase: ", endPhrase);
   // Situationの選択肢を作成
   const situationListOptions = useMemo(() => {
     return situationList.map((situation, index) => ({
@@ -55,14 +60,57 @@ export const UiContainerSituation: React.FC = () => {
       setBackgroundImagePath(backgroundImages[2].path);
       startSituation(situationList[Number(value)]);
     },
-    [setBackgroundImagePath, situationList, startSituation]
+    [setBackgroundImagePath, situationList, startSituation],
   );
 
+  const handleSkipFirstGreeting = useCallback(() => {
+    stopSpeaking();
+  }, [stopSpeaking]);
+
+  useEffect(() => {
+    if (isSituationTalkEnded) {
+      endTalk();
+    }
+  }, [isSituationTalkEnded, endTalk]);
+
   return (
-    <div className={!situation ? " h-full bg-[rgba(255,255,255,0.8)]" : "h-full"}>
-      <HeaderUi onClickEndTalk={endTalk} isSituation={ situation } />
+    <div
+      className={!situation ? " h-full bg-[rgba(255,255,255,0.8)]" : "h-full"}
+    >
+      <HeaderUi onClickEndTalk={endTalk} isSituation={situation} />
+      {!firstGreetingDone && situation && (
+        <>
+          <div
+            className={`
+            fixed top-0 flex flex-col justify-end items-center h-screen w-full pb-52 bg-opacity-60 z-50
+            `}
+          >
+            <div className="p-10">
+              {endPhrase?.description && (
+                <div className="bg-white flex w-[24rem] text-center p-4 justify-center items-center padding-[1rem] gap-2.5 rounded-xl">
+                  <p className="whitespace-pre-wrap text-black text-[0.8rem] font-[30rem]">
+                    {endPhrase.description}
+                  </p>
+                </div>
+              )}
+            </div>
+            <div className="flex justify-center bg-white bg-opacity-20 w-[8rem] h-[2.3rem] rounded-[7rem] absolute left-1/2 transform -translate-x-1/2 bottom-[3rem]">
+              <button
+                className="text-[1rem]"
+                onClick={() => handleSkipFirstGreeting()}
+              >
+                スキップする
+              </button>
+            </div>
+          </div>
+        </>
+      )}
       {showHint && situation && (
-        <ChatHint situation={situation} steps={stepStatus} />
+        <ChatHint
+          situation={situation}
+          steps={stepStatus}
+          endPhrase={endPhrase?.sentence}
+        />
       )}
       {!situation && (
         <ChatMenu
@@ -70,7 +118,7 @@ export const UiContainerSituation: React.FC = () => {
           onClickOption={handleSelectSituation}
         />
       )}
-      {situation && (
+      {situation && firstGreetingDone && (
         <BottomUi
           sendChat={sendMessage}
           toggleHint={toggleHint}
