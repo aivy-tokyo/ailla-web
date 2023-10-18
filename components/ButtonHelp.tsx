@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { FaQuestion } from "react-icons/fa";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { ButtonProps } from "../utils/types";
 
 export const ButtonHelp = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -8,14 +8,15 @@ export const ButtonHelp = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={`
-    relative
-    btn btn-circle shadow
-    btn-neutral
+    relative    
+    border-0
+    bg-transparent
+    btn
     ${`btn-${size}`}
   `}
         {...props}
       >
-        <FaQuestion size={24} />
+        <AiOutlineQuestionCircle className="text-white/60 text-[2rem]" />
       </button>
     );
   }
