@@ -69,6 +69,8 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
     <>
       {/* チャットログを表示 */}
       <div className="fixed bottom-0 flex flex-col  justify-between w-full">
+        { /* ぼかし(blur)を追加 */}
+        <div className="w-full bg-white blur-[0.6rem]" />        
         <button
           onClick={() => toggleExpandChatLog()}
           className={`z-10 relative flex  transition-height ease-in-out duration-150 justify-center ${
@@ -123,7 +125,7 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
                 className="
               w-[17rem] max-w-md mx-auto flex justify-center items-center 
               gap-3 px-3 shadow-[0px_10px_24px_0px_rgba(0, 0, 0, 0.25)]
-              bg-white/20 rounded-[7rem] blur-[0.06rem]
+              bg-white/20 rounded-[7rem]
               "
               >
                 <ButtonHelp onClick={toggleHint} disabled={!toggleHint} />
