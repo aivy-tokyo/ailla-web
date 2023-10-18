@@ -124,7 +124,7 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
               <div
                 className="
               w-[17rem] max-w-md mx-auto flex justify-center items-center 
-              gap-3 px-3 shadow-[0px_10px_24px_0px_rgba(0, 0, 0, 0.25)]
+              gap-6 px-3 shadow-[0px_10px_24px_0px_rgba(0, 0, 0, 0.25)]
               bg-white/20 rounded-[7rem]
             "
               >
