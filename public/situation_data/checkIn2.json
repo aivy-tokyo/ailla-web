@@ -1,5 +1,6 @@
 {
-  "title": "Check in 2",
+  "title": "チェックイン 2",
+  "titleEnglish": "Check in 2",
   "description": "ホテルのフロントでチェックインするシーンです。宿泊代の前払いが必要な場合です。",
   "roleOfAi": "Customer",
   "roleOfUser": "Staff",

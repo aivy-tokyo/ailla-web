@@ -1,5 +1,6 @@
 {
-  "title": "Check-in at the Airport3",
+  "title": "空港でのチェックイン 3",
+  "titleEnglish": "Check-in at the Airport3",
   "description": "空港でチェックインするシーンです。顧客のフライトが悪天候でキャンセルになった場合の会話です。会話は乗客が、最新の運行状況を問い合わせるセリフから始まります。最後に、乗客が感謝の言葉を述べます。",
   "roleOfAi": "Passenger",
   "roleOfUser": "JAL Staff",

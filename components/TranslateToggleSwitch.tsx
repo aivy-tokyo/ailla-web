@@ -1,15 +1,24 @@
+import { Situation } from "@/utils/types";
 import { isTranslatedAtom } from "@/utils/atoms";
 import { useAtom } from "jotai";
 
-const TranslateToggleSwitch = () => {
+const TranslateToggleSwitch = ({
+  isSituationSelection,
+}: {
+    isSituationSelection?: boolean;
+}) => {
   const [isTranslated, setIsTranslated] = useAtom(isTranslatedAtom);
   const handleTranslate = () => {
     setIsTranslated((prev) => !prev);
   };
 
+  console.log("isSituationSelection", isSituationSelection)
+
   return (
     <div className="ml-4 flex justify-start w-[40%]">
-      <span className="text-white mr-2">日本語で入力</span>
+      <span className={isSituationSelection ? "text-[#7B8392] mr-2" : "text-white mr-2"}>
+        日本語で入力
+      </span>
       <button onClick={handleTranslate}>
         {!isTranslated ? (
           <svg

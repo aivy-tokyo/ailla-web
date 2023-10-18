@@ -1,5 +1,6 @@
 {
-  "title": "Check out",
+  "title": "チェックアウト",
+  "titleEnglish": "Check out",
   "description": "ホテルのフロントでチェックアウトするシーンです。",
   "roleOfAi": "Customer",
   "roleOfUser": "Staff",

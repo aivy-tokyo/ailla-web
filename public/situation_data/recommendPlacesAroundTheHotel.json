@@ -1,5 +1,6 @@
 {
-  "title": "recommended places around the hotel",
+  "title": "ホテル周りのおすすめの場所",
+  "titleEnglish": "Recommended places around the hotel",
   "description": "ホテルの周りのおすすめの場所を案内しているシーンです。",
   "roleOfAi": "Customer",
   "roleOfUser": "Staff",

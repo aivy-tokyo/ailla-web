@@ -1,5 +1,6 @@
 {
-  "title": "Reserve Restaurant",
+  "title": "レストランの予約",
+  "titleEnglish": "Reserve Restaurant",
   "description": "今夜のレストランディナーを予約するシーンです。",
   "roleOfAi": "Customer",
   "roleOfUser": "Staff",

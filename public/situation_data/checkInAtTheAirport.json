@@ -1,5 +1,6 @@
 {
-  "title": "Check-in at the Airport",
+  "title": "空港でのチェックイン",
+  "titleEnglish": "Check-in at the Airport",
   "description": "空港でチェックインするシーンです。",
   "roleOfAi": "Passenger",
   "roleOfUser": "JAL Staff",
