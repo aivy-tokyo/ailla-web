@@ -23,9 +23,11 @@ export const ButtonMic = forwardRef<
       ref={ref}
       className={`
       relative
+      border-0      
       btn btn-circle shadow
       ${`btn-${size}`}
-      ${isMicRecording ? "btn-secondary" : "btn-neutral"}
+      text-white
+      bg-gradient-pink
     `}
       onPointerDown={handleButtonDown}
       onPointerUp={handleButtonUp}
