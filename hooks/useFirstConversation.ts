@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import { useAtomValue } from "jotai";
-import { useContext, useCallback, useRef, useState, useEffect } from "react";
+import { useContext, useCallback, useRef, useState } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { clientInfoAtom, userInfoAtom } from "../utils/atoms";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
@@ -149,13 +149,13 @@ export const useFirstConversation = (props: {
         }
 
         const randomIndex = Math.floor(
-          Math.random() * comeBackGreetingList(language).length
+          Math.random() * comeBackGreetingList(language).length,
         );
 
         await speakCharactor({
           text: replaceUserName(
             comeBackGreetingList(language)[randomIndex],
-            userName
+            userName,
           ),
           viewerModel,
           language,

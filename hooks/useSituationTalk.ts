@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
-import { Situation } from "@/utils/types";
+import { Situation, EndPhrase } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
 export const useSituationTalk = () => {
@@ -28,24 +28,30 @@ export const useSituationTalk = () => {
   const [situation, setSituation] = useState<Situation | null>();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const [situationList, setSituationList] = useState<Situation[]>([]);
+  // situation開始時の会話を管理する
+  const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false);
+  const [endPhrase, setEndPhrase] = useState<EndPhrase | null>();
+  // シチュエーションが終了したかを判別する
+  const [isSituationTalkEnded, setIsSituationTalkEnded] =
+    useState<boolean>(false);
   const [stepStatus, setStepStatus] = useState<
     Array<Situation["steps"][number] & { isClear: boolean }>
   >([]);
   useEffect(
     () =>
       setStepStatus(
-        situation?.steps.map((step) => ({ ...step, isClear: false })) ?? []
+        situation?.steps.map((step) => ({ ...step, isClear: false })) ?? [],
       ),
-    [situation]
+    [situation],
   );
 
   useEffect(() => {
     Promise.all(
       clientSituationList.map((fileName) =>
         fetch(`situation_data/${language}/${fileName}.json`).then((res) =>
-          res.json()
-        )
-      )
+          res.json(),
+        ),
+      ),
     ).then((dataArray) => setSituationList(dataArray));
   }, []);
 
@@ -73,6 +79,16 @@ export const useSituationTalk = () => {
         console.log("newMessages->", newMessages);
         setMessages(newMessages);
         setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
+        setEndPhrase(selectedSituation?.endPhrase);
+
+        if (!firstGreetingDone) {
+          await speakCharactor({
+            text: await selectedSituation?.endPhrase?.descriptionEn,
+            viewerModel: viewer.model,
+            language,
+          });
+          setFirstGreetingDone(true);
+        }
 
         // キャラクター発話
         await speakCharactor({
@@ -84,7 +100,13 @@ export const useSituationTalk = () => {
         console.error(error);
       }
     },
-    [setChatLog, speakCharactor, viewer.model]
+    [
+      setChatLog,
+      speakCharactor,
+      viewer.model,
+      firstGreetingDone,
+      setFirstGreetingDone,
+    ],
   );
 
   const sendMessage = useCallback(
@@ -102,6 +124,26 @@ export const useSituationTalk = () => {
         };
         console.log("userMessage->", userMessage);
         setChatLog((prev) => [...prev, userMessage]);
+
+        const isContainsAllElements = endPhrase?.keySentences.every(
+          (sentence) => userMessage.content.includes(sentence),
+        );
+        if (isContainsAllElements) {
+          setChatLog((prev) => [
+            ...prev,
+            {
+              role: "assistant",
+              content: situation.endTalk,
+            },
+          ]);
+          await speakCharactor({
+            text: situation.endTalk,
+            viewerModel: viewer.model,
+            language: "ja",
+          });
+          setIsSituationTalkEnded(true);
+          return;
+        }
 
         const response = await axios.post("/api/chat/situation", {
           title: situation.title,
@@ -136,8 +178,14 @@ export const useSituationTalk = () => {
       messages,
       roleOfAi,
       speakCharactor,
-    ]
+      endPhrase,
+    ],
   );
+
+  const stopSpeaking = useCallback(() => {
+    setFirstGreetingDone(true);
+    viewer.model?.stopSpeak();
+  }, [viewer.model]);
 
   return {
     situation,
@@ -145,7 +193,11 @@ export const useSituationTalk = () => {
     situationList,
     messages,
     startSituation: startSituationTalk,
+    stopSpeaking,
     sendMessage,
+    firstGreetingDone,
+    endPhrase,
+    isSituationTalkEnded,
     roleOfAi,
     roleOfUser,
   };

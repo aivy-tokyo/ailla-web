@@ -1,36 +1,55 @@
-import { FaRegSun } from "react-icons/fa";
+import { FaRegQuestionCircle, FaRegSun } from "react-icons/fa";
 import EndTalkButton from "./EndTalkButton";
-// import TranslateToggleSwitch from "./TranslateToggleSwitch";
+import TranslateToggleSwitch from "./TranslateToggleSwitch";
 import { SettingContainer } from "./SettingContainer";
 import { useState } from "react";
+import { HelpDialog } from "./HelpDialog";
+import { Situation } from "@/utils/types";
 
 type HeaderUiProps = {
   onClickEndTalk?: () => void;
+  isSituationSelection?: boolean;
 };
-export const HeaderUi: React.FC<HeaderUiProps> = ({ onClickEndTalk }) => {
+export const HeaderUi: React.FC<HeaderUiProps> = ({
+  onClickEndTalk,
+  isSituationSelection,
+}) => {
   const [showSetting, setShowSetting] = useState<boolean>(false);
+  const modalHelp = document.getElementById("modal_help") as HTMLDialogElement;
 
   return (
     <>
-      <div className="z-1 fixed top-0 w-full flex h-12 justify-between items-center my-2 px-2">
+      <div className="z-1 fixed top-5 w-full flex justify-between items-center my-2 px-2 ">
         {/* 機能未実装のため */}
-        {/* <TranslateToggleSwitch /> */}
+        <TranslateToggleSwitch isSituationSelection={isSituationSelection} />
         <div className="self-end ml-auto flex items-center gap-2">
           {onClickEndTalk ? (
-            <EndTalkButton onClick={onClickEndTalk} />
+            <EndTalkButton onClick={onClickEndTalk} isSituationSelection={isSituationSelection}  />
           ) : (
-            <button
-              className="btn btn-icon btn-ghost btn-sm"
-              onClick={() => setShowSetting(true)}
-            >
-              <FaRegSun className="text-white" size={24} />
-            </button>
+            <div className="flex justify-end gap-2">
+              <button>
+                <FaRegQuestionCircle
+                  className="opacity-60 text-white"
+                  size={28}
+                  onClick={() => {
+                    modalHelp.showModal();
+                  }}
+                />
+              </button>
+              <button
+                className="btn btn-icon btn-ghost btn-sm"
+                onClick={() => setShowSetting(true)}
+              >
+                <FaRegSun className="opacity-60 text-white" size={28} />
+              </button>
+            </div>
           )}
         </div>
       </div>
       {showSetting && (
         <SettingContainer onClose={() => setShowSetting(false)} />
       )}
+      <HelpDialog />
     </>
   );
 };

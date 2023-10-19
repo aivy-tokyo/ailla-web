@@ -1,5 +1,6 @@
 {
-  "title": "Asked for a Menu Recommendation",
+  "title": "おすすめのメニューを聞かれた時 2",
+  "titleEnglish": "Asked for a Menu Recommendation2",
   "description": "お寿司屋さんでメニューのおすすめを聞かれた時の会話です。まずメニュー全般の中からおすすめを聞かれます。その次に特定のお魚やネタの中からおすすめを聞かれます。さらに他のおすすめが１回聞かれます。その後にベジタリアン向けのメニューについて聞かれます。その後にお寿司に合う飲み物について聞かれます。",
   "roleOfAi": "Customer",
   "roleOfUser": "Staff",

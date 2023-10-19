@@ -1,5 +1,6 @@
 {
-  "title": "Payment",
+  "title": "支払い 2",
+  "titleEnglish": "Payment",
   "description": "飲食店でお会計をするシーンです。顧客はクレジットカードでの支払いを希望します。",
   "roleOfAi": "Customer",
   "roleOfUser": "Staff",
