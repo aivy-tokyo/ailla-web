@@ -10,9 +10,6 @@ export const ChatHint: React.FC<ChatHintProps> = ({ steps, situation, endPhrase 
     <div className="overflow-y-auto w-full h-3/5 max-w-2xl mx-auto bg-white/80 text-[#47556D] rounded-3xl">
       <div className="flex flex-col justify-center items-center w-full px-5 py-3">
         <h2 className="mb-3 font-extrabold text-lg">{situation.title}</h2>
-        <p className="text-sm mb-3 font-bold">
-          {situation.roleOfUser}としてAillaと会話してください。
-        </p>
         <p className="text-left text-sm mb-5">{situation.description}</p>
         <h3 className="text-lg font-bold mb-1">会話のHint</h3>
         {steps.map(({ description, hint }, index) => (
