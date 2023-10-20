@@ -67,9 +67,9 @@ const generatePromptText = async ({
 // 2役の返答が帰ってきた場合にCustomer側の返答のみを取得する処理
 const avoidReturnTwoRoles = (responseMessage: string) => {
   console.log("responseMessage->", responseMessage);
-  // 北京語の場合はフロントスタッフ、英語の場合はCustomer
+  // 北京語の場合はフロントデスク、英語の場合はCustomer
   const matchPattern1 = responseMessage.match(
-    /^([^]+?)\s*フロントスタッフ:|([^]+?)\s*Customer:/
+    /^([^]+?)\s*フロントデスク:|([^]+?)\s*Customer:/,
   );
 
   if (matchPattern1 && matchPattern1[1]) {
@@ -101,7 +101,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
     { messages: ChatCompletionRequestMessage[] } | { error: string }
-  >
+  >,
 ) {
   try {
     const title = (req.body as Parameter).title ?? "";

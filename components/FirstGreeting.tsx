@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { PropsWithChildren, useContext, useState, useCallback } from "react";
+import { PropsWithChildren, useState } from "react";
 import { FirstGreetingContext } from "@/features/firstGreetingContext";
 
 export const FirstGreetingProvider: React.FC<PropsWithChildren> = ({
@@ -19,10 +19,6 @@ export const FirstGreetingProvider: React.FC<PropsWithChildren> = ({
 export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
   // 始まりのボタンを押したかどうかの状態管理
   const [startButtonClicked, setStartButtonClicked] = useState<boolean>(false);
-
-  // if (!viewer.model) {
-  //   return <></>;
-  // }
 
   if (!startButtonClicked) {
     return (
