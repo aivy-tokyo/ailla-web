@@ -10,8 +10,7 @@ import { UserInfo } from "../entities/UserInfo";
 import { useUserInfo } from "@/hooks/useUserInfo";
 
 export const RegisterContainer: React.FC = () => {
-  const { registerUserInfo, userInfo} =
-    useUserInfo();
+  const { registerUserInfo, userInfo } = useUserInfo();
 
   const [name, setName] = useState("");
   const [prefecture, setPrefecture] = useState<Prefecture>("選択しない");
@@ -34,8 +33,8 @@ export const RegisterContainer: React.FC = () => {
       event.preventDefault();
 
       // month, dayが1桁の場合は0埋め
-      const paddedMonth = month.padStart(2, '0');
-      const paddedDay = day.padStart(2, '0');
+      const paddedMonth = month.padStart(2, "0");
+      const paddedDay = day.padStart(2, "0");
       setMonth(paddedMonth);
       setDay(paddedDay);
 
@@ -77,7 +76,7 @@ export const RegisterContainer: React.FC = () => {
           setIsResultError(true);
           throw new Error(`${errors.join(", ")}`);
         }
-        
+
         setIsSendingRequest(true);
         await registerUserInfo(name, prefecture, birthdate, gender);
         router.push("/");
@@ -118,10 +117,11 @@ export const RegisterContainer: React.FC = () => {
         <h2 className="text-2xl">新規登録</h2>
         <form onSubmit={handleSubmit} className="w-[80%] my-5">
           <div className="mb-5">
-            <label htmlFor="">名前：</label>
+            <label htmlFor="">名前（ローマ字）：</label>
             <input
               type="text"
               value={name}
+              placeholder="例：Ailla"
               pattern="[A-Za-z0-9]+" // 英数字のみ
               onChange={(e) => setName(e.target.value)}
               className="rounded-md p-2 w-full text-white bg-slate-900"
