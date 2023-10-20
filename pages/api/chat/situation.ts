@@ -12,10 +12,17 @@ const chat = new ChatOpenAI({
 });
 
 // シチュエーションの会話をするためのSYSTEMのメッセージテンプレート
-const promptTemplate = new PromptTemplate({
-  template: `あなたは、英会話の教師です。次の設定に従って、役になりきって、英語を話してください。設定:[{title}]{situation}あなたは{role}です。{role}側の英語を話してください。会話の中で名前を名乗る時はAillaと名乗ってください。`,
-  inputVariables: ["title", "situation","role"],
-});
+const situationTemplate = (speakLanguage: string) => {
+  const introduction = `あなたは、${speakLanguage}の教師です。次の設定に従って、役になりきって、${speakLanguage}を話してください。`;
+  const situationDetails = `設定:[{title}]{situation}`;
+  const roleDescription = `あなたは{role}です。{role}側の${speakLanguage}を話してください。`;
+  const namingInstruction = `会話の中で名前を名乗る時はAillaと名乗ってください。`;
+
+  return new PromptTemplate({
+    template: `${introduction} ${situationDetails} ${roleDescription} ${namingInstruction}`,
+    inputVariables: ["title", "situation", "role"],
+  });
+};
 
 // prompt textを生成する
 // 引数: topic - トピック, messages - 会話の配列, userName - ユーザー名
@@ -25,13 +32,15 @@ const generatePromptText = async ({
   description: situantion,
   messages,
   role,
+  speakLanguage,
 }: {
   title: string;
   description: string;
   messages: ChatCompletionRequestMessage[];
   role: string;
+  speakLanguage: string;
 }) => {
-  const systemPrompt = await promptTemplate.format({
+  const systemPrompt = await situationTemplate(speakLanguage).format({
     title: title,
     situation: situantion,
     role: role,
@@ -57,17 +66,20 @@ const generatePromptText = async ({
 
 // 2役の返答が帰ってきた場合にCustomer側の返答のみを取得する処理
 const avoidReturnTwoRoles = (responseMessage: string) => {
-  console.log('responseMessage->', responseMessage);
+  console.log("responseMessage->", responseMessage);
+  // 北京語の場合はフロントデスク、英語の場合はCustomer
+  const matchPattern1 = responseMessage.match(
+    /^([^]+?)\s*フロントデスク:|([^]+?)\s*Customer:/,
+  );
 
-  const matchPattern1 = responseMessage.match(/Customer:\s*([^]+?)\s*Staff:/);
-  if(matchPattern1 && matchPattern1[1]) {
-    console.log("[!WARNING!]:Two roles responded.(matchPattern1))")
+  if (matchPattern1 && matchPattern1[1]) {
+    console.log("[!WARNING!]:Two roles responded.(matchPattern1))");
     return matchPattern1[1];
   }
 
   const matchPattern2 = responseMessage.match(/^([^]+?)\s*Staff:/);
-  if(matchPattern2 && matchPattern2[1]) {
-    console.log("[!WARNING!]:Two roles responded.(matchPattern2))")
+  if (matchPattern2 && matchPattern2[1]) {
+    console.log("[!WARNING!]:Two roles responded.(matchPattern2))");
     return matchPattern2[1];
   }
   return responseMessage;
@@ -81,26 +93,28 @@ type Parameter = {
   description: string;
   messages: ChatCompletionRequestMessage[];
   role: string;
+  speakLanguage: string;
 };
 
 // Path: pages/api/chat/situation.ts
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
-    | { messages: ChatCompletionRequestMessage[]; }
-    | { error: string }
-  >
+    { messages: ChatCompletionRequestMessage[] } | { error: string }
+  >,
 ) {
   try {
     const title = (req.body as Parameter).title ?? "";
     const description = (req.body as Parameter).description ?? "";
     const messages = (req.body as Parameter).messages ?? [];
     const role = (req.body as Parameter).role ?? "";
+    const speakLanguage = (req.body as Parameter).speakLanguage ?? "英語";
     const promptText = await generatePromptText({
       title: title,
       description: description,
       messages,
       role: role,
+      speakLanguage: speakLanguage,
     });
     const responseMessage = await chat.predict(promptText);
     //2役の返答が帰ってきた場合にCustomer側の返答のみを取得する
@@ -109,7 +123,6 @@ export default async function handler(
       role: "assistant",
       content: processedResponseMessage,
     });
-      
 
     res.status(200).json({
       messages: messages,

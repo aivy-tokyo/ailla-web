@@ -1,11 +1,12 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import {
   chatLogAtom,
+  clientInfoAtom,
   isCharactorSpeakingAtom,
   userInfoAtom,
 } from "../utils/atoms";
 import { ChatCompletionRequestMessage } from "openai";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
@@ -21,6 +22,7 @@ export const useFreeTalk = () => {
   const [topic, setTopic] = useState<string>("");
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
 
   const startFreeTalk = useCallback(async () => {
     if (!viewer.model) return;
@@ -32,6 +34,7 @@ export const useFreeTalk = () => {
       const response = await axios.post("/api/chat/free-talk", {
         userName: userInfo?.name,
         messages: [],
+        speakLanguage: clientInfo?.speakLanguage,
       });
       console.log("response->", response);
       const { topic, messages: newMessages } = response.data;
@@ -41,7 +44,8 @@ export const useFreeTalk = () => {
       setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
       await speakCharactor({
         text: newMessages[newMessages.length - 1].content,
-        viewerModel: viewer.model
+        viewerModel: viewer.model,
+        language: clientInfo?.language || "en",
       });
     } catch (error) {
       Sentry.captureException(error);
@@ -70,6 +74,7 @@ export const useFreeTalk = () => {
         const response = await axios.post("/api/chat/free-talk", {
           userName: userInfo?.name,
           messages: [...messages, userMessage],
+          language: clientInfo?.language,
         });
         console.log("response->", response);
         const { topic, messages: newMessages } = response.data;
@@ -80,18 +85,13 @@ export const useFreeTalk = () => {
         await speakCharactor({
           text: newMessages[newMessages.length - 1].content,
           viewerModel: viewer.model,
+          language: clientInfo?.language || "en",
         });
       } catch (error) {
         Sentry.captureException(error);
       }
     },
-    [
-      viewer.model,
-      setChatLog,
-      userInfo?.name,
-      messages,
-      speakCharactor,
-    ]
+    [viewer.model, setChatLog, userInfo?.name, messages, speakCharactor]
   );
 
   return {

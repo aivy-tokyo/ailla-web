@@ -3,7 +3,11 @@ import { HeaderUi } from "./HeaderUi";
 import { useRouter } from "next/router";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { useAtomValue, useSetAtom } from "jotai";
-import { chatLogAtom, isVoiceInputAllowedAtom } from "../utils/atoms";
+import {
+  chatLogAtom,
+  clientInfoAtom,
+  isVoiceInputAllowedAtom,
+} from "../utils/atoms";
 import { useVoiceInput } from "../hooks/useVoiceInput";
 import * as Sentry from "@sentry/nextjs";
 import { useFirstConversation } from "../hooks/useFirstConversation";
@@ -15,6 +19,7 @@ export const UiContainer = () => {
   const { viewer } = useContext(ViewerContext);
   const isVoiceInputAllowed = useAtomValue(isVoiceInputAllowedAtom);
   const setChatLog = useSetAtom(chatLogAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
   // 最初の挨拶をしたかどうかの状態管理
   const { firstGreetingDone, setFirstGreetingDone } =
     useContext(FirstGreetingContext);
@@ -67,22 +72,32 @@ export const UiContainer = () => {
       {
         title: "フリートーク",
         englishTitle: "Free talk",
+        chineseTitle: "自由对话",
         onClick: () => router.push("/?mode=free-talk"),
       },
       {
         title: "シチュエーション",
         englishTitle: "Situation talk",
+        chineseTitle: "情境对话",
         onClick: () => router.push("/?mode=situation"),
       },
 
       {
         title: "リピートプラクティス",
         englishTitle: "Repeat practice",
+        chineseTitle: "重复练习",
         // @ts-ignore
         onClick: () => modal_comming_soon.showModal(),
       },
     ].map((item, index) => {
-      return <ButtonTalkMode item={item} key={index} />;
+      const displayTitle =
+        clientInfo?.language === "en" ? item.englishTitle : item.chineseTitle;
+      return (
+        <ButtonTalkMode
+          item={{ ...item, englishTitle: displayTitle }}
+          key={index}
+        />
+      );
     });
   };
 

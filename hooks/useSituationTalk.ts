@@ -1,6 +1,7 @@
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import {
   chatLogAtom,
+  clientInfoAtom,
   isCharactorSpeakingAtom,
 } from "../utils/atoms";
 import { ChatCompletionRequestMessage } from "openai";
@@ -11,22 +12,16 @@ import { useViewer } from "./useViewer";
 import { Situation, EndPhrase } from "@/utils/types";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
-const situationFileNames = [
-  // public/situations フォルダ内のファイル名を指定"
-  "checkIn.json",
-  "checkIn2.json",
-  "checkOut.json",
-  "reserveRestaurant.json",
-  "earlyArrivalInquiry.json",
-  "recommendPlacesAroundTheHotel.json",
-];
-
 export const useSituationTalk = () => {
   const viewer = useViewer();
   const { speakCharactor } = useCharactorSpeaking();
   const setChatLog = useSetAtom(chatLogAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
   const [roleOfAi, setRoleOfAi] = useState<string>("");
   const [roleOfUser, setRoleOfUser] = useState<string>("");
+
+  const language = clientInfo?.language ?? "";
+  const clientSituationList = clientInfo?.situationList ?? [];
 
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
 
@@ -34,26 +29,29 @@ export const useSituationTalk = () => {
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const [situationList, setSituationList] = useState<Situation[]>([]);
   // situation開始時の会話を管理する
-  const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false)
+  const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false);
   const [endPhrase, setEndPhrase] = useState<EndPhrase | null>();
   // シチュエーションが終了したかを判別する
-  const [isSituationTalkEnded, setIsSituationTalkEnded] = useState<boolean>(false);
+  const [isSituationTalkEnded, setIsSituationTalkEnded] =
+    useState<boolean>(false);
   const [stepStatus, setStepStatus] = useState<
     Array<Situation["steps"][number] & { isClear: boolean }>
   >([]);
   useEffect(
     () =>
       setStepStatus(
-        situation?.steps.map((step) => ({ ...step, isClear: false })) ?? []
+        situation?.steps.map((step) => ({ ...step, isClear: false })) ?? [],
       ),
-    [situation]
+    [situation],
   );
 
   useEffect(() => {
     Promise.all(
-      situationFileNames.map((fileName) =>
-        fetch(`situation_data/${fileName}`).then((res) => res.json())
-      )
+      clientSituationList.map((fileName) =>
+        fetch(`situation_data/${language}/${fileName}.json`).then((res) =>
+          res.json(),
+        ),
+      ),
     ).then((dataArray) => setSituationList(dataArray));
   }, []);
 
@@ -74,32 +72,41 @@ export const useSituationTalk = () => {
           description: selectedSituation.description,
           messages: [],
           role: selectedSituation.roleOfAi,
+          speakLanguage: clientInfo?.speakLanguage,
         });
         console.log("response->", response);
         const { messages: newMessages } = response.data;
         console.log("newMessages->", newMessages);
         setMessages(newMessages);
         setChatLog((prev) => [...prev, newMessages[newMessages.length - 1]]);
-        setEndPhrase(selectedSituation?.endPhrase)
+        setEndPhrase(selectedSituation?.endPhrase);
 
         if (!firstGreetingDone) {
           await speakCharactor({
             text: await selectedSituation?.endPhrase?.descriptionEn,
             viewerModel: viewer.model,
+            language,
           });
-          setFirstGreetingDone(true)
+          setFirstGreetingDone(true);
         }
 
         // キャラクター発話
         await speakCharactor({
           text: newMessages[newMessages.length - 1].content,
-          viewerModel: viewer.model
+          viewerModel: viewer.model,
+          language,
         });
       } catch (error) {
         console.error(error);
       }
     },
-    [setChatLog, speakCharactor, viewer.model, firstGreetingDone, setFirstGreetingDone]
+    [
+      setChatLog,
+      speakCharactor,
+      viewer.model,
+      firstGreetingDone,
+      setFirstGreetingDone,
+    ],
   );
 
   const sendMessage = useCallback(
@@ -110,7 +117,6 @@ export const useSituationTalk = () => {
         setIsCharactorSpeaking(true);
 
         // TODO 各stepのkeySentencesを確認して、クリアしたstepを記録する
-
         // Userメッセージを送信
         const userMessage: Message = {
           role: "user",
@@ -119,19 +125,24 @@ export const useSituationTalk = () => {
         console.log("userMessage->", userMessage);
         setChatLog((prev) => [...prev, userMessage]);
 
-        const isContainsAllElements = endPhrase?.keySentences.every(sentence => userMessage.content.includes(sentence))
+        const isContainsAllElements = endPhrase?.keySentences.every(
+          (sentence) => userMessage.content.includes(sentence),
+        );
         if (isContainsAllElements) {
-          setChatLog((prev) => [...prev, {
-            role:"assistant",
-            content: situation.endTalk
-          }]);
+          setChatLog((prev) => [
+            ...prev,
+            {
+              role: "assistant",
+              content: situation.endTalk,
+            },
+          ]);
           await speakCharactor({
             text: situation.endTalk,
             viewerModel: viewer.model,
-            lang: "ja",
+            language: "ja",
           });
-          setIsSituationTalkEnded(true)
-          return
+          setIsSituationTalkEnded(true);
+          return;
         }
 
         const response = await axios.post("/api/chat/situation", {
@@ -139,6 +150,7 @@ export const useSituationTalk = () => {
           description: situation.description,
           messages: [...messages, userMessage],
           role: roleOfAi,
+          language: clientInfo?.language,
         });
         console.log("response->", response);
         const { messages: newMessages } = response.data;
@@ -150,6 +162,7 @@ export const useSituationTalk = () => {
         await speakCharactor({
           text: newMessages[newMessages.length - 1].content,
           viewerModel: viewer.model,
+          language,
         });
       } catch (error) {
         console.error(error);
@@ -166,7 +179,7 @@ export const useSituationTalk = () => {
       roleOfAi,
       speakCharactor,
       endPhrase,
-    ]
+    ],
   );
 
   const stopSpeaking = useCallback(() => {
@@ -179,8 +192,7 @@ export const useSituationTalk = () => {
     stepStatus,
     situationList,
     messages,
-    startSituation: 
-    startSituationTalk,
+    startSituation: startSituationTalk,
     stopSpeaking,
     sendMessage,
     firstGreetingDone,
