@@ -20,7 +20,6 @@ export const UiContainer = () => {
   const isVoiceInputAllowed = useAtomValue(isVoiceInputAllowedAtom);
   const setChatLog = useSetAtom(chatLogAtom);
   const clientInfo = useAtomValue(clientInfoAtom);
-  const learningLanguage = clientInfo?.learningLanguage;
   // 最初の挨拶をしたかどうかの状態管理
   const { firstGreetingDone, setFirstGreetingDone } =
     useContext(FirstGreetingContext);
@@ -73,22 +72,32 @@ export const UiContainer = () => {
       {
         title: "フリートーク",
         englishTitle: "Free talk",
+        chineseTitle: "自由对话",
         onClick: () => router.push("/?mode=free-talk"),
       },
       {
         title: "シチュエーション",
         englishTitle: "Situation talk",
+        chineseTitle: "情境对话",
         onClick: () => router.push("/?mode=situation"),
       },
 
       {
         title: "リピートプラクティス",
         englishTitle: "Repeat practice",
+        chineseTitle: "重复练习",
         // @ts-ignore
         onClick: () => modal_comming_soon.showModal(),
       },
     ].map((item, index) => {
-      return <ButtonTalkMode item={item} key={index} />;
+      const displayTitle =
+        clientInfo?.language === "en" ? item.englishTitle : item.chineseTitle;
+      return (
+        <ButtonTalkMode
+          item={{ ...item, englishTitle: displayTitle }}
+          key={index}
+        />
+      );
     });
   };
 
