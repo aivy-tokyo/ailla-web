@@ -6,7 +6,7 @@ type ChatHintProps = {
   endPhrase?: string
 };
 export const ChatHint: React.FC<ChatHintProps> = ({ steps, situation, endPhrase }) => (
-  <div className="hint-container opacity-80 w-screen h-screen z-0 top-0 pt-5 px-3 flex fixed">
+  <div className="hint-container opacity-80 w-screen h-screen z-0 top-0 pt-5 px-3 flex fixed justify-center items-center">
     <div className="overflow-y-auto w-full h-3/5 max-w-2xl mx-auto bg-white/80 text-[#47556D] rounded-3xl">
       <div className="flex flex-col justify-center items-center w-full px-5 py-3">
         <h2 className="mb-3 font-extrabold text-lg">{situation.title}</h2>
