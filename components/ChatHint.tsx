@@ -13,10 +13,10 @@ export const ChatHint: React.FC<ChatHintProps> = ({ steps, situation, endPhrase 
         <p className="text-sm mb-3 font-bold">
           {situation.roleOfUser}としてAillaと会話してください。
         </p>
-        <p className="text-center text-sm mb-5">{situation.description}</p>
+        <p className="text-left text-sm mb-5">{situation.description}</p>
         <h3 className="text-lg font-bold mb-1">会話のHint</h3>
         {steps.map(({ description, hint }, index) => (
-          <div key={index} className="text-center mb-3">
+          <div key={index} className="text-left mb-3">
             {/* 説明文: ヒントの説明を表示、太字 */}
             <p className="text-sm font-bold">{description}</p>
             {/* ヒント: ヒントの内容を表示、斜体 */}
