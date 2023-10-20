@@ -3,7 +3,11 @@ import { HeaderUi } from "./HeaderUi";
 import { useRouter } from "next/router";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { useAtomValue, useSetAtom } from "jotai";
-import { chatLogAtom, isVoiceInputAllowedAtom } from "../utils/atoms";
+import {
+  chatLogAtom,
+  clientInfoAtom,
+  isVoiceInputAllowedAtom,
+} from "../utils/atoms";
 import { useVoiceInput } from "../hooks/useVoiceInput";
 import * as Sentry from "@sentry/nextjs";
 import { useFirstConversation } from "../hooks/useFirstConversation";
@@ -15,6 +19,8 @@ export const UiContainer = () => {
   const { viewer } = useContext(ViewerContext);
   const isVoiceInputAllowed = useAtomValue(isVoiceInputAllowedAtom);
   const setChatLog = useSetAtom(chatLogAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
+  const learningLanguage = clientInfo?.learningLanguage;
   // 最初の挨拶をしたかどうかの状態管理
   const { firstGreetingDone, setFirstGreetingDone } =
     useContext(FirstGreetingContext);

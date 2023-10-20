@@ -1,14 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { TextToSpeechClient } from "@google-cloud/text-to-speech";
 import * as Sentry from "@sentry/nextjs";
-import { CharactersOfGoogleTts } from "@/utils/types";
+import { CharactersOfGoogleEnglishTts } from "@/utils/types";
 
 const client = new TextToSpeechClient({
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
   credentials: JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS as string),
 });
 
-const synthesizeSpeech = async (text: string, voiceName: CharactersOfGoogleTts) => {
+const synthesizeSpeech = async (
+  text: string,
+  voiceName: CharactersOfGoogleEnglishTts,
+  languageCode: string
+) => {
   const request = {
     audioConfig: {
       audioEncoding: "MP3" as const,
@@ -20,7 +24,7 @@ const synthesizeSpeech = async (text: string, voiceName: CharactersOfGoogleTts) 
       text: text,
     },
     voice: {
-      languageCode: "en-US",
+      languageCode: languageCode,
       name: voiceName,
     },
   };
@@ -28,12 +32,11 @@ const synthesizeSpeech = async (text: string, voiceName: CharactersOfGoogleTts) 
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-
-  const { text, voiceName } = req.body;
+  const { text, voiceName, formalLanguage } = req.body;
   try {
     // sythesize text
     let response;
-    [response] = await synthesizeSpeech(text, voiceName);
+    [response] = await synthesizeSpeech(text, voiceName, formalLanguage);
     // send audio
     res.setHeader("Content-Type", "audio/mpeg");
     res.send(response.audioContent);

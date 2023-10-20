@@ -1,0 +1,23 @@
+{
+    "title": "支付2",
+    "description": "飲食店でお会計をするシーンです。顧客は現金での支払いを希望します。",
+    "roleOfAi": "Customer",
+    "roleOfUser": "Staff",
+    "steps": [
+        {
+            "keySentences": ["账单"],
+            "description": "まずは伝票を渡し、中身を確認してもらおう",
+            "hint": "这是您的账单，请确认。"
+        },
+        {
+            "keySentences": ["付款"],
+            "description": "次に支払い方法を確認しよう",
+            "hint": "您希望如何支付？"
+        },
+        {
+            "keySentences": ["改变"],
+            "description": "お釣りが必要な場合、お釣りとレシートを渡そう",
+            "hint": "这是找给您的零钱和收据。还有其他我可以帮助您的吗？"
+        }
+    ]
+}

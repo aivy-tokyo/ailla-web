@@ -4,43 +4,57 @@ import * as Sentry from "@sentry/nextjs";
 
 type Params = {
   text: string;
-  lang?: 'ja' | 'en' | string;
+  language: "ja" | "en" | "cn" | string;
+  formalLanguage: string;
   currentAvatar: Avatar;
 };
 
 export const tts = async ({
   text,
-  lang = 'en',
+  language = "en",
+  formalLanguage = "en-US",
   currentAvatar,
 }: Params): Promise<ArrayBuffer | undefined> => {
   try {
     let response: AxiosResponse<ArrayBuffer>;
 
-    if(lang === 'en'){ //英語ならGoogleTextToSpeechAPI
-      const voiceName = currentAvatar.ttsEnglish
-      response = await axios.post('/api/synthesize', {
-        text,
-        voiceName,
-      }, {
-        headers: { 'Content-Type': 'application/json' },
-        responseType: "arraybuffer",
-      });
+    if (language === "en" || language === "cn") {
+      const voiceName =
+        language === "en" ? currentAvatar.ttsEnglish : currentAvatar.ttsChinese;
+
+      response = await axios.post(
+        "/api/synthesize",
+        {
+          text,
+          voiceName,
+          formalLanguage,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+          responseType: "arraybuffer",
+        }
+      );
 
       return response.data;
-    }else if(lang === 'ja'){ //日本語ならClovaVoiceAPI
-      const speaker = currentAvatar.ttsJapanese
-      response = await axios.post('/api/clova-voice', {
-        text,
-        speaker,
-      }, {
-        headers: { 'Content-Type': 'application/json' },
-        responseType: "arraybuffer",
-      });
+    } else if (language === "ja") {
+      //日本語ならClovaVoiceAPI
+      const speaker = currentAvatar.ttsJapanese;
+      response = await axios.post(
+        "/api/clova-voice",
+        {
+          text,
+          speaker,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+          responseType: "arraybuffer",
+        }
+      );
 
       return response.data;
-    }else {
-      console.error('Unsupported language');
-        return undefined;
+    } else {
+      console.error("Unsupported language");
+      return undefined;
     }
   } catch (error) {
     Sentry.captureException(error);
