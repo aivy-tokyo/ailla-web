@@ -7,9 +7,8 @@ import { HeaderLabel } from "./HeaderLabel";
 import * as Sentry from "@sentry/nextjs";
 
 const UserInfo = () => {
-  const { editUserInfo, deleteUserInfo, userInfo} =
-    useUserInfo();
-    
+  const { editUserInfo, deleteUserInfo, userInfo } = useUserInfo();
+
   const [name, setName] = useState<string>(userInfo?.name as string);
   const [prefecture, setPrefecture] = useState<Prefecture>(
     userInfo?.prefecture as Prefecture
@@ -41,14 +40,12 @@ const UserInfo = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSubmit = async (e: any) => {
-
     e.preventDefault();
 
     try {
-
       // month, dayが1桁の場合は0埋め
-      const paddedMonth = month.padStart(2, '0');
-      const paddedDay = day.padStart(2, '0');
+      const paddedMonth = month.padStart(2, "0");
+      const paddedDay = day.padStart(2, "0");
 
       setMonth(paddedMonth);
       setDay(paddedDay);
@@ -86,7 +83,6 @@ const UserInfo = () => {
 
       await editUserInfo(name, prefecture, birthdate, gender);
       setIsEditMode(false);
-
     } catch (error: unknown) {
       Sentry.captureException(error);
       setIsResultError(true);
@@ -95,7 +91,6 @@ const UserInfo = () => {
       } else {
         setErrorMessage("Error occurred.");
       }
-
     } finally {
       setTimeout(() => {
         setIsResultError(false);
@@ -128,7 +123,10 @@ const UserInfo = () => {
       {isEditMode ? (
         <form onSubmit={handleSubmit}>
           <div className="flex justify-between items-center mb-5">
-            <button className="btn btn-neutral btn-sm" onClick={() => setIsEditMode(false)}>
+            <button
+              className="btn btn-neutral btn-sm"
+              onClick={() => setIsEditMode(false)}
+            >
               キャンセル
             </button>
             <button type="submit" className="btn btn-primary btn-sm">
@@ -137,13 +135,14 @@ const UserInfo = () => {
           </div>
           <div className="flex flex-col mb-5">
             <label htmlFor="name">
-              <HeaderLabel>名前：</HeaderLabel>
+              <HeaderLabel>名前（ローマ字）：</HeaderLabel>
             </label>
             <input
               id="name"
               name="name"
               type="text"
               className="input"
+              placeholder="例：Ailla"
               pattern="[A-Za-z0-9]+"
               title="英数字のみ入力してください"
               value={name}
@@ -176,37 +175,37 @@ const UserInfo = () => {
               <HeaderLabel>生年月日：</HeaderLabel>
             </label>
             <div className="flex">
-            <input
-              id="year"
-              name="year"
-              type="number"
-              className="input w-1/3 mr-1 px-1"
-              pattern="\d{4}"
-              title="数字のみ入力してください"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-            />
-            <div className="flex items-center">年</div>
-            <input
-              id="month"
-              name="month"
-              type="string"
-              className="input w-1/4 mr-1 px-1"
-              pattern="\d{1,2}"
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-            />
-            <div className="flex items-center">月</div>
-            <input
-              id="day"
-              name="day"
-              type="string"
-              className="input w-1/4 mr-1 padding-x-1"
-              pattern="\d{1,2}"
-              value={day}
-              onChange={(e) => setDay(e.target.value)}
-            />
-            <div className="flex items-center">日</div>
+              <input
+                id="year"
+                name="year"
+                type="number"
+                className="input w-1/3 mr-1 px-1"
+                pattern="\d{4}"
+                title="数字のみ入力してください"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+              />
+              <div className="flex items-center">年</div>
+              <input
+                id="month"
+                name="month"
+                type="string"
+                className="input w-1/4 mr-1 px-1"
+                pattern="\d{1,2}"
+                value={month}
+                onChange={(e) => setMonth(e.target.value)}
+              />
+              <div className="flex items-center">月</div>
+              <input
+                id="day"
+                name="day"
+                type="string"
+                className="input w-1/4 mr-1 padding-x-1"
+                pattern="\d{1,2}"
+                value={day}
+                onChange={(e) => setDay(e.target.value)}
+              />
+              <div className="flex items-center">日</div>
             </div>
           </div>
 
@@ -227,7 +226,10 @@ const UserInfo = () => {
           </div>
 
           <div className="flex justify-between items-center my-10">
-            <button className="btn btn-error btn-xs w-full" onClick={handleUserDelete}>
+            <button
+              className="btn btn-error btn-xs w-full"
+              onClick={handleUserDelete}
+            >
               ユーザー情報を削除する
             </button>
           </div>
