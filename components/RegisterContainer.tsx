@@ -110,7 +110,7 @@ export const RegisterContainer: React.FC = () => {
         <h2 className="text-2xl">新規登録</h2>
         <form onSubmit={handleSubmit} className="w-[80%] my-5">
           <div className="mb-5">
-            <label htmlFor="">名前(ローマ字)：</label>
+            <label htmlFor="">名前（ローマ字）：</label>
             <input
               type="text"
               value={name}
