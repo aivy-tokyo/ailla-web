@@ -89,7 +89,7 @@ export const RegisterContainer: React.FC = () => {
         setIsSendingRequest(false);
       }
     },
-    [month, day, year, name, prefecture, gender, registerUserInfo, router]
+    [month, day, year, name, prefecture, gender, registerUserInfo, router],
   );
 
   return (
@@ -110,10 +110,11 @@ export const RegisterContainer: React.FC = () => {
         <h2 className="text-2xl">新規登録</h2>
         <form onSubmit={handleSubmit} className="w-[80%] my-5">
           <div className="mb-5">
-            <label htmlFor="">名前：</label>
+            <label htmlFor="">名前(ローマ字)：</label>
             <input
               type="text"
               value={name}
+              placeholder="例：Ailla"
               pattern="[A-Za-z0-9]+" // 英数字のみ
               onChange={(e) => setName(e.target.value)}
               className="rounded-md p-2 w-full text-white bg-slate-900"
