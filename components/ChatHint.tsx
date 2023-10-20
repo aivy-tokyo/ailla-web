@@ -17,7 +17,7 @@ export const ChatHint: React.FC<ChatHintProps> = ({ steps, situation, endPhrase 
             {/* 説明文: ヒントの説明を表示、太字 */}
             <p className="text-sm font-bold">{description}</p>
             {/* ヒント: ヒントの内容を表示、斜体 */}
-            <p className="text-sm italic">Hint: {hint}</p>
+            <p className="text-sm italic">{hint}</p>
           </div>
         ))}
         <h3 className="text-lg font-bold mt-8">会話の終了</h3>
