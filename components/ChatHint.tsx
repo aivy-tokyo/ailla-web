@@ -25,7 +25,9 @@ export const ChatHint: React.FC<ChatHintProps> = ({
         </h2>
         <p className="text-left text-sm mb-1">{situation.description}</p>
         <div className="h-[0.1rem] mix-blend-multiply bg-[#CED4DE] my-3" />
-        <h3 className="text-left font-[700] text-[1.3rem] mb-3">会話のHint</h3>
+        <h3 className=" flex items-center text-left font-[700] text-[1.3rem] mb-3">
+          <HiOutlineLightBulb className="opacity-60 mr-1" /> 会話のHint
+        </h3>
         {steps.map(({ description, hint }, index) => (
           <div key={index} className="text-left mb-3">
             {/* 説明文: ヒントの説明を表示、太字 */}
