@@ -17,7 +17,8 @@ export const ChatHint: React.FC<ChatHintProps> = ({ steps, situation, onClose })
       </button>
       <div className="flex flex-col justify-center  w-full px-5 py-3">
         <h2 className="mb-3 font-[700] text-[1.8rem]">{situation.titleEnglish}</h2>
-        <p className="text-left text-sm mb-5">{situation.description}</p>
+        <p className="text-left text-sm mb-1">{situation.description}</p>
+        <div className="h-[0.1rem] mix-blend-multiply bg-[#CED4DE] my-3"/>
         <h3 className="text-left font-[700] text-[1.3rem] mb-3">会話のHint</h3>
         {steps.map(({ description, hint }, index) => (
           <div key={index} className="text-left mb-3">
