@@ -20,8 +20,6 @@ export const ChatHint: React.FC<ChatHintProps> = ({ steps, situation, endPhrase 
             <p className="text-sm italic">{hint}</p>
           </div>
         ))}
-        <h3 className="text-lg font-bold mt-8">会話の終了</h3>
-        <p className="text-sm mt-1">終了フレーズは 「{endPhrase}」 です</p>
       </div>
     </div>
   </div>
