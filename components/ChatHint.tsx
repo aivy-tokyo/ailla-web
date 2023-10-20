@@ -1,4 +1,5 @@
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { HiOutlineLightBulb } from "react-icons/hi";
 import { Situation, SituationStep } from "@/utils/types";
 
 type ChatHintProps = {
