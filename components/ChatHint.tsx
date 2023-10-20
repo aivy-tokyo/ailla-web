@@ -34,7 +34,7 @@ export const ChatHint: React.FC<ChatHintProps> = ({
             {/* 説明文: ヒントの説明を表示、太字 */}
             <p className="text-sm font-bold">{description}</p>
             {/* ヒント: ヒントの内容を表示、斜体 */}
-            <p className="text-sm">{hint}</p>
+            <p className="text-sm text-[#7B8392]">{hint}</p>
           </div>
         ))}
       </div>
