@@ -1,8 +1,8 @@
 import "@/styles/globals.css";
-import { backgroundImagePathAtom } from "@/utils/atoms";
-import { useAtomValue } from "jotai";
+import { backgroundImagePathAtom, clientInfoAtom } from "@/utils/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
 import type { AppProps } from "next/app";
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider } from "next-auth/react";
 import * as Sentry from "@sentry/nextjs";
 import { useEffect } from "react";
 
@@ -11,6 +11,7 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const backgroundImagePath = useAtomValue(backgroundImagePathAtom);
+  const setClientInfo = useSetAtom(clientInfoAtom);
 
   // sentry.init
   const environment = {
@@ -21,10 +22,10 @@ export default function App({
   };
 
   Sentry.init({
-    dsn: environment.env !== 'dev' ? environment.sentry.dsn : '',
+    dsn: environment.env !== "dev" ? environment.sentry.dsn : "",
     environment: environment.env, // prod, staging, dev
-    release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || 'no name',
-    debug: environment.env !== 'prod',
+    release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || "no name",
+    debug: environment.env !== "prod",
   });
 
   // Sentry.setUserにユーザー情報を追加する
@@ -35,7 +36,7 @@ export default function App({
         username: session.user.name,
       });
     }
-  } , [session]);
+  }, [session]);
 
   useEffect(() => {
     window.scrollTo(0, 1);
@@ -43,17 +44,17 @@ export default function App({
 
   return (
     <SessionProvider session={session}>
-    <div
-      className="w-screen h-screen"
-      style={{
-        backgroundImage: `url("${backgroundImagePath}")`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-      }}
-    >
-      <Component {...pageProps} />
-    </div>
+      <div
+        className="w-screen h-screen"
+        style={{
+          backgroundImage: `url("${backgroundImagePath}")`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
+      >
+        <Component {...pageProps} />
+      </div>
     </SessionProvider>
   );
 }

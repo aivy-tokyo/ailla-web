@@ -20,14 +20,14 @@ type Props = {
 const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
   const isCharacterSpeaking = useAtomValue(isCharactorSpeakingAtom);
   const [chatMode, setChatMode] = useState<ChatMode>("mic");
-  
+
   // VoiceInputの状態管理とロジックを取得
   const { startRecording, stopRecording, isMicRecording } = useVoiceInput({
     onStopRecording: useCallback(
       (message: string) => {
         sendChat(message);
       },
-      [sendChat]
+      [sendChat],
     ),
   });
   // isCharacterSpeakingがtrueの間はRecordingを止める
@@ -48,7 +48,7 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
       sendChat(inputValue);
       setInputValue("");
     },
-    [inputValue, sendChat]
+    [inputValue, sendChat],
   );
 
   // ChatLogの状態管理とロジックを取得
@@ -60,7 +60,7 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
     setTimeout(() => {
       chatLogScrollRef.current?.scrollTo(
         0,
-        chatLogScrollRef.current?.scrollHeight
+        chatLogScrollRef.current?.scrollHeight,
       );
     }, 150);
   }, []);
@@ -68,16 +68,18 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
   return (
     <>
       {/* チャットログを表示 */}
-      <div className="fixed bottom-0 flex flex-col  justify-between w-full">
+      <div className="fixed bottom-0 flex flex-col justify-between w-full">
+        {/* ぼかし(blur)を追加 */}
+        <div className="w-full bg-white blur-[0.6rem]" />
         <button
           onClick={() => toggleExpandChatLog()}
-          className={`z-10 relative flex  transition-height ease-in-out duration-150 justify-center ${
+          className={`z-10 relative flex transition-height ease-in-out duration-150 justify-center ${
             isChatLogExpanded ? "h-screen" : "h-36"
           }`}
         >
           <div
             ref={chatLogScrollRef}
-            className={`w-screen  max-w-[600px] overflow-hidden px-5 h-full flex  transition-color ease-in duration-150 flex-col ${
+            className={`w-screen max-w-[600px] overflow-hidden px-5 h-full flex transition-color ease-in duration-150 flex-col ${
               isChatLogExpanded
                 ? "overflow-y-scroll py-20 bg-black opacity-90"
                 : "py-1 mask-top-fadeout top-0 absolute justify-end"
@@ -119,9 +121,15 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
                 />
               </form>
             ) : (
-              <div className="w-full max-w-md mx-auto flex justify-center items-center gap-3 px-3">
+              <div
+                className="
+              w-[17rem] max-w-md mx-auto flex justify-center items-center 
+              gap-6 px-3 shadow-[0px_10px_24px_0px_rgba(0, 0, 0, 0.25)]
+              bg-white/20 rounded-[7rem]
+            "
+              >
                 <ButtonHelp onClick={toggleHint} disabled={!toggleHint} />
-                <div className="relative flex justify-center items-center">
+                <div className="relative flex justify-center items-center transform -translate-y-5">
                   {isMicRecording && (
                     <span className="absolute w-[65%] h-[65%] bg-white rounded-full animate-ping"></span>
                   )}

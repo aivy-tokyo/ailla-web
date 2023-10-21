@@ -2,46 +2,78 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { ChatCompletionRequestMessage } from "openai";
-import { GPT_MODEL } from "../../../utils/constants";
+import { GPT_MODEL, LanguageKey } from "../../../utils/constants";
 
 const chat = new ChatOpenAI({
   modelName: GPT_MODEL,
   temperature: 0.7,
   maxTokens: 150,
 });
+
 // TOPICのリスト
-const topics = [
-  "Hobbies", // Talking about favorite hobbies or interests.
-  "Travel", // Sharing experiences from places you've been or want to visit.
-  "Food", // Conversations about favorite dishes or restaurants.
-  "Movies and Music", // Discussing recent movies watched or favorite musicians.
-  "Sports", // Talking about favorite sports or teams.
-  "Family", // Light conversation about family members or pets.
-  "Recent Events", // Sharing what you did on the last holiday or weekend.
-];
-const getRandomPickupTopic = () => {
-  return topics[Math.floor(Math.random() * topics.length)];
+const topics = {
+  cn: {
+    爱好: "Talking about favorite hobbies or interests.",
+    旅行: "Sharing experiences from places you've been or want to visit.",
+    食物: "Conversations about favorite dishes or restaurants.",
+    电影和音乐: "Discussing recent movies watched or favorite musicians.",
+    运动的: "Talking about favorite sports or teams.",
+    家庭: "Light conversation about family members or pets.",
+    最近发生的事件: "Sharing what you did on the last holiday or weekend.",
+  },
+  en: {
+    Hobby: "Talking about favorite hobbies or interests.",
+    Travel: "Sharing experiences from places you've been or want to visit.",
+    Food: "Conversations about favorite dishes or restaurants.",
+    "Movie and Music":
+      "Discussing recent movies watched or favorite musicians.",
+    Sports: "Talking about favorite sports or teams.",
+    Family: "Light conversation about family members or pets.",
+    "Recent Events": "Sharing what you did on the last holiday or weekend.",
+  },
+};
+
+const isLanguageKey = (input: any): input is LanguageKey => {
+  return input === "en" || input === "cn";
+};
+
+const getRandomPickupTopic = (language: LanguageKey) => {
+  const topicKeys = Object.keys(
+    topics[language]
+  ) as (keyof (typeof topics)[LanguageKey])[];
+  const randomKey = topicKeys[Math.floor(Math.random() * topicKeys.length)];
+  return topics[language][randomKey];
 };
 
 // IceBreakの会話をするためのSYSTEMのメッセージテンプレート
-const promptTemplateForIceBreak = new PromptTemplate({
-  template: `あなたは英会話の教師です。あなたの名前はAilla。生徒の名前は{userName}。英会話の授業を始める前のアイスブレイク会話をしてください。トピックは{topic}です。会話は100文字におさめてください。会話はかならず英語で行ってください。`,
-  inputVariables: ["topic", "userName"],
-});
+const iceBreakTemplate = (speakLanguage: string) => {
+  const introduction = `あなたは${speakLanguage}会話の教師です。あなたの名前はAilla。生徒の名前は{userName}。`;
+  const instruction = `${speakLanguage}会話の授業を始める前のアイスブレイク会話をしてください。`;
+  const constraints = `トピックは{topic}です。会話は100文字におさめてください。会話はかならず${speakLanguage}で行ってください。`;
+
+  return new PromptTemplate({
+    template: `${introduction} ${instruction} ${constraints}`,
+    inputVariables: ["topic", "userName"],
+  });
+};
 
 // prompt textを生成する
-// 引数: topic - トピック, messages - 会話の配列, userName - ユーザー名
+// 引数: topic - トピック, messages - 会話の配列, userName - ユーザー名, speakLanguage - 話す言語
 // 返り値: prompt text
 const generatePromptText = async ({
   topic,
   messages,
   userName,
+  language,
+  speakLanguage,
 }: {
   topic: string;
   messages: ChatCompletionRequestMessage[];
   userName: string;
+  language: string;
+  speakLanguage: string;
 }) => {
-  const promptForIceBreak = await promptTemplateForIceBreak.format({
+  const promptForIceBreak = await iceBreakTemplate(speakLanguage).format({
     topic,
     userName,
   });
@@ -106,6 +138,8 @@ const avoidReturnTwoRoles = (responseMessage: string) => {
 type Parameter = {
   userName: string;
   messages: ChatCompletionRequestMessage[];
+  language: string;
+  speakLanguage: string;
   topic?: string;
   end?: boolean;
 };
@@ -122,13 +156,25 @@ export default async function handler(
   >
 ) {
   try {
-    const topic = (req.body as Parameter).topic ?? getRandomPickupTopic();
+    const language = (req.body as Parameter).language ?? "en";
+
+    let topic = (req.body as Parameter).topic;
+    if (!topic) {
+      if (isLanguageKey(language)) {
+        topic = getRandomPickupTopic(language);
+      } else {
+        throw new Error("Invalid language provided");
+      }
+    }
     const userName = (req.body as Parameter).userName ?? "you";
     const messages = (req.body as Parameter).messages ?? [];
+    const speakLanguage = (req.body as Parameter).speakLanguage ?? "英語";
     const promptText = await generatePromptText({
       topic,
       messages,
       userName,
+      language,
+      speakLanguage,
     });
     const chatMessage = await chat.predict(promptText);
     console.log("chatMessage->", chatMessage);

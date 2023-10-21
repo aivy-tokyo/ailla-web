@@ -4,7 +4,7 @@ import { Prefecture, UserGenderType } from "@/utils/types";
 import axios from "axios";
 import { useAtom, useAtomValue } from "jotai";
 import { signOut } from "next-auth/react";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 export const useUserInfo = () => {
   const userId = useAtomValue(userIdAtom);
@@ -17,8 +17,13 @@ export const useUserInfo = () => {
       userBirthdate: string,
       userGender: UserGenderType
     ) => {
-
-      console.log("registerUserInfo", userName, userPrefecture, userBirthdate, userGender);
+      console.log(
+        "registerUserInfo",
+        userName,
+        userPrefecture,
+        userBirthdate,
+        userGender
+      );
       const response = await axios.put("/api/user", {
         id: userId,
         name: userName,
@@ -48,7 +53,13 @@ export const useUserInfo = () => {
     ) => {
       if (!userId) return;
 
-      console.log("editUserInfo", userName, userPrefecture, userBirthdate, userGender);
+      console.log(
+        "editUserInfo",
+        userName,
+        userPrefecture,
+        userBirthdate,
+        userGender
+      );
 
       const response = await axios.post("/api/user", {
         id: userId,
@@ -90,6 +101,6 @@ export const useUserInfo = () => {
     editUserInfo,
     deleteUserInfo,
     userInfo,
-    setUserInfo
+    setUserInfo,
   };
 };
