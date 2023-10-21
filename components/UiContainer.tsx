@@ -78,8 +78,7 @@ export const UiContainer = () => {
       {
         title: "リピートプラクティス",
         englishTitle: "Repeat practice",
-        // @ts-ignore
-        onClick: () => modal_comming_soon.showModal(),
+        onClick: () => router.push("/?mode=repeat-practice"),
       },
     ].map((item, index) => {
       return <ButtonTalkMode item={item} key={index} />;

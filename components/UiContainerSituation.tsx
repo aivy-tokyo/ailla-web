@@ -116,7 +116,8 @@ export const UiContainerSituation: React.FC = () => {
         <ChatMenu
           options={situationListOptions}
           onClickOption={handleSelectSituation}
-          setIsSituationSelection={setIsSituationSelection}
+          setIsSelection={setIsSituationSelection}
+          type="situation"
         />
       )}
       {situation && firstGreetingDone && (

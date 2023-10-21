@@ -134,3 +134,20 @@ export type Situation = {
   endPhrase: EndPhrase
   endTalk: string
 };
+
+/**
+ * リピートプラクティスの型定義
+ */
+export type RepeatPracticeStep = {
+  role: string;
+  sentence: string;
+}
+
+export type RepeatPractice = {
+  title: string; // リピートプラクティスのタイトル
+  titleEnglish: string; // リピートプラクティスの英タイトル
+  description: string; // リピートプラクティスの説明
+  roleOfAi: string; // AIの役割
+  roleOfUser: string; // ユーザーの役割
+  steps: RepeatPracticeStep[];
+}
