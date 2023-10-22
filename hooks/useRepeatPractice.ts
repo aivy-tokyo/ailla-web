@@ -57,17 +57,6 @@ export const useRepeatPractice = () => {
     setRoleOfAi(selectedRepeatPractice.roleOfAi);
     setRoleOfUser(selectedRepeatPractice.roleOfUser);
 
-    // const response = await axios.post("/api/chat/repeat-practice", {
-    //   title: selectedRepeatPractice.title,
-    //   description: selectedRepeatPractice.description,
-    //   messages: [],
-    //   role: selectedRepeatPractice.roleOfAi,
-    // });
-    // console.log("response->", response);
-    // const { messages: newMessages } = response.data;
-    // console.log("newMessages->", newMessages);
-    // setMessages(newMessages);
-
     setChatLog((prev) => [...prev, {
       role: "assistant",
       content: selectedRepeatPractice.steps[0].sentence,
@@ -96,9 +85,10 @@ export const useRepeatPractice = () => {
       const nextStepIndex = steps.findIndex(step => step === currentStep) != -1
         ? steps.findIndex(step => step === currentStep) + 1
         : -1;
+      const isLastIndex = nextStepIndex === steps.length;
 
       // 次のstepが見つからない場合、リピートプラクティスを終了させる
-      if (nextStepIndex === -1) {
+      if (isLastIndex) {
         setChatLog((prev) => [...prev, {
           role: "assistant",
           content: "お疲れ様でした。リピートプラクティスを終了します。",
@@ -107,7 +97,7 @@ export const useRepeatPractice = () => {
         await speakCharactor({
           text: "お疲れ様でした。リピートプラクティスを終了します。",
           viewerModel: viewer.model,
-          language,
+          language: "ja",
         });
 
         setIsRepeatPracticeEnded(true);

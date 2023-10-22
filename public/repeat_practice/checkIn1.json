@@ -2,8 +2,8 @@
   "title": "チェックイン1",
   "titleEnglish": "Check in 1",
   "description": "ホテルのフロントでチェックインするシーンです。",
-  "roleOfAi": "Customer",
-  "roleOfUser": "Staff",
+  "roleOfAi": "Ailla",
+  "roleOfUser": "You",
   "steps": [
     {
       "role": "staff",
