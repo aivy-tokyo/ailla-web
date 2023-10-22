@@ -1,13 +1,18 @@
-import { useSetAtom } from "jotai";
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+import { ChatCompletionRequestMessage } from "openai";
+import { useAtomValue, useSetAtom } from "jotai";
 import {
   chatLogAtom,
+  clientInfoAtom,
   isCharactorSpeakingAtom,
 } from "../utils/atoms";
-import { ChatCompletionRequestMessage } from "openai";
-import axios from "axios";
 
-import { RepeatPractice } from "@/utils/types";
-import { useCallback, useEffect, useState } from "react";
+import { RepeatPractice, RepeatPracticeStep } from "@/utils/types";
+
+import { Message } from "../features/messages/messages";
+import { useViewer } from "./useViewer";
+import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
 const situationFileNames = [
   // public/repeat_practice フォルダ内のファイル名を指定"
@@ -15,12 +20,23 @@ const situationFileNames = [
 ];
 
 export const useRepeatPractice = () => {
+  const viewer = useViewer();
+  const { speakCharactor } = useCharactorSpeaking();
+  const setChatLog = useSetAtom(chatLogAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
+
   const [roleOfAi, setRoleOfAi] = useState<string>("");
   const [roleOfUser, setRoleOfUser] = useState<string>("");
 
   const [repeatPractice, setRepeatPractice] = useState<RepeatPractice | null>();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const [repeatPracticeList, setRepeatPracticeList] = useState<RepeatPractice[]>([]);
+  const [currentStep, setCurrentStep] = useState<RepeatPracticeStep | null>();
+  const [steps, setSteps] = useState<RepeatPracticeStep[] | null>();
+  const [isRepeatPracticeEnded, setIsRepeatPracticeEnded] =
+    useState<boolean>(false);
+
+  const language = clientInfo?.language ?? "";
 
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
 
@@ -33,22 +49,99 @@ export const useRepeatPractice = () => {
   }, []);
 
   const startRepeatPractice = useCallback(async (selectedRepeatPractice: RepeatPractice) => {
+    if (!viewer.model) return;
+    console.log("selectedRepeatPractice:",selectedRepeatPractice);
+
     setRepeatPractice(selectedRepeatPractice);
     setMessages([]);
     setRoleOfAi(selectedRepeatPractice.roleOfAi);
     setRoleOfUser(selectedRepeatPractice.roleOfUser);
 
-    const response = await axios.post("/api/chat/repeat-practice", {
-      title: selectedRepeatPractice.title,
-      description: selectedRepeatPractice.description,
-      messages: [],
-      role: selectedRepeatPractice.roleOfAi,
+    // const response = await axios.post("/api/chat/repeat-practice", {
+    //   title: selectedRepeatPractice.title,
+    //   description: selectedRepeatPractice.description,
+    //   messages: [],
+    //   role: selectedRepeatPractice.roleOfAi,
+    // });
+    // console.log("response->", response);
+    // const { messages: newMessages } = response.data;
+    // console.log("newMessages->", newMessages);
+    // setMessages(newMessages);
+
+    setChatLog((prev) => [...prev, {
+      role: "assistant",
+      content: selectedRepeatPractice.steps[0].sentence,
+    }]);
+    setSteps(selectedRepeatPractice.steps);
+    setCurrentStep(selectedRepeatPractice.steps[0]);
+
+    await speakCharactor({
+      text: selectedRepeatPractice.steps[0].sentence,
+      viewerModel: viewer.model,
+      language,
     });
-    console.log("response->", response);
-    const { messages: newMessages } = response.data;
-    console.log("newMessages->", newMessages);
-    setMessages(newMessages);
-  }, [])
+  }, [setChatLog, viewer.model, language, speakCharactor])
+
+  const sendMessage = useCallback(async (message: string) => {
+      if (!viewer.model || !repeatPractice || !message.trim() || !steps) return;
+
+    try {
+      setIsCharactorSpeaking(true);
+      const userMessage: Message = {
+        role: "user",
+        content: message,
+      };
+      setChatLog((prev) => [...prev, userMessage]);
+
+      const nextStepIndex = steps.findIndex(step => step === currentStep) != -1
+        ? steps.findIndex(step => step === currentStep) + 1
+        : -1;
+
+      // 次のstepが見つからない場合、リピートプラクティスを終了させる
+      if (nextStepIndex === -1) {
+        setChatLog((prev) => [...prev, {
+          role: "assistant",
+          content: "お疲れ様でした。リピートプラクティスを終了します。",
+        }]);
+
+        await speakCharactor({
+          text: "お疲れ様でした。リピートプラクティスを終了します。",
+          viewerModel: viewer.model,
+          language,
+        });
+
+        setIsRepeatPracticeEnded(true);
+        return;
+      }
+
+      setCurrentStep(steps[nextStepIndex]);
+      setChatLog((prev) => [...prev, {
+        role: "assistant",
+        content: steps[nextStepIndex].sentence,
+      }]);
+
+      await speakCharactor({
+        text: steps[nextStepIndex].sentence,
+        viewerModel: viewer.model,
+        language,
+      });
+
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsCharactorSpeaking(false);
+    }
+  },
+  [
+    language,
+    repeatPractice,
+    currentStep,
+    steps,
+    viewer.model,
+    speakCharactor,
+    setChatLog,
+    setIsCharactorSpeaking,
+  ]);
 
   return {
     repeatPractice,
@@ -56,5 +149,7 @@ export const useRepeatPractice = () => {
     roleOfAi,
     roleOfUser,
     startRepeatPractice,
+    sendMessage,
+    isRepeatPracticeEnded,
   }
 };

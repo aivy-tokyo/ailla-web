@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import BottomUi from "./BottomUi";
 import { ChatMenu } from "./ChatMenu";
 import { HeaderUi } from "./HeaderUi";
@@ -32,6 +32,8 @@ export const UiContainerRepeatPractice: React.FC = () => {
     roleOfAi,
     roleOfUser,
     startRepeatPractice,
+    sendMessage,
+    isRepeatPracticeEnded,
   } = useRepeatPractice()
 
   // RepeatPracticeの選択肢を作成
@@ -51,6 +53,12 @@ export const UiContainerRepeatPractice: React.FC = () => {
     [setBackgroundImagePath, repeatPracticeList, startRepeatPractice],
   );
 
+  useEffect(() => {
+    if (isRepeatPracticeEnded) {
+      endTalk();
+    }
+  }, [isRepeatPracticeEnded, endTalk]);
+
   return (
     <div className={!repeatPractice ? "h-full bg-[rgba(255,255,255,0.8)]" : "h-full"}>
       <HeaderUi onClickEndTalk={endTalk} />
@@ -64,7 +72,7 @@ export const UiContainerRepeatPractice: React.FC = () => {
       )}
       {repeatPractice && (
         <BottomUi
-          sendChat={() => {}}
+          sendChat={sendMessage}
           toggleHint={toggleHint}
           roleOfAi={roleOfAi}
           roleOfUser={roleOfUser}
