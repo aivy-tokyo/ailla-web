@@ -8,10 +8,7 @@ import { useUserInfo } from "@/hooks/useUserInfo";
 import { useCallback, useState } from "react";
 import { HeaderLabel } from "./HeaderLabel";
 import * as Sentry from "@sentry/nextjs";
-import {
-  avatars,
-  backgroundImages,
-} from "../utils/constants";
+import { avatars, backgroundImages } from "../utils/constants";
 import {
   avatarPathAtom,
   backgroundImagePathAtom,
@@ -84,22 +81,22 @@ const UserInfo = () => {
   const [isResultError, setIsResultError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [backgroundImagePath, setBackgroundImagePath] = useAtom(
-    backgroundImagePathAtom
-  );  
+    backgroundImagePathAtom,
+  );
   const setCurrentAvatar = useSetAtom(currentAvatarAtom);
   const handleChangeAvatar = (e: ChangeEvent<HTMLSelectElement>) => {
-    const currentAvatar = avatars.find(avatar => avatar.path === e.target.value);
+    const currentAvatar = avatars.find(
+      (avatar) => avatar.path === e.target.value,
+    );
     if (!currentAvatar) return;
     setCurrentAvatar(currentAvatar);
     setAvatarPath(e.target.value);
   };
   const [avatarPath, setAvatarPath] = useAtom(avatarPathAtom);
-  
 
   const handleChangeBackgroundImage = (e: ChangeEvent<HTMLSelectElement>) => {
     setBackgroundImagePath(e.target.value);
   };
-
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -297,12 +294,6 @@ const UserInfo = () => {
         <div>
           <div className="flex justify-between items-center mb-5">
             <p className="font-bold text-[#47556D] text-2xl">ユーザー情報</p>
-            <button
-              className="btn btn-secondary btn-sm"
-              onClick={() => setIsEditMode(true)}
-            >
-              編集する
-            </button>
           </div>
           <UserInfoItem label="名前" value={userInfo?.name} id="name" />
           <UserInfoItem
@@ -315,50 +306,66 @@ const UserInfo = () => {
             value={userInfo?.birthdate}
             id="birthdate"
           />
-            <UserInfoItem label="性別" value={userInfo?.gender} id="gender" />
-            {/* アバターの変更UI */}
-            <div className="w-full">
-              <HeaderLabel>アバターを選ぶ</HeaderLabel>
-              <select
-                className="select select-bordered w-full max-w-xs bg-white"
-                onChange={(e) => handleChangeAvatar(e)}
-                value={avatarPath}
-              >
-                {avatars.map((avatar, index) => {
-                  return (
-                    <option key={index} value={avatar.path} className="text-[#47556D]">
-                      {avatar.label}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            {/* 背景の変更UI */}
-            <div className="w-full">
-              <HeaderLabel>背景を選ぶ</HeaderLabel>
-              <select
-                className="select select-bordered w-full max-w-xs bg-white"
-                onChange={(e) => handleChangeBackgroundImage(e)}
-                value={backgroundImagePath}
-              >
-                {backgroundImages.map((image, index) => {
-                  return (
-                    <option key={index} value={image.path}>
-                      {image.label}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            {/* サインアウトボタン */}
-            <div className="w-full my-10">
-              <button
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => signOut()}
-              >
-                サインアウト
-              </button>
-            </div>            
+          <UserInfoItem label="性別" value={userInfo?.gender} id="gender" />
+          <button
+            className="
+                border-[1px] border-solid border-[#47556D]
+                mr-2 px-[1rem] py-[0.5rem] rounded-[0.8rem]
+                text-[1rem] text-[#47556D]
+                "
+            onClick={() => setIsEditMode(true)}
+          >
+            編集する
+          </button>
+          <div className="flex justify-center relative w-full h-[1px] my-5 border-[#CED4DE] border-b" />
+          <h1 className="text-[#47556D] font-bold text-[1.5rem]">各種設定</h1>
+          {/* アバターの変更UI */}
+          <div className="w-full my-5">
+            <HeaderLabel>アバターを選ぶ</HeaderLabel>
+            <select
+                className="select select-bordered rounded-[0.7rem] w-full max-w-xs bg-white h-[2rem] mt-2"
+              onChange={(e) => handleChangeAvatar(e)}
+              value={avatarPath}
+            >
+              {avatars.map((avatar, index) => {
+                return (
+                  <option
+                    key={index}
+                    value={avatar.path}
+                    className="text-[#47556D]"
+                  >
+                    {avatar.label}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          {/* 背景の変更UI */}
+          <div className="w-full my-5">
+            <HeaderLabel>背景を選ぶ</HeaderLabel>
+            <select
+              className="select select-bordered rounded-[0.7rem] w-full max-w-xs bg-white h-[2rem] mt-2"
+              onChange={(e) => handleChangeBackgroundImage(e)}
+              value={backgroundImagePath}
+            >
+              {backgroundImages.map((image, index) => {
+                return (
+                  <option key={index} value={image.path}>
+                    {image.label}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          {/* サインアウトボタン */}
+          <div className="w-full my-10">
+            <button
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => signOut()}
+            >
+              サインアウト
+            </button>
+          </div>
         </div>
       )}
     </div>
