@@ -6,6 +6,22 @@ import { useCallback, useState } from "react";
 import { HeaderLabel } from "./HeaderLabel";
 import * as Sentry from "@sentry/nextjs";
 
+type InputFieldProps = {
+  label: string;
+  children: React.ReactNode;
+};
+
+const InputField: React.FC<InputFieldProps> = ({ label, children }) => {
+  return (
+    <div className="flex flex-col my-6">
+      <label>
+        <HeaderLabel>{label}</HeaderLabel>
+      </label>
+      {children}
+    </div>
+  );
+};
+
 const UserInfoItem = ({
   label,
   value,
@@ -142,10 +158,7 @@ const UserInfo = () => {
           <h1 className="text-[#47556D] font-bold text-[1.5rem]">
             ユーザー情報の編集
           </h1>
-          <div className="flex flex-col mb-2">
-            <label htmlFor="name">
-              <HeaderLabel>名前</HeaderLabel>
-            </label>
+          <InputField label="名前">
             <input
               id="name"
               name="name"
@@ -157,30 +170,22 @@ const UserInfo = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-          </div>
-          <div className="flex flex-col mb-2">
-            <label htmlFor="prefecture">
-              <HeaderLabel>都道府県</HeaderLabel>
-            </label>
+          </InputField>
+          <InputField label="都道府県">
             <select
               id="prefecture"
               className="select select-bordered w-full max-w-xs bg-white text-[#47556D]"
               value={prefecture}
               onChange={(e) => setPrefecture(e.target.value as Prefecture)}
             >
-              {prefectures.map((prefecture, index) => {
-                return (
-                  <option key={index} value={prefecture}>
-                    {prefecture}
-                  </option>
-                );
-              })}
+              {prefectures.map((pref, index) => (
+                <option key={index} value={pref}>
+                  {pref}
+                </option>
+              ))}
             </select>
-          </div>
-          <div className="flex flex-col mb-2">
-            <label htmlFor="birthdate">
-              <HeaderLabel>生年月日</HeaderLabel>
-            </label>
+          </InputField>
+          <InputField label="生年月日">
             <div className="flex">
               <input
                 id="year"
@@ -216,11 +221,8 @@ const UserInfo = () => {
               />
               <div className="flex items-center text-[#47556D]">日</div>
             </div>
-          </div>
-          <div className="flex flex-col mb-5">
-            <label htmlFor="gender">
-              <HeaderLabel>性別</HeaderLabel>
-            </label>
+          </InputField>
+          <InputField label="性別">
             <select
               id="gender"
               className="select select-bordered w-full max-w-xs bg-white text-[#47556D]"
@@ -231,7 +233,7 @@ const UserInfo = () => {
               <option value="女性">女性</option>
               <option value="選択しない">選択しない</option>
             </select>
-          </div>
+          </InputField>
           <div className="flex justify-left mb-2">
             <button
               className="
