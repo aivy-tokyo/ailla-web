@@ -59,13 +59,13 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
           <div className="w-full">
             <HeaderLabel>アバターを選ぶ</HeaderLabel>
             <select
-              className="select select-bordered w-full max-w-xs"
+              className="select select-bordered w-full max-w-xs bg-white"
               onChange={(e) => handleChangeAvatar(e)}
               value={avatarPath}
             >
               {avatars.map((avatar, index) => {
                 return (
-                  <option key={index} value={avatar.path}>
+                  <option key={index} value={avatar.path} className="text-[#47556D]">
                     {avatar.label}
                   </option>
                 );
@@ -76,7 +76,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
           <div className="w-full">
             <HeaderLabel>背景を選ぶ</HeaderLabel>
             <select
-              className="select select-bordered w-full max-w-xs"
+              className="select select-bordered w-full max-w-xs bg-white"
               onChange={(e) => handleChangeBackgroundImage(e)}
               value={backgroundImagePath}
             >
