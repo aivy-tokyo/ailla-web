@@ -6,6 +6,29 @@ import { useCallback, useState } from "react";
 import { HeaderLabel } from "./HeaderLabel";
 import * as Sentry from "@sentry/nextjs";
 
+const UserInfoItem = ({
+  label,
+  value,
+  id,
+}: {
+  label: string;
+  value: string | undefined;
+  id: string;
+}) => {
+  return (
+    <div className="flex justify-between mb-5 w-3/5">
+      <label htmlFor={id} className="w-1/5">
+        <HeaderLabel>{label}</HeaderLabel>
+      </label>
+      <div className="w-2/5">
+        <p id={id} className="text-[#47556D] text-left text-xl mt-5 mb-3">
+          {value}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const UserInfo = () => {
   const { editUserInfo, deleteUserInfo, userInfo } = useUserInfo();
 
@@ -122,7 +145,9 @@ const UserInfo = () => {
       )}
       {isEditMode ? (
         <form onSubmit={handleSubmit} className="bg-[#E3DDE8]">
-          <h1 className="text-[#47556D] font-bold text-[1.5rem]">ユーザー情報の編集</h1>
+          <h1 className="text-[#47556D] font-bold text-[1.5rem]">
+            ユーザー情報の編集
+          </h1>
           <div className="flex flex-col mb-2">
             <label htmlFor="name">
               <HeaderLabel>名前</HeaderLabel>
@@ -174,9 +199,7 @@ const UserInfo = () => {
                 onChange={(e) => setYear(e.target.value)}
               />
               <div className="flex items-center">
-                <span className="text-[#47556D]">
-                  年
-                </span>
+                <span className="text-[#47556D]">年</span>
               </div>
               <input
                 id="month"
@@ -226,14 +249,17 @@ const UserInfo = () => {
             >
               キャンセル
             </button>
-            <button type="submit" className="
+            <button
+              type="submit"
+              className="
             mr-2 px-[1rem] py-[0.5rem] rounded-[0.8rem]
             text-[1rem] text-white bg-gradient-pink
-            ">
+            "
+            >
               更新する
             </button>
           </div>
-          <div className="flex justify-between items-center my-7">            
+          <div className="flex justify-between items-center my-7">
             <button
               className="w-full text-red-400 text-left"
               onClick={handleUserDelete}
@@ -245,7 +271,7 @@ const UserInfo = () => {
       ) : (
         <div>
           <div className="flex justify-between items-center mb-5">
-            <p className="font-bold text-white text-2xl">ユーザー情報</p>
+            <p className="font-bold text-[#47556D] text-2xl">ユーザー情報</p>
             <button
               className="btn btn-secondary btn-sm"
               onClick={() => setIsEditMode(true)}
@@ -253,38 +279,18 @@ const UserInfo = () => {
               編集する
             </button>
           </div>
-          <div className="flex items-center mb-5">
-            <label htmlFor="name">
-              <HeaderLabel>名前</HeaderLabel>
-            </label>
-            <p id="name" className="text-white text-xl mt-5 mb-3">
-              {userInfo?.name}
-            </p>
-          </div>
-          <div className="flex items-center mb-5">
-            <label htmlFor="prefecture">
-              <HeaderLabel>都道府県</HeaderLabel>
-            </label>
-            <p id="prefecture" className="text-white text-xl mt-5 mb-3">
-              {userInfo?.prefecture}
-            </p>
-          </div>
-          <div className="flex items-center mb-5">
-            <label htmlFor="birthdate">
-              <HeaderLabel>生年月日</HeaderLabel>
-            </label>
-            <p id="birthdate" className="text-white text-xl mt-5 mb-3">
-              {userInfo?.birthdate}
-            </p>
-          </div>
-          <div className="flex items-center mb-5">
-            <label htmlFor="gender">
-              <HeaderLabel>性別</HeaderLabel>
-            </label>
-            <p id="gender" className="text-white text-xl mt-5 mb-3">
-              {userInfo?.gender}
-            </p>
-          </div>
+          <UserInfoItem label="名前" value={userInfo?.name} id="name" />
+          <UserInfoItem
+            label="都道府県"
+            value={userInfo?.prefecture}
+            id="prefecture"
+          />
+          <UserInfoItem
+            label="生年月日"
+            value={userInfo?.birthdate}
+            id="birthdate"
+          />
+          <UserInfoItem label="性別" value={userInfo?.gender} id="gender" />
         </div>
       )}
     </div>
