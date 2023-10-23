@@ -121,7 +121,7 @@ const UserInfo = () => {
         </div>
       )}
       {isEditMode ? (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="bg-[#E3DDE8]">
           <div className="flex justify-between items-center mb-5">
             <button
               className="btn btn-neutral btn-sm"
@@ -135,13 +135,15 @@ const UserInfo = () => {
           </div>
           <div className="flex flex-col mb-5">
             <label htmlFor="name">
-              <HeaderLabel>名前(ローマ字)：</HeaderLabel>
+              <HeaderLabel>
+                <span className="text-[#47556D]">名前</span>
+              </HeaderLabel>
             </label>
             <input
               id="name"
               name="name"
               type="text"
-              className="input"
+              className="input bg-white text-[#47556D]"
               placeholder="例：Ailla"
               pattern="[A-Za-z0-9]+"
               title="英数字のみ入力してください"
@@ -149,14 +151,17 @@ const UserInfo = () => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-
           <div className="flex flex-col mb-5">
             <label htmlFor="prefecture">
-              <HeaderLabel>都道府県：</HeaderLabel>
+              <HeaderLabel>
+                <span className="text-[#47556D]">
+                都道府県：
+                </span>
+              </HeaderLabel>
             </label>
             <select
               id="prefecture"
-              className="select select-bordered w-full max-w-xs"
+              className="select select-bordered w-full max-w-xs bg-white text-[#47556D]"
               value={prefecture}
               onChange={(e) => setPrefecture(e.target.value as Prefecture)}
             >
@@ -172,50 +177,60 @@ const UserInfo = () => {
 
           <div className="flex flex-col mb-5">
             <label htmlFor="birthdate">
-              <HeaderLabel>生年月日：</HeaderLabel>
+              <HeaderLabel>
+                <span className="text-[#47556D]">
+                  生年月日
+                </span>
+              </HeaderLabel>
             </label>
             <div className="flex">
               <input
                 id="year"
                 name="year"
                 type="number"
-                className="input w-1/3 mr-1 px-1"
+                className="input w-1/3 mr-1 px-1 bg-white text-[#47556D]"
                 pattern="\d{4}"
                 title="数字のみ入力してください"
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
               />
-              <div className="flex items-center">年</div>
+              <div className="flex items-center">
+                <span className="text-[#47556D]">
+                  年
+                </span>
+              </div>
               <input
                 id="month"
                 name="month"
                 type="string"
-                className="input w-1/4 mr-1 px-1"
+                className="input w-1/4 mr-1 bg-white px-1 text-[#47556D]"
                 pattern="\d{1,2}"
                 value={month}
                 onChange={(e) => setMonth(e.target.value)}
               />
-              <div className="flex items-center">月</div>
+              <div className="flex items-center text-[#47556D]">月</div>
               <input
                 id="day"
                 name="day"
                 type="string"
-                className="input w-1/4 mr-1 padding-x-1"
+                className="input w-1/4 mr-1 padding-x-1 bg-white text-[#47556D]"
                 pattern="\d{1,2}"
                 value={day}
                 onChange={(e) => setDay(e.target.value)}
               />
-              <div className="flex items-center">日</div>
+              <div className="flex items-center text-[#47556D]">日</div>
             </div>
           </div>
 
           <div className="flex flex-col mb-5">
             <label htmlFor="gender">
-              <HeaderLabel>性別：</HeaderLabel>
+              <HeaderLabel>
+                <span className="text-[#47556D]">性別</span>
+              </HeaderLabel>
             </label>
             <select
               id="gender"
-              className="select select-bordered w-full max-w-xs"
+              className="select select-bordered w-full max-w-xs bg-white text-[#47556D]"
               value={gender}
               onChange={(e) => setGender(e.target.value as UserGenderType)}
             >
@@ -227,7 +242,7 @@ const UserInfo = () => {
 
           <div className="flex justify-between items-center my-10">
             <button
-              className="btn btn-error btn-xs w-full"
+              className="w-full text-red-400 text-left"
               onClick={handleUserDelete}
             >
               ユーザー情報を削除する
