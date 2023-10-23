@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, {  ChangeEvent } from "react";
 import { signOut } from "next-auth/react";
 import { useAtom, useSetAtom } from "jotai";
 import { IoLogOutOutline } from "react-icons/io5";

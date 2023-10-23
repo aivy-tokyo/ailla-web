@@ -1,6 +1,4 @@
 import React from "react";
-import { MdClose } from "react-icons/md";
-import {AiOutlineArrowLeft} from "react-icons/ai";
 import UserInfo from "./UserInfo";
 
 
