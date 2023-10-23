@@ -2,6 +2,7 @@ import React, { ChangeEvent } from "react";
 import { signOut } from "next-auth/react";
 import { useAtom, useSetAtom } from "jotai";
 import { FaRegTimesCircle } from "react-icons/fa";
+import { IoLogOutOutline } from "react-icons/io5"
 import { Prefecture, UserGenderType } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
 import { useUserInfo } from "@/hooks/useUserInfo";
@@ -358,12 +359,13 @@ const UserInfo = () => {
             </select>
           </div>
           {/* サインアウトボタン */}
-          <div className="w-full my-10">
+          <div className="w-full my-3">
             <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                className="flex justify-start items-center py-2 rounded text-red-500"
               onClick={() => signOut()}
-            >
-              サインアウト
+              >                
+                <span className="">サインアウト</span>
+                <IoLogOutOutline className="ml-1" />
             </button>
           </div>
         </div>
