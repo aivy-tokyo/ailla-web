@@ -1,3 +1,6 @@
+import React, { ChangeEvent } from "react";
+import { signOut } from "next-auth/react";
+import { useAtom, useSetAtom } from "jotai";
 import { FaRegTimesCircle } from "react-icons/fa";
 import { Prefecture, UserGenderType } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
@@ -5,6 +8,15 @@ import { useUserInfo } from "@/hooks/useUserInfo";
 import { useCallback, useState } from "react";
 import { HeaderLabel } from "./HeaderLabel";
 import * as Sentry from "@sentry/nextjs";
+import {
+  avatars,
+  backgroundImages,
+} from "../utils/constants";
+import {
+  avatarPathAtom,
+  backgroundImagePathAtom,
+  currentAvatarAtom,
+} from "../utils/atoms";
 
 type InputFieldProps = {
   label: string;
@@ -71,6 +83,23 @@ const UserInfo = () => {
   const [isSendingRequest, setIsSendingRequest] = useState(false);
   const [isResultError, setIsResultError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [backgroundImagePath, setBackgroundImagePath] = useAtom(
+    backgroundImagePathAtom
+  );  
+  const setCurrentAvatar = useSetAtom(currentAvatarAtom);
+  const handleChangeAvatar = (e: ChangeEvent<HTMLSelectElement>) => {
+    const currentAvatar = avatars.find(avatar => avatar.path === e.target.value);
+    if (!currentAvatar) return;
+    setCurrentAvatar(currentAvatar);
+    setAvatarPath(e.target.value);
+  };
+  const [avatarPath, setAvatarPath] = useAtom(avatarPathAtom);
+  
+
+  const handleChangeBackgroundImage = (e: ChangeEvent<HTMLSelectElement>) => {
+    setBackgroundImagePath(e.target.value);
+  };
+
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -286,7 +315,50 @@ const UserInfo = () => {
             value={userInfo?.birthdate}
             id="birthdate"
           />
-          <UserInfoItem label="性別" value={userInfo?.gender} id="gender" />
+            <UserInfoItem label="性別" value={userInfo?.gender} id="gender" />
+            {/* アバターの変更UI */}
+            <div className="w-full">
+              <HeaderLabel>アバターを選ぶ</HeaderLabel>
+              <select
+                className="select select-bordered w-full max-w-xs bg-white"
+                onChange={(e) => handleChangeAvatar(e)}
+                value={avatarPath}
+              >
+                {avatars.map((avatar, index) => {
+                  return (
+                    <option key={index} value={avatar.path} className="text-[#47556D]">
+                      {avatar.label}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            {/* 背景の変更UI */}
+            <div className="w-full">
+              <HeaderLabel>背景を選ぶ</HeaderLabel>
+              <select
+                className="select select-bordered w-full max-w-xs bg-white"
+                onChange={(e) => handleChangeBackgroundImage(e)}
+                value={backgroundImagePath}
+              >
+                {backgroundImages.map((image, index) => {
+                  return (
+                    <option key={index} value={image.path}>
+                      {image.label}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            {/* サインアウトボタン */}
+            <div className="w-full my-10">
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => signOut()}
+              >
+                サインアウト
+              </button>
+            </div>            
         </div>
       )}
     </div>
