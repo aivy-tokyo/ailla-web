@@ -1,21 +1,10 @@
-import React, { ChangeEvent } from "react";
-import { signOut } from "next-auth/react";
-import { useAtom, useSetAtom } from "jotai";
 import { FaRegTimesCircle } from "react-icons/fa";
-import { AiOutlineArrowLeft } from "react-icons/ai";
-import { IoLogOutOutline } from "react-icons/io5";
 import { Prefecture, UserGenderType } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
 import { useUserInfo } from "@/hooks/useUserInfo";
 import { useCallback, useState } from "react";
 import { HeaderLabel } from "./HeaderLabel";
 import * as Sentry from "@sentry/nextjs";
-import { avatars, backgroundImages } from "../utils/constants";
-import {
-  avatarPathAtom,
-  backgroundImagePathAtom,
-  currentAvatarAtom,
-} from "../utils/atoms";
 import { UserInfoDisplay } from "./UserInfoDisplay";
 
 type InputFieldProps = {
@@ -30,29 +19,6 @@ const InputField: React.FC<InputFieldProps> = ({ label, children }) => {
         <HeaderLabel>{label}</HeaderLabel>
       </label>
       {children}
-    </div>
-  );
-};
-
-const UserInfoItem = ({
-  label,
-  value,
-  id,
-}: {
-  label: string;
-  value: string | undefined;
-  id: string;
-}) => {
-  return (
-    <div className="flex justify-left w-3/5 my-4">
-      <label htmlFor={id} className="w-2/5">
-        <HeaderLabel>{label}</HeaderLabel>
-      </label>
-      <div className="w-2/5">
-        <p id={id} className="text-[#47556D] text-left text-base">
-          {value}
-        </p>
-      </div>
     </div>
   );
 };
@@ -83,24 +49,6 @@ const UserInfo = ({ onClose }: { onClose: () => void }) => {
   const [isSendingRequest, setIsSendingRequest] = useState(false);
   const [isResultError, setIsResultError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [backgroundImagePath, setBackgroundImagePath] = useAtom(
-    backgroundImagePathAtom,
-  );
-  const setCurrentAvatar = useSetAtom(currentAvatarAtom);
-  const handleChangeAvatar = (e: ChangeEvent<HTMLSelectElement>) => {
-    const currentAvatar = avatars.find(
-      (avatar) => avatar.path === e.target.value,
-    );
-    if (!currentAvatar) return;
-    setCurrentAvatar(currentAvatar);
-    setAvatarPath(e.target.value);
-  };
-  const [avatarPath, setAvatarPath] = useAtom(avatarPathAtom);
-
-  const handleChangeBackgroundImage = (e: ChangeEvent<HTMLSelectElement>) => {
-    setBackgroundImagePath(e.target.value);
-  };
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
