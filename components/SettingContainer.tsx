@@ -40,7 +40,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
 
 
   return (
-    <div className="w-screen h-screen opacity-90 bg-black z-30 top-0 fixed overflow-y-scroll">
+    <div className="w-screen h-screen bg-[#E3DDE8] z-30 top-0 fixed overflow-y-scroll">
       <div className="fixed top-0 right-0 p-3">
         <button
           className="text-white btn btn-circle btn-outline btn-xs"

@@ -122,22 +122,10 @@ const UserInfo = () => {
       )}
       {isEditMode ? (
         <form onSubmit={handleSubmit} className="bg-[#E3DDE8]">
-          <div className="flex justify-between items-center mb-5">
-            <button
-              className="btn btn-neutral btn-sm"
-              onClick={() => setIsEditMode(false)}
-            >
-              キャンセル
-            </button>
-            <button type="submit" className="btn btn-primary btn-sm">
-              更新する
-            </button>
-          </div>
-          <div className="flex flex-col mb-5">
+          <h1 className="text-[#47556D] font-bold text-[1.5rem]">ユーザー情報の編集</h1>
+          <div className="flex flex-col mb-2">
             <label htmlFor="name">
-              <HeaderLabel>
-                <span className="text-[#47556D]">名前</span>
-              </HeaderLabel>
+              <HeaderLabel>名前</HeaderLabel>
             </label>
             <input
               id="name"
@@ -151,13 +139,9 @@ const UserInfo = () => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div className="flex flex-col mb-5">
+          <div className="flex flex-col mb-2">
             <label htmlFor="prefecture">
-              <HeaderLabel>
-                <span className="text-[#47556D]">
-                都道府県：
-                </span>
-              </HeaderLabel>
+              <HeaderLabel>都道府県</HeaderLabel>
             </label>
             <select
               id="prefecture"
@@ -174,14 +158,9 @@ const UserInfo = () => {
               })}
             </select>
           </div>
-
-          <div className="flex flex-col mb-5">
+          <div className="flex flex-col mb-2">
             <label htmlFor="birthdate">
-              <HeaderLabel>
-                <span className="text-[#47556D]">
-                  生年月日
-                </span>
-              </HeaderLabel>
+              <HeaderLabel>生年月日</HeaderLabel>
             </label>
             <div className="flex">
               <input
@@ -221,12 +200,9 @@ const UserInfo = () => {
               <div className="flex items-center text-[#47556D]">日</div>
             </div>
           </div>
-
           <div className="flex flex-col mb-5">
             <label htmlFor="gender">
-              <HeaderLabel>
-                <span className="text-[#47556D]">性別</span>
-              </HeaderLabel>
+              <HeaderLabel>性別</HeaderLabel>
             </label>
             <select
               id="gender"
@@ -239,8 +215,25 @@ const UserInfo = () => {
               <option value="選択しない">選択しない</option>
             </select>
           </div>
-
-          <div className="flex justify-between items-center my-10">
+          <div className="flex justify-left mb-2">
+            <button
+              className="
+                border-[1px] border-solid border-[#47556D]
+                mr-2 px-[1rem] py-[0.5rem] rounded-[0.8rem]
+                text-[1rem] text-[#47556D]
+                "
+              onClick={() => setIsEditMode(false)}
+            >
+              キャンセル
+            </button>
+            <button type="submit" className="
+            mr-2 px-[1rem] py-[0.5rem] rounded-[0.8rem]
+            text-[1rem] text-white bg-gradient-pink
+            ">
+              更新する
+            </button>
+          </div>
+          <div className="flex justify-between items-center my-7">            
             <button
               className="w-full text-red-400 text-left"
               onClick={handleUserDelete}
@@ -262,7 +255,7 @@ const UserInfo = () => {
           </div>
           <div className="flex items-center mb-5">
             <label htmlFor="name">
-              <HeaderLabel>名前：</HeaderLabel>
+              <HeaderLabel>名前</HeaderLabel>
             </label>
             <p id="name" className="text-white text-xl mt-5 mb-3">
               {userInfo?.name}
@@ -270,7 +263,7 @@ const UserInfo = () => {
           </div>
           <div className="flex items-center mb-5">
             <label htmlFor="prefecture">
-              <HeaderLabel>都道府県：</HeaderLabel>
+              <HeaderLabel>都道府県</HeaderLabel>
             </label>
             <p id="prefecture" className="text-white text-xl mt-5 mb-3">
               {userInfo?.prefecture}
@@ -278,7 +271,7 @@ const UserInfo = () => {
           </div>
           <div className="flex items-center mb-5">
             <label htmlFor="birthdate">
-              <HeaderLabel>生年月日：</HeaderLabel>
+              <HeaderLabel>生年月日</HeaderLabel>
             </label>
             <p id="birthdate" className="text-white text-xl mt-5 mb-3">
               {userInfo?.birthdate}
@@ -286,7 +279,7 @@ const UserInfo = () => {
           </div>
           <div className="flex items-center mb-5">
             <label htmlFor="gender">
-              <HeaderLabel>性別：</HeaderLabel>
+              <HeaderLabel>性別</HeaderLabel>
             </label>
             <p id="gender" className="text-white text-xl mt-5 mb-3">
               {userInfo?.gender}
