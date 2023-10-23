@@ -2,7 +2,8 @@ import React, { ChangeEvent } from "react";
 import { signOut } from "next-auth/react";
 import { useAtom, useSetAtom } from "jotai";
 import { FaRegTimesCircle } from "react-icons/fa";
-import { IoLogOutOutline } from "react-icons/io5"
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { IoLogOutOutline } from "react-icons/io5";
 import { Prefecture, UserGenderType } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
 import { useUserInfo } from "@/hooks/useUserInfo";
@@ -55,7 +56,7 @@ const UserInfoItem = ({
   );
 };
 
-const UserInfo = () => {
+const UserInfo = ({onClose}: {onClose: () => void}) => {
   const { editUserInfo, deleteUserInfo, userInfo } = useUserInfo();
   const [name, setName] = useState<string>(userInfo?.name as string);
   const [prefecture, setPrefecture] = useState<Prefecture>(
@@ -293,6 +294,9 @@ const UserInfo = () => {
         </form>
       ) : (
         <div>
+          <button className="text-[#47556D] my-3" onClick={onClose}>
+            <AiOutlineArrowLeft className="text-[#47556D] my-3 h-[1.2rem] w-[1.2rem]" />
+          </button>
           <div className="flex justify-between items-center mb-5">
             <p className="font-bold text-[#47556D] text-2xl">ユーザー情報</p>
           </div>
@@ -324,7 +328,7 @@ const UserInfo = () => {
           <div className="w-full my-5">
             <HeaderLabel>アバターを選ぶ</HeaderLabel>
             <select
-                className="select select-bordered rounded-[0.7rem] w-full max-w-xs bg-white h-[2rem] mt-2"
+              className="select select-bordered rounded-[0.7rem] w-full max-w-xs bg-white h-[2rem] mt-2"
               onChange={(e) => handleChangeAvatar(e)}
               value={avatarPath}
             >
@@ -361,11 +365,11 @@ const UserInfo = () => {
           {/* サインアウトボタン */}
           <div className="w-full my-3">
             <button
-                className="flex justify-start items-center py-2 rounded text-red-500"
+              className="flex justify-start items-center py-2 rounded text-red-500"
               onClick={() => signOut()}
-              >                
-                <span className="">サインアウト</span>
-                <IoLogOutOutline className="ml-1" />
+            >
+              <span className="">サインアウト</span>
+              <IoLogOutOutline className="ml-1" />
             </button>
           </div>
         </div>
