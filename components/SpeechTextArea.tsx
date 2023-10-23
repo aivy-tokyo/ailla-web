@@ -30,12 +30,13 @@ export const SpeechTextArea: React.FC<SpeechTextAreaProps> = ({
             ) : (
               <p className="font-bold">{roleOfAi || 'AILLA'}</p>
             )}
+            {/* chat-bubbleだった 部分*/}
             <p
               className={`${
                 chatLog.role === "user"
                 ? "rounded-[16px] rounded-br-[0px] bg-gradient-pink text-white font-chinese font-family-source-han-sans"
                 : "rounded-[16px] rounded-bl-[0px] bg-white text-[#47556D] font-chinese font-family-source-han-sans"
-              } max-w-[80vw] min-w-[30vw] p-[16px] w-fit`}
+              } z-40 max-w-[80vw] min-w-[30vw] p-[16px] w-fit`}
             >
               {chatLog.content}
             </p>
