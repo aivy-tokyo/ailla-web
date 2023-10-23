@@ -25,7 +25,7 @@ type InputFieldProps = {
 const InputField: React.FC<InputFieldProps> = ({ label, children }) => {
   return (
     <div className="flex flex-col my-6">
-      <label>
+      <label className="my-2">
         <HeaderLabel>{label}</HeaderLabel>
       </label>
       {children}
@@ -56,7 +56,7 @@ const UserInfoItem = ({
   );
 };
 
-const UserInfo = ({onClose}: {onClose: () => void}) => {
+const UserInfo = ({ onClose }: { onClose: () => void }) => {
   const { editUserInfo, deleteUserInfo, userInfo } = useUserInfo();
   const [name, setName] = useState<string>(userInfo?.name as string);
   const [prefecture, setPrefecture] = useState<Prefecture>(
@@ -182,7 +182,7 @@ const UserInfo = ({onClose}: {onClose: () => void}) => {
         </div>
       )}
       {isEditMode ? (
-        <form onSubmit={handleSubmit} className="bg-[#E3DDE8]">
+        <form onSubmit={handleSubmit}>
           <h1 className="text-[#47556D] font-bold text-[1.5rem]">
             ユーザー情報の編集
           </h1>
@@ -294,8 +294,8 @@ const UserInfo = ({onClose}: {onClose: () => void}) => {
         </form>
       ) : (
         <div>
-          <button className="text-[#47556D] my-3" onClick={onClose}>
-            <AiOutlineArrowLeft className="text-[#47556D] my-3 h-[1.2rem] w-[1.2rem]" />
+          <button className="my-1" onClick={onClose}>
+            <AiOutlineArrowLeft className="font-bold text-[#47556D] my-3 h-[1.2rem] w-[1.2rem]" />
           </button>
           <div className="flex justify-between items-center mb-5">
             <p className="font-bold text-[#47556D] text-2xl">ユーザー情報</p>
