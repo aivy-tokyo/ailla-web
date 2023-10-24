@@ -5,14 +5,16 @@ import { Situation, SituationStep } from "@/utils/types";
 type ChatHintProps = {
   situation: Situation;
   steps: SituationStep[];
+  endPhrase: string | undefined;
   onClose?: () => void;
 };
 export const ChatHint: React.FC<ChatHintProps> = ({
   steps,
   situation,
+  endPhrase,
   onClose,
 }) => (
-  <div className="hint-container opacity-80 w-screen h-screen z-0 top-0 pt-5 px-3 flex fixed justify-center items-center">
+  <div className="hint-container opacity-80 w-screen h-screen z-100 top-0 pt-5 px-3 flex fixed justify-center items-center">
     <div className="relative overflow-y-auto w-full h-7/10 max-w-2xl mx-auto bg-white/80 text-[#47556D] rounded-3xl">
       <button
         className="absolute top-3 right-3 flex items-center justify-center bg-transparent text-[#47556D]"
@@ -37,6 +39,15 @@ export const ChatHint: React.FC<ChatHintProps> = ({
             <p className="text-sm text-[#7B8392]">{hint}</p>
           </div>
         ))}
+        {endPhrase && (
+          <>
+            <div className="h-[0.1rem] mix-blend-multiply bg-[#CED4DE] my-3" />
+            <h3 className="text-lg font-bold">会話の終了</h3>
+            <p className="text-sm text-[#7B8392]">
+              終了フレーズは 「{endPhrase}」 です
+            </p>
+          </>
+        )}
       </div>
     </div>
   </div>
