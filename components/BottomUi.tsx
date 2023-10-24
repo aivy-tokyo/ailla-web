@@ -73,17 +73,17 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
         <div className="w-full bg-white blur-[0.6rem]" />
         <button
           onClick={() => toggleExpandChatLog()}
-          className={`z-10 relative flex transition-height ease-in-out duration-150 justify-center ${
-            isChatLogExpanded ? "h-screen" : "h-36"
-          }`}
+          className={`z-10 relative flex transition-height ease-in-out duration-150 justify-center ${isChatLogExpanded ? "h-screen" : "h-36"
+            }`}
         >
           <div
             ref={chatLogScrollRef}
-            className={`w-screen max-w-[600px] overflow-hidden px-5 h-full flex transition-color ease-in duration-150 flex-col ${
-              isChatLogExpanded
-                ? "overflow-y-scroll py-20 bg-black opacity-90"
+            className={`w-screen max-w-[600px] overflow-hidden px-5 h-full 
+                  flex transition-color ease-in duration-150 flex-col              
+                  ${isChatLogExpanded
+                ? "overflow-y-scroll py-20 bg-white/50 backdrop-blur-[0.6rem]"
                 : "py-1 mask-top-fadeout top-0 absolute justify-end"
-            }`}
+              }`}
           >
             <SpeechTextArea
               chatLogs={chatLogs}
