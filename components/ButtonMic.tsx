@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
 import { IoMicOutline } from "react-icons/io5";
 import { ButtonProps } from "../utils/types";
+import { VoiceInputAnimationIcon } from "./AnimationIcons";
 
 export const ButtonMic = forwardRef<
   HTMLButtonElement,
@@ -36,14 +37,7 @@ export const ButtonMic = forwardRef<
       {...props}
     >
       {isMicRecording ? (
-        <div className="px-8 py-1 flex items-center justify-center h-full">
-          <div className="bar w-1 mx-[0.13rem] bg-white animate-stretch1"></div>
-          <div className="bar w-1 mx-[0.13rem] bg-white animate-stretch2"></div>
-          <div className="bar w-1 mx-[0.13rem] bg-white animate-stretch3"></div>
-          <div className="bar w-1 mx-[0.13rem] bg-white animate-stretch4"></div>
-          <div className="bar w-1 mx-[0.13rem] bg-white animate-stretch5"></div>
-          <div className="bar w-1 mx-[0.13rem] bg-white animate-stretch6"></div>
-        </div>
+        <VoiceInputAnimationIcon />
       ) : (
         <IoMicOutline size={40} />
       )}
