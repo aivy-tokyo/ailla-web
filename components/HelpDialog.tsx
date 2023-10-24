@@ -9,7 +9,7 @@ export const HelpDialog = () => {
           <form method="dialog" className="bg-transparent flex justify-end items-center h-full w-3/5">
             {/* if there is a button in form, it will close the modal */}
             <button>
-              <AiOutlineCloseCircle className="" size={30} />
+              <AiOutlineCloseCircle className="w-[2rem] h-[2rem]" />
             </button>
           </form>
         </div>
