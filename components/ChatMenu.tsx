@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { ButtonTalkMode } from "./ButtonTalkMode";
 
 export type MenuOption = {
@@ -9,27 +9,33 @@ export type MenuOption = {
 type ChatMenuProps = {
   options: MenuOption[];
   onClickOption: (value: string) => void;
-  setIsSituationSelection: (value: boolean) => void;
+  setIsSelection: (value: boolean) => void;
+  type: "situation" | "repeatPractice";
 };
 
 export const ChatMenu: React.FC<ChatMenuProps> = ({
   options,
   onClickOption,
-  setIsSituationSelection,
+  setIsSelection,
+  type,
 }) => {
   useEffect(() => {
-    setIsSituationSelection(true);
+    setIsSelection(true);
     return () => {
-      setIsSituationSelection(false);
+      setIsSelection(false);
     };
   });
+
+  const chatMenuTitle = useMemo(() => {
+    return type === "situation" ? "シチュエーション" : "リピートプラクティス"
+  }, [type])
 
   return (
     <div className="hint-container text-white w-screen h-screen -z-0 top-12 flex fixed">
       {/* ヒント領域のコンテナ。画面いっぱいに広げて、中のヒント領域をflex/items-centerで画面の中央に配置(他のUIをさわれなくならないよう微調整済み) */}
       <div className="w-full flex flex-col items-center max-w-[900px] justify-center m-auto">
         <h1 className="text-[1.5rem] -z-0 text-[#47556D] text-center font-[700] mb-7">
-          シチュエーションを
+          {chatMenuTitle}を
           <br />
           選択してください
         </h1>
