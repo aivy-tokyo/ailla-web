@@ -8,7 +8,6 @@ import { HeaderLabel } from "./HeaderLabel";
 type InputFieldProps = {
   label: string;
   children: React.ReactNode;
-
 };
 
 const InputField: React.FC<InputFieldProps> = ({ label, children }) => {
@@ -27,10 +26,13 @@ type UserInfoEditProps = {
   setIsResultError: (item: boolean) => void;
   setIsSendingRequest: (item: boolean) => void;
   setErrorMessage: (item: string) => void;
-}
-export const UserInfoEdit: React.FC<UserInfoEditProps> = (
-  { setIsEditMode, setIsResultError, setIsSendingRequest, setErrorMessage }
-) => {
+};
+export const UserInfoEdit: React.FC<UserInfoEditProps> = ({
+  setIsEditMode,
+  setIsResultError,
+  setIsSendingRequest,
+  setErrorMessage,
+}) => {
   const { editUserInfo, deleteUserInfo, userInfo } = useUserInfo();
 
   const [name, setName] = useState<string>(userInfo?.name as string);
@@ -39,15 +41,6 @@ export const UserInfoEdit: React.FC<UserInfoEditProps> = (
   );
   const [birthdate, setBirthdate] = useState<string>(
     userInfo?.birthdate as string,
-  );
-  const [year, setYear] = useState<string>(
-    userInfo?.birthdate.split("/")[0] as string,
-  );
-  const [month, setMonth] = useState<string>(
-    userInfo?.birthdate.split("/")[1] as string,
-  );
-  const [day, setDay] = useState<string>(
-    userInfo?.birthdate.split("/")[2] as string,
   );
   const [gender, setGender] = useState<UserGenderType>(
     userInfo?.gender as UserGenderType,
@@ -64,19 +57,6 @@ export const UserInfoEdit: React.FC<UserInfoEditProps> = (
     e.preventDefault();
 
     try {
-      // month, dayが1桁の場合は0埋め
-      const paddedMonth = month.padStart(2, "0");
-      const paddedDay = day.padStart(2, "0");
-
-      setMonth(paddedMonth);
-      setDay(paddedDay);
-
-      await setMonth(paddedMonth);
-      await setDay(paddedDay);
-
-      const birthdate = `${year}/${paddedMonth}/${paddedDay}`;
-      setBirthdate(birthdate);
-
       let errors = [];
 
       if (!name) {
@@ -153,41 +133,15 @@ export const UserInfoEdit: React.FC<UserInfoEditProps> = (
         </select>
       </InputField>
       <InputField label="生年月日">
-        <div className="flex">
-          <input
-            id="year"
-            name="year"
-            type="number"
-            className="input w-1/3 mr-1 px-1 bg-white text-[#47556D]"
-            pattern="\d{4}"
-            title="数字のみ入力してください"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-          />
-          <div className="flex items-center">
-            <span className="text-[#47556D]">年</span>
-          </div>
-          <input
-            id="month"
-            name="month"
-            type="string"
-            className="input w-1/4 mr-1 bg-white px-1 text-[#47556D]"
-            pattern="\d{1,2}"
-            value={month}
-            onChange={(e) => setMonth(e.target.value)}
-          />
-          <div className="flex items-center text-[#47556D]">月</div>
-          <input
-            id="day"
-            name="day"
-            type="string"
-            className="input w-1/4 mr-1 padding-x-1 bg-white text-[#47556D]"
-            pattern="\d{1,2}"
-            value={day}
-            onChange={(e) => setDay(e.target.value)}
-          />
-          <div className="flex items-center text-[#47556D]">日</div>
-        </div>
+        <input
+          id="birthdate"
+          name="birthdate"
+          className="input bg-white text-[#47556D]"
+          pattern="\d{4}\/\d{2}\/\d{2}"
+          title="誕生日のフォーマットは YYYY/MM/DD です"
+          value={birthdate}
+          onChange={(e) => setBirthdate(e.target.value)}
+        />
       </InputField>
       <InputField label="性別">
         <select
