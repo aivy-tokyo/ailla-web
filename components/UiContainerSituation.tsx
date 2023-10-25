@@ -110,6 +110,7 @@ export const UiContainerSituation: React.FC = () => {
           situation={situation}
           steps={stepStatus}
           endPhrase={endPhrase?.sentence}
+          onClose={ () => setShowHint(false)}
         />
       )}
       {!situation && (
