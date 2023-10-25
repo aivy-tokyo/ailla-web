@@ -5,57 +5,25 @@
   "roleOfAi": "Ailla",
   "roleOfUser": "You",
   "steps": [
-    {
-      "role": "staff",
-      "sentence": "Good day, welcome. May I have your reservation name, please?"
-    },
-    {
-      "role": "guest",
-      "sentence": "Yes, the reservation is under John Smith."
-    },
-    {
-      "role": "staff",
-      "sentence": "Thank you, Mr. Smith. I will proceed with the check-in process. What type of room did you book?"
-    },
-    {
-      "role": "guest",
-      "sentence": "I booked a single room."
-    },
-    {
-      "role": "staff",
-      "sentence": "Okay, you booked a single room. Let me confirm your reservation details and prepare your room. For check-in, we require either a passport or identification card. Do you have it with you?"
-    },
-    {
-      "role": "guest",
-      "sentence": "Yes, I have my passport with me."
-    },
-    {
-      "role": "staff",
-      "sentence": "Thank you, I'll take your passport. How would you like to settle the payment?"
-    },
-    {
-      "role": "guest",
-      "sentence": "I would like to pay with a credit card."
-    },
-    {
-      "role": "staff",
-      "sentence": "Okay, you'll be paying with a credit card. Please present your credit card and identification when making the payment."
-    },
-    {
-      "role": "guest",
-      "sentence": "Sure, I have both right here."
-    },
-    {
-      "role": "staff",
-      "sentence": "Thank you very much. I have confirmed your payment. The check-in process is complete, and I will now provide you with your room key. The elevator is on the right. Your room is on the fourth floor, room number 412. Enjoy your stay! If you have any questions or need assistance, please don't hesitate to ask."
-    },
-    {
-      "role": "guest",
-      "sentence": "Thank you so much!"
-    },
-    {
-      "role": "staff",
-      "sentence": "You're welcome. Have a pleasant stay!"
-    }
+    "Good day, welcome.",
+    "May I have your reservation name, please?",
+    "Thank you, Mr. Smith",
+    "I will proceed with the check-in process",
+    "What type of room did you book?",
+    "Okay, you booked a single room",
+    "Let me confirm your reservation details and prepare your room",
+    "For check-in, we require either a passport or identification card",
+    "Do you have it with you?",
+    "Thank you, I'll take your passport",
+    "How would you like to settle the payment?",
+    "Okay, you'll be paying with a credit card",
+    "Please present your credit card and identification when making the payment",
+    "Thank you very much",
+    "I have confirmed your payment",
+    "The check-in process is complete, and I will now provide you with your room key",
+    "The elevator is on the right",
+    "Your room is on the fourth floor, room number 412",
+    "Enjoy your stay! If you have any questions or need assistance, please don't hesitate to ask",
+    "You're welcome. Have a pleasant stay!"
   ]
 }
