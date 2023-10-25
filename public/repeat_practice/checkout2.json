@@ -1,0 +1,28 @@
+{
+  "title": "チェックアウト2",
+  "titleEnglish": "Check out 2",
+  "description": "ホテルのフロントでチェックアウトするシーンです。",
+  "roleOfAi": "Ailla",
+  "roleOfUser": "You",
+  "steps": [
+    "Good morning, Mr. Smith. How can I assist you today?",
+    "I apologize for any inconvenience",
+    "Please let me know what the problem is, and I'll do my best to assist you",
+    "I'm sincerely sorry for the inconvenience you experienced during your stay",
+    "Your comfort is our priority, and I appreciate you bringing these issues to my attention",
+    "Allow me to address each concern",
+    "Firstly, I will contact our maintenance team immediately to rectify the air conditioning and shower drain issues",
+    "Secondly, I'll ensure that a plumber checks the drain as soon as possible",
+    "Lastly, I apologize for the noise disturbance caused by the nearby construction",
+    "I'll make a note of your complaint and take measures to prevent this from happening to future guests",
+    "You're most welcome, Mr. Smith",
+    "Our goal is to provide a pleasant and comfortable stay for all our guests",
+    "I assure you that we will take immediate action to address these matters",
+    "Is there anything else I can assist you with?",
+    "Thank you for your understanding and for giving us the opportunity to rectify these concerns",
+    "If there's anything else you need or if you have any further feedback, please don't hesitate to reach out",
+    "We value your feedback and hope to have the chance to serve you better in the future",
+    "Have a safe journey home, Mr. Smith",
+    "Goodbye, Mr. Smith. Take care and have a wonderful day!"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "title": "チェックアウト1",
+  "titleEnglish": "Check out 1",
+  "description": "ホテルのフロントでチェックアウトするシーンです。",
+  "roleOfAi": "Ailla",
+  "roleOfUser": "You",
+  "steps": [
+    "Good morning! How was your stay with us?",
+    "Wonderful to hear that",
+    "Now, let us proceed with the check-out process",
+    "May I have your room number, please?",
+    "Thank you for the information",
+    "Could you please settle any outstanding charges",
+    "I see that you have breakfast charges and a minibar bill",
+    "Thank you, Mr. Smith",
+    "I'll process the payment for you",
+    "Please give me a moment",
+    "Thank you for your patience",
+    "Your payment has been successfully processed",
+    "Here's your receipt",
+    "Is there anything else we can assist you with?",
+    "It was a pleasure having you as our guest, Mr. Smith",
+    "We hope you enjoyed your stay",
+    "If you have any feedback or suggestions, please feel free to let us know",
+    "We wish you a safe journey home!",
+    "Thank you, Mr. Smith",
+    "Take care and have a wonderful day!"
+  ]
+}

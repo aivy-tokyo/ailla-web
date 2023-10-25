@@ -16,6 +16,10 @@ import { useCharactorSpeaking } from "./useCharactorSpeaking";
 const situationFileNames = [
   // public/repeat_practice フォルダ内のファイル名を指定"
   "checkIn1.json",
+  "checkIn2.json",
+  "checkIn3.json",
+  "checkout1.json",
+  "checkout2.json",
 ];
 
 export const useRepeatPractice = () => {

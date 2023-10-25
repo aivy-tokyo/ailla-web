@@ -1,0 +1,25 @@
+{
+  "title": "チェックイン2",
+  "titleEnglish": "Check in 2",
+  "description": "ホテルのフロントでチェックインするシーンです。",
+  "roleOfAi": "Ailla",
+  "roleOfUser": "You",
+  "steps": [
+    "Good morning! Welcome to our hotel. How may I assist you today?",
+    "Thank you, Mr. Smith. Let me check your reservation",
+    "Ah, here it is. You have a reservation for a single room for three nights. Is that correct?",
+    "Wonderful. Before we proceed with the check-in process",
+    "could I kindly ask you to provide a form of identification, such as a passport or driver's license?",
+    "Thank you, Mr. Smith. Now, let's move on to the payment",
+    "How would you like to settle the bill?",
+    "We accept both cash and credit cards",
+    "Perfect. Please fill out this credit card authorization form with your card details and signature",
+    "Once you've completed it, I'll process the payment for you",
+    "Thank you, Mr. Smith. I've processed your payment, and everything is in order",
+    "Now, let's proceed with the check-in formalities",
+    "Here is your room key. You'll be staying in room 306 on the third floor",
+    "Breakfast is served from 7 am to 10 am in the hotel restaurant, and the Wi-Fi password is 'guest123'",
+    "If you have any questions or need assistance during your stay, please don't hesitate to contact our front desk",
+    "Enjoy your stay with us!"
+  ]
+}
