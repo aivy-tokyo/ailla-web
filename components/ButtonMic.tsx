@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import { IoMicOutline } from "react-icons/io5";
-import { RiVoiceprintFill } from "react-icons/ri";
 import { ButtonProps } from "../utils/types";
+import { VoiceInputAnimationIcon } from "./AnimationIcons";
 
 export const ButtonMic = forwardRef<
   HTMLButtonElement,
@@ -37,7 +37,7 @@ export const ButtonMic = forwardRef<
       {...props}
     >
       {isMicRecording ? (
-        <RiVoiceprintFill size={40} className="border-0" />
+        <VoiceInputAnimationIcon />
       ) : (
         <IoMicOutline size={40} />
       )}
