@@ -7,7 +7,7 @@ import {
   isCharactorSpeakingAtom,
 } from "../utils/atoms";
 
-import { RepeatPractice, RepeatPracticeStep } from "@/utils/types";
+import { RepeatPractice } from "@/utils/types";
 
 import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
@@ -16,6 +16,10 @@ import { useCharactorSpeaking } from "./useCharactorSpeaking";
 const situationFileNames = [
   // public/repeat_practice フォルダ内のファイル名を指定"
   "checkIn1.json",
+  "checkIn2.json",
+  "checkIn3.json",
+  "checkout1.json",
+  "checkout2.json",
 ];
 
 export const useRepeatPractice = () => {
@@ -30,8 +34,8 @@ export const useRepeatPractice = () => {
   const [repeatPractice, setRepeatPractice] = useState<RepeatPractice | null>();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const [repeatPracticeList, setRepeatPracticeList] = useState<RepeatPractice[]>([]);
-  const [currentStep, setCurrentStep] = useState<RepeatPracticeStep | null>();
-  const [steps, setSteps] = useState<RepeatPracticeStep[] | null>();
+  const [currentStep, setCurrentStep] = useState<string | null>();
+  const [steps, setSteps] = useState<string[] | null>();
   const [isRepeatPracticeEnded, setIsRepeatPracticeEnded] =
     useState<boolean>(false);
 
@@ -58,13 +62,13 @@ export const useRepeatPractice = () => {
 
     setChatLog((prev) => [...prev, {
       role: "assistant",
-      content: selectedRepeatPractice.steps[0].sentence,
+      content: selectedRepeatPractice.steps[0],
     }]);
     setSteps(selectedRepeatPractice.steps);
     setCurrentStep(selectedRepeatPractice.steps[0]);
 
     await speakCharactor({
-      text: selectedRepeatPractice.steps[0].sentence,
+      text: selectedRepeatPractice.steps[0],
       viewerModel: viewer.model,
       language,
     });
@@ -106,11 +110,11 @@ export const useRepeatPractice = () => {
       setCurrentStep(steps[nextStepIndex]);
       setChatLog((prev) => [...prev, {
         role: "assistant",
-        content: steps[nextStepIndex].sentence,
+        content: steps[nextStepIndex],
       }]);
 
       await speakCharactor({
-        text: steps[nextStepIndex].sentence,
+        text: steps[nextStepIndex],
         viewerModel: viewer.model,
         language,
       });
