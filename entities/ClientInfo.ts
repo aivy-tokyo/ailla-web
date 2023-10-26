@@ -9,6 +9,14 @@ export interface ClientInfo {
   speakLanguage: "北京語" | "英語";
   // シチュエーションリスト
   situationList: string[];
+  // customer側の返答
+  customerResponse: string;
+  // 導入時の挨拶
+  introduction: string;
+  // topics
+  topics: Record<string, string>;
+  // ログイン後の挨拶リスト
+  comeBackGreetings: string[];
   // AzureのSpeech ServiceのAPIキー
   speechApiKey: string;
   // AzureのSpeech Serviceのエンドポイント

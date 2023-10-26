@@ -1,10 +1,9 @@
 import { Avatar, BackgroundImage, Prefecture } from "./types";
 
-export type LanguageKey = "en" | "cn";
-
 export const TableNames = {
   users: "AILLA_USER",
   clients: "AILLA_CLIENT",
+  languages: "AILLA_LANGUAGE",
   userLogs: "UserLogs",
   clientLogs: "ClientLogs",
 } as const;

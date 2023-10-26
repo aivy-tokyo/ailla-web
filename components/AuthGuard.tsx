@@ -7,26 +7,6 @@ import { clientInfoAtom, userIdAtom, userInfoAtom } from "../utils/atoms";
 import { fetchUserId } from "../features/fetchUserId";
 import * as Sentry from "@sentry/nextjs";
 import { UserInfo } from "@/entities/UserInfo";
-import { LanguageKey } from "@/utils/constants";
-
-type ClientEnvValue = {
-  formalLanguage: "en-US" | "zh-CN";
-  learningLanguage: "中国語" | "英語";
-  speakLanguage: "北京語" | "英語";
-};
-
-const clientEnv: Record<LanguageKey, ClientEnvValue> = {
-  en: {
-    formalLanguage: "en-US",
-    learningLanguage: "英語",
-    speakLanguage: "英語",
-  },
-  cn: {
-    formalLanguage: "zh-CN",
-    learningLanguage: "中国語",
-    speakLanguage: "北京語",
-  },
-};
 
 export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
@@ -73,7 +53,6 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
         }
 
         setCanShowContents(true);
-
         const userInfo: UserInfo = {
           name: response.data.name.S,
           prefecture: response.data.prefecture.S,
@@ -81,8 +60,6 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
           gender: response.data.gender.S,
         };
         setUserInfo(userInfo);
-
-        console.log("クライアント情報を取得します");
 
         const client = await axios.get(`/api/client`);
 
@@ -92,14 +69,26 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
           return;
         }
 
-        const languageKey = client.data.language.S as LanguageKey;
+        const clientLanguage = await axios.get(
+          `/api/language?language=${client.data.language.S}`,
+        );
+
+        if (!clientLanguage.data) {
+          console.log("クライアントの言語情報がないので登録画面に遷移します");
+          router.push("/register");
+          return;
+        }
 
         const clientInfo = {
-          language: languageKey,
-          formalLanguage: clientEnv[languageKey].formalLanguage,
-          speakLanguage: clientEnv[languageKey].speakLanguage,
-          learningLanguage: clientEnv[languageKey].learningLanguage,
+          language: client.data.language.S,
+          formalLanguage: clientLanguage.data.formalLanguage.S,
+          speakLanguage: clientLanguage.data.speakLanguage.S,
+          learningLanguage: clientLanguage.data.learningLanguage.S,
           situationList: client.data.situations.SS,
+          introduction: clientLanguage.data.introduction.S,
+          topics: clientLanguage.data.topics.M,
+          customerResponse: clientLanguage.data.customerResponse.S,
+          comeBackGreetings: clientLanguage.data.comeBackGreetings.SS,
           speechApiKey: "",
           speechEndpoint: "",
         };

@@ -24,14 +24,28 @@ export const useFreeTalk = () => {
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
   const clientInfo = useAtomValue(clientInfoAtom);
 
+  interface Topic {
+    S: string;
+  }
+
+  const getRandomPickupTopic = () => {
+    const topics: Record<string, Topic> | {} = clientInfo?.topics || {};
+    const topicKeys = Object.keys(topics);
+    const randomKey = topicKeys[Math.floor(Math.random() * topicKeys.length)];
+    return (topics as Record<string, Topic>)[randomKey]?.S || "";
+  };
+
   const startFreeTalk = useCallback(async () => {
     if (!viewer.model) return;
 
     try {
       setIsCharactorSpeaking(true);
 
+      const freeTalkTopic = getRandomPickupTopic();
+      console.log("freeTalkTopic->", freeTalkTopic);
       setMessages([]);
       const response = await axios.post("/api/chat/free-talk", {
+        topic: freeTalkTopic,
         userName: userInfo?.name,
         messages: [],
         speakLanguage: clientInfo?.speakLanguage,
@@ -91,7 +105,7 @@ export const useFreeTalk = () => {
         Sentry.captureException(error);
       }
     },
-    [viewer.model, setChatLog, userInfo?.name, messages, speakCharactor]
+    [viewer.model, setChatLog, userInfo?.name, messages, speakCharactor],
   );
 
   return {

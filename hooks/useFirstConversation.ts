@@ -4,20 +4,6 @@ import { useContext, useCallback, useRef, useState } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { clientInfoAtom, userInfoAtom } from "../utils/atoms";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
-import { LanguageKey } from "../utils/constants";
-
-const isLanguageKey = (key: string): key is LanguageKey => {
-  return key === "en" || key === "cn";
-};
-
-const introductions: Record<LanguageKey, string> = {
-  en: `Hello {UserName}! I'm Ailla, your English conversation partner. Let's have a fun and interesting chat together!`,
-  cn: `你好 {UserName}！我是艾拉，你的中文对话伙伴。让我们一起来一场有趣又有趣的聊天吧！`,
-};
-
-const introductionGreeting = (language: LanguageKey) => {
-  return introductions[language] || ""; // Default to an empty string if the language is not found.
-};
 
 const appExplanation = (learningLanguage: string) => {
   const explanation: string = `
@@ -46,33 +32,12 @@ Aillaが${learningLanguage}を話すので、
   return explanation;
 };
 
-const comeBackGreetings: Record<LanguageKey, string[]> = {
-  en: [
-    "Welcome back! It's great to see you again. Are you ready for another exciting lesson?",
-    "Hello {UserName}! I hope you had a wonderful week. Let's continue our journey through China together!",
-    "Nice to see you again, {UserName}! I look forward to hearing about your progress.",
-    "Hello {UserName}! How have you been lately? Let's make today's lesson another success!",
-    "Welcome back, {UserName}! Your hard work is definitely paying off. Let's keep pushing forward!",
-  ],
-  cn: [
-    // 以下は例です。実際の挨拶を編集してください。
-    "欢迎回来！很高兴再次见到你。你准备好进行另一堂激动人心的课了吗？",
-    "你好，{UserName}！希望你过得愉快。让我们一起继续在中国的旅程吧！",
-    "很高兴再次见到你，{UserName}！期待听到你的进步。",
-    "你好，{UserName}！你最近过得怎样？让我们使今天的课程再次成功！",
-    "欢迎回来，{UserName}！你的努力肯定会得到回报。让我们继续努力前进！",
-  ],
-};
-
-const comeBackGreetingList = (language: LanguageKey) =>
-  comeBackGreetings[language];
-
 const lessonsStartPhrases = [
-  "今日は何から始めたいと思いますか？どのレッスンにしましょうか？",
-  "今日のレッスンはどれから手をつけましょうか？",
-  "今日はどのトピックから学び始めるのがいいと思いますか？",
-  "どのレッスンから今日の授業を始めたいですか？",
-  "今日の始めたいレッスンは何ですか？どれから進めましょうか？",
+  "今日はどのレッスンから始めますか？",
+  "どのレッスンを最初に進めるといいでしょうか？",
+  "どのトピックから学びたいですか？",
+  "どのレッスンから授業をスタートしますか？",
+  "始めたいレッスンはどれですか？",
 ];
 
 // UserNameをユーザー名に置き換える
@@ -94,6 +59,8 @@ export const useFirstConversation = (props: {
     clientInfo && clientInfo.learningLanguage
       ? clientInfo.learningLanguage
       : "英語";
+  const comeBackGreetings = clientInfo?.comeBackGreetings || [];
+  const introduction = clientInfo?.introduction || "";
 
   const { speakCharactor } = useCharactorSpeaking();
   // speakを継続するかどうかのフラグ
@@ -106,12 +73,6 @@ export const useFirstConversation = (props: {
     const viewerModel = viewer.model;
     const { onSpeaking, onSpeakingEnd } = props;
 
-    console.log("useFirstConversation language->", language);
-
-    if (!isLanguageKey(language)) {
-      return;
-    }
-
     try {
       // localStorageからisAppExplanationDoneを取得
       const isAppExplanationDone = localStorage.getItem("isAppExplanationDone");
@@ -123,7 +84,7 @@ export const useFirstConversation = (props: {
         }
 
         await speakCharactor({
-          text: replaceUserName(introductionGreeting(language), userName),
+          text: replaceUserName(introduction, userName),
           viewerModel,
           language,
           onSpeaking,
@@ -149,14 +110,11 @@ export const useFirstConversation = (props: {
         }
 
         const randomIndex = Math.floor(
-          Math.random() * comeBackGreetingList(language).length,
+          Math.random() * comeBackGreetings.length,
         );
 
         await speakCharactor({
-          text: replaceUserName(
-            comeBackGreetingList(language)[randomIndex],
-            userName,
-          ),
+          text: replaceUserName(comeBackGreetings[randomIndex], userName),
           viewerModel,
           language,
           onSpeaking,

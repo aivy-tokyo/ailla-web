@@ -23,14 +23,9 @@ const SwitchContainer: React.FC<{ mode: ContainerMode }> = ({ mode }) => {
   }
 };
 
-
 const FullscreenContainer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-  return (
-    <div className="fixed h-screen w-screen left-0 top-0">
-      {children}
-    </div>
-  );
-}
+  return <div className="fixed h-screen w-screen left-0 top-0">{children}</div>;
+};
 
 export default function Home() {
   const router = useRouter();
