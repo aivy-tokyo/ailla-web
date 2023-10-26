@@ -2,48 +2,13 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { ChatCompletionRequestMessage } from "openai";
-import { GPT_MODEL, LanguageKey } from "../../../utils/constants";
+import { GPT_MODEL } from "../../../utils/constants";
 
 const chat = new ChatOpenAI({
   modelName: GPT_MODEL,
   temperature: 0.7,
   maxTokens: 150,
 });
-
-// TOPICのリスト
-const topics = {
-  cn: {
-    爱好: "Talking about favorite hobbies or interests.",
-    旅行: "Sharing experiences from places you've been or want to visit.",
-    食物: "Conversations about favorite dishes or restaurants.",
-    电影和音乐: "Discussing recent movies watched or favorite musicians.",
-    运动的: "Talking about favorite sports or teams.",
-    家庭: "Light conversation about family members or pets.",
-    最近发生的事件: "Sharing what you did on the last holiday or weekend.",
-  },
-  en: {
-    Hobby: "Talking about favorite hobbies or interests.",
-    Travel: "Sharing experiences from places you've been or want to visit.",
-    Food: "Conversations about favorite dishes or restaurants.",
-    "Movie and Music":
-      "Discussing recent movies watched or favorite musicians.",
-    Sports: "Talking about favorite sports or teams.",
-    Family: "Light conversation about family members or pets.",
-    "Recent Events": "Sharing what you did on the last holiday or weekend.",
-  },
-};
-
-const isLanguageKey = (input: any): input is LanguageKey => {
-  return input === "en" || input === "cn";
-};
-
-const getRandomPickupTopic = (language: LanguageKey) => {
-  const topicKeys = Object.keys(
-    topics[language]
-  ) as (keyof (typeof topics)[LanguageKey])[];
-  const randomKey = topicKeys[Math.floor(Math.random() * topicKeys.length)];
-  return topics[language][randomKey];
-};
 
 // IceBreakの会話をするためのSYSTEMのメッセージテンプレート
 const iceBreakTemplate = (speakLanguage: string) => {
@@ -140,7 +105,7 @@ type Parameter = {
   messages: ChatCompletionRequestMessage[];
   language: string;
   speakLanguage: string;
-  topic?: string;
+  topic: string;
   end?: boolean;
 };
 
@@ -153,26 +118,21 @@ export default async function handler(
         messages: ChatCompletionRequestMessage[];
       }
     | { error: string }
-  >
+  >,
 ) {
   try {
     const language = (req.body as Parameter).language ?? "en";
-
-    let topic = (req.body as Parameter).topic;
-    if (!topic) {
-      if (isLanguageKey(language)) {
-        topic = getRandomPickupTopic(language);
-      } else {
-        throw new Error("Invalid language provided");
-      }
-    }
+    const topic = (req.body as Parameter).topic;
     const userName = (req.body as Parameter).userName ?? "you";
     const messages = (req.body as Parameter).messages ?? [];
     const speakLanguage = (req.body as Parameter).speakLanguage ?? "英語";
+
+    console.log("/api/chat/free-talk topic->", topic);
+
     const promptText = await generatePromptText({
       topic,
       messages,
-      userName,
+      userName: userName ?? "",
       language,
       speakLanguage,
     });
@@ -180,7 +140,7 @@ export default async function handler(
     console.log("chatMessage->", chatMessage);
     const assistantMessage = extractTextBeforeUserName(
       chatMessage,
-      `${userName}:`
+      `${userName}:`,
     );
     console.log("assistantMessage->", assistantMessage);
 

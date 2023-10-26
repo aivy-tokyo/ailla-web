@@ -31,7 +31,7 @@ export const useCharactorSpeaking = () => {
       () => {
         viewer?.model?.resumeAudio();
       },
-      { once: true }
+      { once: true },
     );
   }, [viewer?.model]);
 
@@ -75,7 +75,7 @@ export const useCharactorSpeaking = () => {
         }, 500);
       }
     },
-    [currentAvatar, clientInfo, setIsCharactorSpeaking]
+    [currentAvatar, clientInfo, setIsCharactorSpeaking],
   );
 
   return {
