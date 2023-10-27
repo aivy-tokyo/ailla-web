@@ -11,8 +11,8 @@ type Params = {
 
 export const tts = async ({
   text,
-  language = "en",
-  formalLanguage = "en-US",
+  language,
+  formalLanguage,
   currentAvatar,
 }: Params): Promise<ArrayBuffer | undefined> => {
   try {
@@ -32,7 +32,7 @@ export const tts = async ({
         {
           headers: { "Content-Type": "application/json" },
           responseType: "arraybuffer",
-        }
+        },
       );
 
       return response.data;
@@ -48,7 +48,7 @@ export const tts = async ({
         {
           headers: { "Content-Type": "application/json" },
           responseType: "arraybuffer",
-        }
+        },
       );
 
       return response.data;
