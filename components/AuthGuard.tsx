@@ -87,7 +87,6 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
           situationList: client.data.situations.SS,
           introduction: clientLanguage.data.introduction.S,
           topics: clientLanguage.data.topics.M,
-          customerResponse: clientLanguage.data.customerResponse.S,
           comeBackGreetings: clientLanguage.data.comeBackGreetings.SS,
           speechApiKey: "",
           speechEndpoint: "",
