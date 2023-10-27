@@ -1,0 +1,53 @@
+{
+  "title": "チェックイン",
+  "titleEnglish": "Check in",
+  "description": "ホテルのフロントでチェックインするシーンです。",
+  "roleOfAi": "Customer",
+  "roleOfUser": "Staff",
+  "steps": [
+    {
+      "keySentences": ["reservation", "name"],
+      "description": "まずは名前を確認しよう",
+      "hint": "ご予約名を教えていただけますか？"
+    },
+    {
+      "keySentences": ["type", "room"],
+      "description": "次に部屋のタイプを確認しよう",
+      "hint": "どのタイプのお部屋をご予約されましたか？"
+    },
+    {
+      "keySentences": ["passport", "identification"],
+      "description": "次に身分証明書を確認しよう",
+      "hint": "チェックインの際、パスポートか身分証明書が必要です。お持ちですか？"
+    },
+    {
+      "keySentences": ["payment"],
+      "description": "次に支払い方法を確認しよう",
+      "hint": "お支払い方法はいかがなさいますか？"
+    },
+    {
+      "keySentences": ["room", "number"],
+      "description": "最後に部屋番号を伝えよう",
+      "hint": "お部屋の番号は1234です。エレベーターはあちらにございます。"
+    },
+    {
+      "keyPhrases": [
+        "ありがとうございます！楽しい滞在になることをお祈りします。"
+      ],
+      "description": "最後の挨拶をしよう",
+      "hint": "ありがとうございます！楽しい滞在になることをお祈りします。"
+    }
+  ],
+  "endPhrase": {
+    "keySentences": [
+      "ありがとうございます",
+      "楽しい",
+      "滞在に",
+      "なりますように"
+    ],
+    "sentence": "Thank you! Enjoy your stay.",
+    "description": "「チェックイン」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'ありがとうございます！楽しい滞在になることをお祈りします。'です。",
+    "descriptionEn": "「チェックイン」の場面で、あなたはスタッフとしての役目を果たします。"
+  },
+  "endTalk": "お疲れ様でした。チェックインのシチュエーショントークを終了します。"
+}
