@@ -14,7 +14,7 @@ export const ChatHint: React.FC<ChatHintProps> = ({
   endPhrase,
   onClose,
 }) => (
-  <div className="hint-container opacity-80 w-screen h-screen z-100 top-0 pt-5 px-3 flex fixed justify-center items-center">
+  <div className="hint-container opacity-95 w-screen h-screen z-100 top-0 pt-5 px-3 flex fixed justify-center items-center">
     <div className="relative overflow-y-auto w-full h-7/10 max-w-2xl mx-auto bg-white/80 text-[#47556D] rounded-3xl">
       <button
         className="absolute top-3 right-3 flex items-center justify-center bg-transparent text-[#47556D]"
@@ -27,6 +27,9 @@ export const ChatHint: React.FC<ChatHintProps> = ({
           {situation.titleEnglish}
         </h2>
         <p className="text-left text-sm mb-1">{situation.description}</p>
+        <p className="text-sm mb-5">
+          {situation.roleOfUser}としてAillaと会話してください。
+        </p>
         <div className="h-[0.1rem] mix-blend-multiply bg-[#CED4DE] my-3" />
         <h3 className=" flex items-center text-left font-[700] text-[1.3rem] mb-3">
           <HiOutlineLightBulb className="opacity-60 mr-1" /> 会話のHint
