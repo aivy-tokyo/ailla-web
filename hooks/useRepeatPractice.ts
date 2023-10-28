@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { ChatCompletionRequestMessage } from "openai";
 import { useAtomValue, useSetAtom } from "jotai";
 import {
   chatLogAtom,
@@ -32,10 +31,13 @@ export const useRepeatPractice = () => {
   const [roleOfUser, setRoleOfUser] = useState<string>("");
 
   const [repeatPractice, setRepeatPractice] = useState<RepeatPractice | null>();
-  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const [repeatPracticeList, setRepeatPracticeList] = useState<RepeatPractice[]>([]);
   const [currentStep, setCurrentStep] = useState<string | null>();
-  const [steps, setSteps] = useState<string[] | null>();
+  // NOTE: 内部処理用と表示用のstepを混ぜるとコードの可読性が落ちるため別々にしました
+  // 内部処理用の step
+  const [steps, setSteps] = useState<string[]>([]);
+  // 表示用の step
+  const [displaySteps, setDisplaySteps] = useState<string[]>([]);
   const [isRepeatPracticeEnded, setIsRepeatPracticeEnded] =
     useState<boolean>(false);
 
@@ -51,12 +53,13 @@ export const useRepeatPractice = () => {
     ).then((dataArray) => setRepeatPracticeList(dataArray));
   }, []);
 
+  const lowercaseString = (arr: string[]) => arr.map(str => str.replace(/[,.?]/g, '').toLowerCase())
+
   const startRepeatPractice = useCallback(async (selectedRepeatPractice: RepeatPractice) => {
     if (!viewer.model) return;
     console.log("selectedRepeatPractice:",selectedRepeatPractice);
 
     setRepeatPractice(selectedRepeatPractice);
-    setMessages([]);
     setRoleOfAi(selectedRepeatPractice.roleOfAi);
     setRoleOfUser(selectedRepeatPractice.roleOfUser);
 
@@ -64,8 +67,9 @@ export const useRepeatPractice = () => {
       role: "assistant",
       content: selectedRepeatPractice.steps[0],
     }]);
-    setSteps(selectedRepeatPractice.steps);
-    setCurrentStep(selectedRepeatPractice.steps[0]);
+    setSteps(lowercaseString(selectedRepeatPractice.steps));
+    setDisplaySteps(selectedRepeatPractice.steps)
+    setCurrentStep(selectedRepeatPractice.steps[0].replace(/[,.?]/g, '').toLowerCase());
 
     await speakCharactor({
       text: selectedRepeatPractice.steps[0],
@@ -84,6 +88,22 @@ export const useRepeatPractice = () => {
         content: message,
       };
       setChatLog((prev) => [...prev, userMessage]);
+
+      if (message.toLowerCase() !== currentStep) {
+        const currentStepIndex = steps.findIndex(step => step === currentStep) 
+        setChatLog((prev) => [...prev, {
+          role: "assistant",
+          content: `Repeat again ${displaySteps[currentStepIndex]}`,
+        }]);
+
+        await speakCharactor({
+          text: `Repeat again ${currentStep}`,
+          viewerModel: viewer.model,
+          language,
+        });
+
+        return;
+      }
 
       const nextStepIndex = steps.findIndex(step => step === currentStep) != -1
         ? steps.findIndex(step => step === currentStep) + 1
@@ -110,11 +130,11 @@ export const useRepeatPractice = () => {
       setCurrentStep(steps[nextStepIndex]);
       setChatLog((prev) => [...prev, {
         role: "assistant",
-        content: steps[nextStepIndex],
+        content: displaySteps[nextStepIndex],
       }]);
 
       await speakCharactor({
-        text: steps[nextStepIndex],
+        text: displaySteps[nextStepIndex],
         viewerModel: viewer.model,
         language,
       });
@@ -130,6 +150,7 @@ export const useRepeatPractice = () => {
     repeatPractice,
     currentStep,
     steps,
+    displaySteps,
     viewer.model,
     speakCharactor,
     setChatLog,
