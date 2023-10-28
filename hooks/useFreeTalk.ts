@@ -1,12 +1,12 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import {
   chatLogAtom,
+  clientInfoAtom,
   isCharactorSpeakingAtom,
-  textToSpeechApiTypeAtom,
   userInfoAtom,
 } from "../utils/atoms";
 import { ChatCompletionRequestMessage } from "openai";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
@@ -16,13 +16,24 @@ import { useCharactorSpeaking } from "./useCharactorSpeaking";
 export const useFreeTalk = () => {
   const viewer = useViewer();
   const userInfo = useAtomValue(userInfoAtom);
-  const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
   const setChatLog = useSetAtom(chatLogAtom);
   const { speakCharactor } = useCharactorSpeaking();
 
   const [topic, setTopic] = useState<string>("");
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
+
+  interface Topic {
+    S: string;
+  }
+
+  const getRandomPickupTopic = () => {
+    const topics: Record<string, Topic> | {} = clientInfo?.topics || {};
+    const topicKeys = Object.keys(topics);
+    const randomKey = topicKeys[Math.floor(Math.random() * topicKeys.length)];
+    return (topics as Record<string, Topic>)[randomKey]?.S || "";
+  };
 
   const startFreeTalk = useCallback(async () => {
     if (!viewer.model) return;
@@ -30,10 +41,14 @@ export const useFreeTalk = () => {
     try {
       setIsCharactorSpeaking(true);
 
+      const freeTalkTopic = getRandomPickupTopic();
+      console.log("freeTalkTopic->", freeTalkTopic);
       setMessages([]);
       const response = await axios.post("/api/chat/free-talk", {
+        topic: freeTalkTopic,
         userName: userInfo?.name,
         messages: [],
+        speakLanguage: clientInfo?.speakLanguage,
       });
       console.log("response->", response);
       const { topic, messages: newMessages } = response.data;
@@ -44,7 +59,7 @@ export const useFreeTalk = () => {
       await speakCharactor({
         text: newMessages[newMessages.length - 1].content,
         viewerModel: viewer.model,
-        textToSpeechApiType,
+        language: clientInfo?.language || "en",
       });
     } catch (error) {
       Sentry.captureException(error);
@@ -55,7 +70,6 @@ export const useFreeTalk = () => {
     setChatLog,
     setIsCharactorSpeaking,
     speakCharactor,
-    textToSpeechApiType,
     userInfo?.name,
     viewer.model,
   ]);
@@ -74,6 +88,7 @@ export const useFreeTalk = () => {
         const response = await axios.post("/api/chat/free-talk", {
           userName: userInfo?.name,
           messages: [...messages, userMessage],
+          language: clientInfo?.language,
         });
         console.log("response->", response);
         const { topic, messages: newMessages } = response.data;
@@ -84,20 +99,13 @@ export const useFreeTalk = () => {
         await speakCharactor({
           text: newMessages[newMessages.length - 1].content,
           viewerModel: viewer.model,
-          textToSpeechApiType,
+          language: clientInfo?.language || "en",
         });
       } catch (error) {
         Sentry.captureException(error);
       }
     },
-    [
-      viewer.model,
-      setChatLog,
-      userInfo?.name,
-      messages,
-      speakCharactor,
-      textToSpeechApiType,
-    ]
+    [viewer.model, setChatLog, userInfo?.name, messages, speakCharactor],
   );
 
   return {

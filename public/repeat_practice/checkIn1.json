@@ -1,0 +1,29 @@
+{
+  "title": "チェックイン1",
+  "titleEnglish": "Check in 1",
+  "description": "ホテルのフロントでチェックインするシーンです。",
+  "roleOfAi": "Ailla",
+  "roleOfUser": "You",
+  "steps": [
+    "Good day, welcome.",
+    "May I have your reservation name, please?",
+    "Thank you, Mr. Smith",
+    "I will proceed with the check-in process",
+    "What type of room did you book?",
+    "Okay, you booked a single room",
+    "Let me confirm your reservation details and prepare your room",
+    "For check-in, we require either a passport or identification card",
+    "Do you have it with you?",
+    "Thank you, I'll take your passport",
+    "How would you like to settle the payment?",
+    "Okay, you'll be paying with a credit card",
+    "Please present your credit card and identification when making the payment",
+    "Thank you very much",
+    "I have confirmed your payment",
+    "The check-in process is complete, and I will now provide you with your room key",
+    "The elevator is on the right",
+    "Your room is on the fourth floor, room number 412",
+    "Enjoy your stay! If you have any questions or need assistance, please don't hesitate to ask",
+    "You're welcome. Have a pleasant stay!"
+  ]
+}

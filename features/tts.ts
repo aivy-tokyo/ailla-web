@@ -1,49 +1,61 @@
 import axios, { AxiosResponse } from "axios";
-import { TextToSpeechApiType } from "../utils/types";
+import { Avatar } from "../utils/types";
 import * as Sentry from "@sentry/nextjs";
 
 type Params = {
   text: string;
-  textToSpeechApiType: TextToSpeechApiType;
-  lang?: 'ja' | 'en' | string;
+  language: "ja" | "en" | "cn" | string;
+  formalLanguage: string;
+  currentAvatar: Avatar;
 };
 
 export const tts = async ({
   text,
-  textToSpeechApiType,
-  lang = 'en',
+  language,
+  formalLanguage,
+  currentAvatar,
 }: Params): Promise<ArrayBuffer | undefined> => {
   try {
     let response: AxiosResponse<ArrayBuffer>;
 
-    switch (textToSpeechApiType) {
-      case 'googleTextToSpeech':
-        response = await axios.post('/api/synthesize', {
-          text,
-          lang,
-        }, {
-          headers: { 'Content-Type': 'application/json' },
-          responseType: "arraybuffer",
-        });
-        break;
+    if (language === "en" || language === "cn") {
+      const voiceName =
+        language === "en" ? currentAvatar.ttsEnglish : currentAvatar.ttsChinese;
 
-      case 'clovaVoice':
-        response = await axios.post('/api/clova-voice', {
+      response = await axios.post(
+        "/api/synthesize",
+        {
           text,
-          lang,
-        }, {
-          headers: { 'Content-Type': 'application/json' },
+          voiceName,
+          formalLanguage,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
           responseType: "arraybuffer",
-        });
-        break;
+        },
+      );
 
-      default:
-        console.error('Unsupported textToSpeechApiType:', textToSpeechApiType);
-        return undefined;
+      return response.data;
+    } else if (language === "ja") {
+      //日本語ならClovaVoiceAPI
+      const speaker = currentAvatar.ttsJapanese;
+      response = await axios.post(
+        "/api/clova-voice",
+        {
+          text,
+          speaker,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+          responseType: "arraybuffer",
+        },
+      );
+
+      return response.data;
+    } else {
+      console.error("Unsupported language");
+      return undefined;
     }
-    console.log('Synthesis succeeded:', textToSpeechApiType);
-
-    return response.data;
   } catch (error) {
     Sentry.captureException(error);
   }

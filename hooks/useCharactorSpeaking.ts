@@ -1,24 +1,29 @@
 import { Model } from "../features/vrmViewer/model";
 import { useCallback, useEffect } from "react";
-import { TextToSpeechApiType } from "../utils/types";
 import { tts } from "../features/tts";
 import * as Sentry from "@sentry/nextjs";
-import { useSetAtom } from "jotai";
-import { isCharactorSpeakingAtom } from "../utils/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import {
+  currentAvatarAtom,
+  isCharactorSpeakingAtom,
+  clientInfoAtom,
+} from "../utils/atoms";
 import { useViewer } from "./useViewer";
 
 type Props = {
   text: string;
   viewerModel: Model;
-  textToSpeechApiType: TextToSpeechApiType;
-  lang?: string;
+  language: string;
   onSpeaking?: (text: string) => void;
   onSpeakingEnd?: () => void;
 };
 
 export const useCharactorSpeaking = () => {
   const viewer = useViewer();
+  const currentAvatar = useAtomValue(currentAvatarAtom);
   const setIsCharactorSpeaking = useSetAtom(isCharactorSpeakingAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
+  const formalLanguage = clientInfo?.formalLanguage || "";
 
   useEffect(() => {
     document.addEventListener(
@@ -26,7 +31,7 @@ export const useCharactorSpeaking = () => {
       () => {
         viewer?.model?.resumeAudio();
       },
-      { once: true }
+      { once: true },
     );
   }, [viewer?.model]);
 
@@ -34,16 +39,21 @@ export const useCharactorSpeaking = () => {
     async ({
       text,
       viewerModel,
-      textToSpeechApiType,
-      lang = "en",
+      language,
       onSpeaking,
       onSpeakingEnd,
     }: Props) => {
       console.log("speak:", text);
       setIsCharactorSpeaking(true);
+
       try {
         viewerModel.resumeAudio();
-        const buffer = await tts({ text, textToSpeechApiType, lang });
+        const buffer = await tts({
+          text,
+          language,
+          formalLanguage,
+          currentAvatar,
+        });
         if (!buffer) {
           return;
         }
@@ -65,7 +75,7 @@ export const useCharactorSpeaking = () => {
         }, 500);
       }
     },
-    [setIsCharactorSpeaking]
+    [currentAvatar, clientInfo, setIsCharactorSpeaking],
   );
 
   return {

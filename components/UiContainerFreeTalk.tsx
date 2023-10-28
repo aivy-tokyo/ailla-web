@@ -10,7 +10,7 @@ import { ButtonUsageModal } from "./ButtonUsageModal";
 export const UiContainerFreeTalk: React.FC = () => {
   const router = useRouter();
   const setChatLog = useSetAtom(chatLogAtom);
-  
+
   const endTalk = useCallback(() => {
     setChatLog([]);
     router.replace("/");
@@ -24,7 +24,6 @@ export const UiContainerFreeTalk: React.FC = () => {
       startFreeTalk();
     }
   }, [startFreeTalk, isButtonUsageExplained]);
-
 
   return (
     <>

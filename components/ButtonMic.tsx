@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
-import { FaMicrophone } from "react-icons/fa";
+import { IoMicOutline } from "react-icons/io5";
 import { ButtonProps } from "../utils/types";
+import { VoiceInputAnimationIcon } from "./AnimationIcons";
 
 export const ButtonMic = forwardRef<
   HTMLButtonElement,
@@ -23,9 +24,11 @@ export const ButtonMic = forwardRef<
       ref={ref}
       className={`
       relative
+      border-0      
       btn btn-circle shadow
       ${`btn-${size}`}
-      ${isMicRecording ? "btn-secondary" : "btn-neutral"}
+      text-white
+      bg-gradient-pink
     `}
       onPointerDown={handleButtonDown}
       onPointerUp={handleButtonUp}
@@ -33,7 +36,11 @@ export const ButtonMic = forwardRef<
       onTouchEnd={handleButtonUp}
       {...props}
     >
-      <FaMicrophone size={24} />
+      {isMicRecording ? (
+        <VoiceInputAnimationIcon />
+      ) : (
+        <IoMicOutline size={40} />
+      )}
     </button>
   );
 });

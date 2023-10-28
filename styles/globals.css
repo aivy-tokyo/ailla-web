@@ -38,3 +38,7 @@
   mask-image: linear-gradient(to bottom, transparent 0, #FFF 30%, #FFF 100%);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #FFF 30%, #FFF 100%);
 }
+
+.font-chinese{
+  font-family: "source-han-sans-simplified-c", sans-serif;
+}

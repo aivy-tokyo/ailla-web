@@ -1,16 +1,59 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useCallback, useEffect, useState } from "react";
 import { HeaderUi } from "./HeaderUi";
 import { useRouter } from "next/router";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { useAtomValue, useSetAtom } from "jotai";
-import { chatLogAtom, isVoiceInputAllowedAtom } from "../utils/atoms";
+import {
+  chatLogAtom,
+  clientInfoAtom,
+  isVoiceInputAllowedAtom,
+} from "../utils/atoms";
 import { useVoiceInput } from "../hooks/useVoiceInput";
+import * as Sentry from "@sentry/nextjs";
+import { useFirstConversation } from "../hooks/useFirstConversation";
+import { FirstGreetingContext } from "@/features/firstGreetingContext";
+import { ButtonTalkMode } from "./ButtonTalkMode";
 
 export const UiContainer = () => {
   const router = useRouter();
   const { viewer } = useContext(ViewerContext);
   const isVoiceInputAllowed = useAtomValue(isVoiceInputAllowedAtom);
   const setChatLog = useSetAtom(chatLogAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
+  // 最初の挨拶をしたかどうかの状態管理
+  const { firstGreetingDone, setFirstGreetingDone } =
+    useContext(FirstGreetingContext);
+  // 話しているテキストの状態管理
+  const [currentText, setCurrentText] = useState<string>("");
+  // 最初の挨拶をする関数
+  const { speak, stopSpeaking } = useFirstConversation({
+    onSpeaking: useCallback((text: string) => setCurrentText(text), []),
+    onSpeakingEnd: useCallback(() => setCurrentText(""), []),
+  });
+
+  const greet = useCallback(async () => {
+    if (viewer.model && !firstGreetingDone) {
+      try {
+        await viewer.model.resumeAudio(); //MEMO:iOSだとAudioContextのstateが'suspended'になり、音声が再生できないことへの対策。
+        // Characterの挨拶
+        await speak();
+        setFirstGreetingDone(true);
+      } catch (error) {
+        Sentry.captureException(error);
+      }
+    }
+  }, [firstGreetingDone, setFirstGreetingDone, speak, viewer.model]);
+
+  useEffect(() => {
+    if (!firstGreetingDone) greet();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [firstGreetingDone]);
+
+  const handleSkipFirstGreeting = useCallback(() => {
+    viewer.model?.stopSpeak();
+    setFirstGreetingDone(true);
+    stopSpeaking();
+  }, [stopSpeaking, setFirstGreetingDone, viewer.model]);
 
   useEffect(() => {
     viewer.model?.stopSpeak();
@@ -24,48 +67,73 @@ export const UiContainer = () => {
     }
   }, [getUserMediaPermission, isVoiceInputAllowed]);
 
+  const Buttons = () => {
+    return [
+      {
+        title: "フリートーク",
+        englishTitle: "Free talk",
+        chineseTitle: "自由对话",
+        onClick: () => router.push("/?mode=free-talk"),
+      },
+      {
+        title: "シチュエーション",
+        englishTitle: "Situation talk",
+        chineseTitle: "情境对话",
+        onClick: () => router.push("/?mode=situation"),
+      },
+
+      {
+        title: "リピートプラクティス",
+        englishTitle: "Repeat practice",
+        chineseTitle: "重复练习",
+        onClick: () => router.push("/?mode=repeat-practice"),
+      },
+    ].map((item, index) => {
+      const displayTitle =
+        clientInfo?.language === "en" ? item.englishTitle : item.chineseTitle;
+      return (
+        <ButtonTalkMode
+          item={{ ...item, englishTitle: displayTitle }}
+          key={index}
+        />
+      );
+    });
+  };
+
   return (
     <>
-      <HeaderUi />
-      <div
-        className="
-        max-w-2xl mx-auto
-      fixed bottom-0 left-0 right-0
-      grid grid-cols-2 gap-2
-      p-2
-      "
-      >
-        <button
-          className="btn btn-primary text-xs"
-          onClick={() => router.push("/?mode=free-talk")}
-        >
-          フリートーク
-        </button>
-        <button
-          className="btn btn-primary text-xs"
-          onClick={() => router.push("/?mode=situation")}
-        >
-          シチュエーショントーク
-        </button>
-        <button
-          className="btn btn-primary text-xs"
-          onClick={() => {
-            // @ts-ignore
-            modal_comming_soon.showModal();
-          }}
-        >
-          リピートプラクティス
-        </button>
-        <button
-          className="btn btn-info text-xs"
-          onClick={() => {
-            // @ts-ignore
-            modal_help.showModal();
-          }}
-        >
-          使い方を見る
-        </button>
-      </div>
+      {firstGreetingDone ? (
+        <>
+          <HeaderUi />
+          <div className="flex justify-center">
+            <div className="fixed bottom-[2rem] flex flex-col items-center gap-4 p-2">
+              <Buttons />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div>
+          {currentText && (
+            <div className="flex justify-center">
+              <div className="fixed bottom-[11rem]">
+                <div className="bg-white flex w-[24rem] text-center p-4 justify-center items-center padding-[1rem] gap-2.5 rounded-xl">
+                  <p className="whitespace-pre-wrap text-black  text-[0.8rem] font-[30rem]  ">
+                    {currentText}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="flex justify-center bg-white bg-opacity-20 w-[8rem] h-[2.3rem] rounded-[7rem] absolute left-1/2 transform -translate-x-1/2 bottom-[3rem]">
+            <button
+              className="text-[1rem]"
+              onClick={() => handleSkipFirstGreeting()}
+            >
+              スキップする
+            </button>
+          </div>
+        </div>
+      )}
       {/* Open the modal using document.getElementById('ID').showModal() method */}
       <dialog id="modal_comming_soon" className="modal">
         <div className="modal-box">
@@ -74,42 +142,6 @@ export const UiContainer = () => {
             この機能は現在準備中です。
             <br />
             しばらくお待ちください。
-          </p>
-          <div className="modal-action">
-            <form method="dialog" className="flex justify-center w-full">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">とじる</button>
-            </form>
-          </div>
-        </div>
-      </dialog>
-      <dialog id="modal_help" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">使い方</h3>
-          <p className="py-4">
-            このアプリでは、Aillaと英語で会話をすることができます。
-            <br />
-            英会話の練習には3つのモードがあります。
-            <br />
-            <br />
-            <strong>1. フリートークモード</strong>
-            <br />
-            <strong>2. シチュエーションモード</strong>
-            <br />
-            <strong>3. リピートプラクティスモード</strong>
-            <br />
-            <br />
-            <strong>フリートークモード</strong>
-            では、自由に会話をすることができます。
-            <br />
-            <strong>シチュエーションモード</strong>
-            では、シチュエーションに沿った会話をすることができます。
-            <br />
-            <strong>リピートプラクティスモード</strong>
-            では、Aillaが英語を話すので、それを聞いてリピートすることで発音の練習をすることができます。
-            <br />
-            <br />
-            モードを選択すると、会話が始まります。
           </p>
           <div className="modal-action">
             <form method="dialog" className="flex justify-center w-full">

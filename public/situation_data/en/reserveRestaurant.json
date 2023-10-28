@@ -1,5 +1,6 @@
 {
-  "title": "Reserve Restaurant",
+  "title": "レストランの予約",
+  "titleEnglish": "Reserve Restaurant",
   "description": "今夜のレストランディナーを予約するシーンです。",
   "roleOfAi": "Customer",
   "roleOfUser": "Staff",
@@ -39,5 +40,12 @@
       "description": "最後に予約を確認しよう",
       "hint": "Thank you for your reservation.  We have your reservation for tonight at <reserved time>"
     }
-  ]
+  ],
+  "endPhrase": {
+    "keySentences": ["looking", "forward", "to", "serving", "you", "tonight", "goodbye"],
+    "sentence": "Looking forward to serving you tonight. Goodbye!",
+    "description":  "「レストランの予約シーン」のシチュエーショントークを始めます。 あなたはスタッフ役です。終了フレーズは 'Looking forward to serving you tonight. Goodbye!'です。",
+    "descriptionEn": "You begin the 'reserve-restaurant' situation talk. You are playing the role of a staff member."
+  },
+  "endTalk": "お疲れ様でした。レストランの予約シーンのシチュエーショントークを終了します。"
 }

@@ -1,12 +1,8 @@
-import axios from "axios";
-import { useSetAtom, useAtomValue } from "jotai";
 import { useRouter } from "next/router";
 import { useState, useCallback, FormEvent } from "react";
 import { FaRegTimesCircle } from "react-icons/fa";
-import { userInfoAtom, userIdAtom } from "../utils/atoms";
 import { prefectures } from "../utils/constants";
 import { Prefecture, UserGenderType } from "../utils/types";
-import { UserInfo } from "../entities/UserInfo";
 import { useUserInfo } from "@/hooks/useUserInfo";
 
 export const RegisterContainer: React.FC = () => {
@@ -20,13 +16,11 @@ export const RegisterContainer: React.FC = () => {
   const [day, setDay] = useState<string>("");
 
   const [gender, setGender] = useState<UserGenderType>("選択しない");
-  const setUserInfo = useSetAtom(userInfoAtom);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
   const [isResultError, setIsResultError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const router = useRouter();
-  const userId = useAtomValue(userIdAtom);
 
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -46,7 +40,6 @@ export const RegisterContainer: React.FC = () => {
 
       try {
         let errors = [];
-
         if (!name) {
           errors.push("ユーザー名が未入力です");
         }
@@ -96,7 +89,7 @@ export const RegisterContainer: React.FC = () => {
         setIsSendingRequest(false);
       }
     },
-    [month, day, year, name, prefecture, gender, registerUserInfo, router]
+    [month, day, year, name, prefecture, gender, registerUserInfo, router],
   );
 
   return (

@@ -1,7 +1,13 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { isTranslatedAtom, isCharactorSpeakingAtom, isVoiceInputAllowedAtom } from "../utils/atoms";
+import {
+  isTranslatedAtom,
+  isCharactorSpeakingAtom,
+  isVoiceInputAllowedAtom,
+} from "../utils/atoms";
 import * as Sentry from "@sentry/nextjs";
+// clientInfoAtomのimportを追加
+import { clientInfoAtom } from "../utils/atoms";
 
 type Props = {
   onStartRecording?: () => void;
@@ -29,13 +35,17 @@ export const useVoiceInput = ({
   const isTranslated = useAtomValue(isTranslatedAtom);
   const isCharactorSpeaking = useAtomValue(isCharactorSpeakingAtom);
   const setIsVoiceInputAllowed = useSetAtom(isVoiceInputAllowedAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
 
   const [isMicRecording, setIsMicRecording] = useState(false);
   const transcriptsRef = useRef<string[]>([]);
   const [currentTranscript, setCurrentTranscript] = useState<string>("");
 
   useEffect(() => {
-    recognition.lang = isTranslated ? "ja-JP" : "en-US"; // 言語を指定する
+    recognition.lang = isTranslated
+      ? "ja-JP"
+      : clientInfo?.formalLanguage || "en-US"; // 言語を指定する
+    recognition.lang = "ja-JP";
     recognition.interimResults = true; // 途中経過を取得する
     recognition.continuous = true; // 連続的に音声認識を行う
     recognition.maxAlternatives = 1; // 1つの認識結果のみを取得する

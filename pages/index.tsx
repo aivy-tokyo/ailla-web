@@ -5,13 +5,15 @@ import { AuthGuard } from "../components/AuthGuard";
 import { useRouter } from "next/router";
 import { UiContainerFreeTalk } from "../components/UiContainerFreeTalk";
 import { UiContainerSituation } from "../components/UiContainerSituation";
+import { UiContainerRepeatPractice } from "../components/UiContainerRepeatPractice";
 import { FirstGreeting } from "../components/FirstGreeting";
+import { PropsWithChildren, useContext, useState, useCallback } from "react";
 
 type ContainerMode = "repeat-practice" | "situation" | "free-talk" | undefined;
 const SwitchContainer: React.FC<{ mode: ContainerMode }> = ({ mode }) => {
   switch (mode) {
     case "repeat-practice":
-      return <UiContainer />;
+      return <UiContainerRepeatPractice />;
     case "situation":
       return <UiContainerSituation />;
     case "free-talk":
@@ -19,6 +21,10 @@ const SwitchContainer: React.FC<{ mode: ContainerMode }> = ({ mode }) => {
     default:
       return <UiContainer />;
   }
+};
+
+const FullscreenContainer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+  return <div className="fixed h-screen w-screen left-0 top-0">{children}</div>;
 };
 
 export default function Home() {
@@ -30,9 +36,11 @@ export default function Home() {
       <AppHead />
       <AuthGuard>
         <VrmViewer />
-        <FirstGreeting>
-          <SwitchContainer mode={mode as ContainerMode} />
-        </FirstGreeting>
+        <FullscreenContainer>
+          <FirstGreeting>
+            <SwitchContainer mode={mode as ContainerMode} />
+          </FirstGreeting>
+        </FullscreenContainer>
       </AuthGuard>
     </>
   );

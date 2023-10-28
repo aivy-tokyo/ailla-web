@@ -1,9 +1,10 @@
 import { Message } from "@/features/messages/messages";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { TextToSpeechApiType } from "./types";
+import { Avatar } from "./types";
 import { avatars, backgroundImages } from "./constants";
-import { UserInfo } from "../entities/UserInfo";
+import { UserInfo } from "@/entities/UserInfo";
+import { ClientInfo } from "@/entities/ClientInfo";
 import { Viewer } from "../features/vrmViewer/viewer";
 
 // チャットログのアトム
@@ -16,6 +17,13 @@ export const isTranslatedAtom = atom<boolean>(false);
 export const userIdAtom = atom<string>("");
 // ユーザー情報のアトム
 export const userInfoAtom = atom<UserInfo | null>(null);
+
+// Client情報のアトム
+export const clientInfoAtom = atom<ClientInfo | null>(null);
+
+// Client言語情報のアトム
+export const clientLanguageAtom = atom<string>("");
+
 // 最初の挨拶が終わったかどうかのアトム
 export const firstGreetingDoneAtom = atom<boolean>(false);
 // viewerのアトム
@@ -31,15 +39,17 @@ export const avatarPathAtom = atomWithStorage<string>(
   "avatar",
   avatars[0].path
 );
+
+// 表示するアバターのアトム
+export const currentAvatarAtom = atomWithStorage<Avatar>(
+  "currentAvatar",
+  avatars[0]
+);
+
 // 表示する背景画像のパスのアトム
 export const backgroundImagePathAtom = atomWithStorage<string>(
   "backgroundImagePath",
   backgroundImages[0].path
-);
-// テキスト読み上げAPIの種類のアトム
-export const textToSpeechApiTypeAtom = atomWithStorage<TextToSpeechApiType>(
-  "textToSpeechApiType",
-  "googleTextToSpeech"
 );
 // ボタンの使い方を説明したかどうかのアトム
 export const isButtonUsageExplainedAtom = atomWithStorage<boolean>(

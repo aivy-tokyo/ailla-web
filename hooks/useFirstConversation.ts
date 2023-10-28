@@ -1,18 +1,15 @@
 import * as Sentry from "@sentry/nextjs";
 import { useAtomValue } from "jotai";
-import { useContext, useCallback, useRef } from "react";
+import { useContext, useCallback, useRef, useState } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
-import {
-  userInfoAtom,
-  textToSpeechApiTypeAtom,
-} from "../utils/atoms";
+import { clientInfoAtom, userInfoAtom } from "../utils/atoms";
 import { useCharactorSpeaking } from "./useCharactorSpeaking";
 
-const introductionGreeting = `Hi {UserName}! I'm Ailla, your English conversation partner. Let's have a fun and engaging chat together!`;
-const appExplanation = `
+const appExplanation = (learningLanguage: string) => {
+  const explanation: string = `
 このアプリでは、
-Aillaと英語で会話をすることができます。
-英会話の練習には3つのモードがあります。
+Aillaと${learningLanguage}で会話をすることができます。
+会話の練習には3つのモードがあります。
 
 1. フリートークモード。
 2. シチュエーションモード。
@@ -24,27 +21,23 @@ Aillaと英語で会話をすることができます。
 シチュエーションに沿った会話をすることができます。
 
 リピートプラクティスモードでは、
-Aillaが英語を話すので、
+Aillaが${learningLanguage}を話すので、
 それを聞いてリピートすることで発音の練習をすることができます。
 モードを選択すると、
 会話が始まります。
 
 さあ、はじめましょう！!
-`;
+  `;
 
-const comeBackGreetingList = [
-  "Welcome back! It's great to see you again. Ready for another exciting lesson?",
-  "Hi {UserName}! I hope you had a great week. Let's continue our English journey together!",
-  "Good to see you again, {UserName}! I'm looking forward to hearing about your progress.",
-  "Hello {UserName}! How have you been? Let's make today's lesson another success!",
-  "Welcome back, {UserName}! Your hard work is really paying off. Let's keep it up!",
-];
+  return explanation;
+};
+
 const lessonsStartPhrases = [
-  "今日は何から始めたいと思いますか？どのレッスンにしましょうか？",
-  "今日のレッスンはどれから手をつけましょうか？",
-  "今日はどのトピックから学び始めるのがいいと思いますか？",
-  "どのレッスンから今日の授業を始めたいですか？",
-  "今日の始めたいレッスンは何ですか？どれから進めましょうか？",
+  "今日はどのレッスンから始めますか？",
+  "どのレッスンを最初に進めるといいでしょうか？",
+  "どのトピックから学びたいですか？",
+  "どのレッスンから授業をスタートしますか？",
+  "始めたいレッスンはどれですか？",
 ];
 
 // UserNameをユーザー名に置き換える
@@ -59,7 +52,16 @@ export const useFirstConversation = (props: {
 }) => {
   const { viewer } = useContext(ViewerContext);
   const userInfo = useAtomValue(userInfoAtom);
-  const textToSpeechApiType = useAtomValue(textToSpeechApiTypeAtom);
+  const clientInfo = useAtomValue(clientInfoAtom);
+  const language: string =
+    clientInfo && clientInfo.language ? clientInfo.language : "en";
+  const learningLanguage: string =
+    clientInfo && clientInfo.learningLanguage
+      ? clientInfo.learningLanguage
+      : "英語";
+  const comeBackGreetings = clientInfo?.comeBackGreetings || [];
+  const introduction = clientInfo?.introduction || "";
+
   const { speakCharactor } = useCharactorSpeaking();
   // speakを継続するかどうかのフラグ
   const isSpeaking = useRef(true);
@@ -80,11 +82,11 @@ export const useFirstConversation = (props: {
         if (!isSpeaking.current) {
           return;
         }
-        
+
         await speakCharactor({
-          text: replaceUserName(introductionGreeting, userName),
+          text: replaceUserName(introduction, userName),
           viewerModel,
-          textToSpeechApiType,
+          language,
           onSpeaking,
           onSpeakingEnd,
         });
@@ -94,10 +96,9 @@ export const useFirstConversation = (props: {
         }
 
         await speakCharactor({
-          text: replaceUserName(appExplanation, userName),
+          text: replaceUserName(appExplanation(learningLanguage), userName),
           viewerModel,
-          textToSpeechApiType,
-          lang: "ja",
+          language: "ja",
           onSpeaking,
           onSpeakingEnd,
         });
@@ -109,12 +110,13 @@ export const useFirstConversation = (props: {
         }
 
         const randomIndex = Math.floor(
-          Math.random() * comeBackGreetingList.length
+          Math.random() * comeBackGreetings.length,
         );
+
         await speakCharactor({
-          text: replaceUserName(comeBackGreetingList[randomIndex], userName),
+          text: replaceUserName(comeBackGreetings[randomIndex], userName),
           viewerModel,
-          textToSpeechApiType,
+          language,
           onSpeaking,
           onSpeakingEnd,
         });
@@ -126,8 +128,7 @@ export const useFirstConversation = (props: {
         await speakCharactor({
           text: lessonsStartPhrases[randomIndex],
           viewerModel,
-          textToSpeechApiType,
-          lang: "ja",
+          language: "ja",
           onSpeaking,
           onSpeakingEnd,
         });
@@ -135,7 +136,7 @@ export const useFirstConversation = (props: {
     } catch (error) {
       Sentry.captureException(error);
     }
-  }, [viewer.model, userInfo, props, speakCharactor, textToSpeechApiType]);
+  }, [viewer.model, userInfo, props, speakCharactor]);
 
   const stopSpeaking = useCallback(() => {
     viewer.model?.stopSpeak();
