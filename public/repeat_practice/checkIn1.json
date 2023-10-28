@@ -25,5 +25,9 @@
     "Your room is on the fourth floor, room number 412",
     "Enjoy your stay! If you have any questions or need assistance, please don't hesitate to ask",
     "You're welcome. Have a pleasant stay!"
-  ]
+  ],
+  "firstConversation": {
+    "description":  "「チェックイン1」のリピートプラクティスを始めます。 あなたはスタッフ役です。",
+    "descriptionEn": "You begin the 'check-in' situation talk. You are playing the role of a staff member."
+  }
 }

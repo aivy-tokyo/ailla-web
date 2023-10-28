@@ -200,6 +200,11 @@ export type Situation = {
   endTalk: string
 };
 
+export type FirstConversation = {
+  description: string // チャットログに表示させる説明
+  descriptionEn: string // AIに発音させる説明
+}
+
 export type RepeatPractice = {
   title: string; // リピートプラクティスのタイトル
   titleEnglish: string; // リピートプラクティスの英タイトル
@@ -207,4 +212,5 @@ export type RepeatPractice = {
   roleOfAi: string; // AIの役割
   roleOfUser: string; // ユーザーの役割
   steps: string[];
+  firstConversation: FirstConversation
 }

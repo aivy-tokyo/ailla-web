@@ -6,7 +6,7 @@ import {
   isCharactorSpeakingAtom,
 } from "../utils/atoms";
 
-import { RepeatPractice } from "@/utils/types";
+import { FirstConversation, RepeatPractice } from "@/utils/types";
 
 import { Message } from "../features/messages/messages";
 import { useViewer } from "./useViewer";
@@ -30,6 +30,8 @@ export const useRepeatPractice = () => {
   const [roleOfAi, setRoleOfAi] = useState<string>("");
   const [roleOfUser, setRoleOfUser] = useState<string>("");
 
+  const [firstGreetingDone, setFirstGreetingDone] = useState<boolean>(false);
+  const [firstConversation, setFirstConversation] = useState<FirstConversation>();
   const [repeatPractice, setRepeatPractice] = useState<RepeatPractice | null>();
   const [repeatPracticeList, setRepeatPracticeList] = useState<RepeatPractice[]>([]);
   const [currentStep, setCurrentStep] = useState<string | null>();
@@ -53,7 +55,7 @@ export const useRepeatPractice = () => {
     ).then((dataArray) => setRepeatPracticeList(dataArray));
   }, []);
 
-  const lowercaseString = (arr: string[]) => arr.map(str => str.replace(/[,.?]/g, '').toLowerCase())
+  const lowercaseString = (arr: string[]) => arr.map(str => str.replace(/[,.?\d]/g, '').toLowerCase())
 
   const startRepeatPractice = useCallback(async (selectedRepeatPractice: RepeatPractice) => {
     if (!viewer.model) return;
@@ -62,6 +64,16 @@ export const useRepeatPractice = () => {
     setRepeatPractice(selectedRepeatPractice);
     setRoleOfAi(selectedRepeatPractice.roleOfAi);
     setRoleOfUser(selectedRepeatPractice.roleOfUser);
+    setFirstConversation(selectedRepeatPractice.firstConversation)
+
+    if (!firstGreetingDone) {
+      await speakCharactor({
+        text: await selectedRepeatPractice?.firstConversation?.descriptionEn,
+        viewerModel: viewer.model,
+        language,
+      });
+      setFirstGreetingDone(true);
+    }
 
     setChatLog((prev) => [...prev, {
       role: "assistant",
@@ -69,14 +81,20 @@ export const useRepeatPractice = () => {
     }]);
     setSteps(lowercaseString(selectedRepeatPractice.steps));
     setDisplaySteps(selectedRepeatPractice.steps)
-    setCurrentStep(selectedRepeatPractice.steps[0].replace(/[,.?]/g, '').toLowerCase());
+    setCurrentStep(selectedRepeatPractice.steps[0].replace(/[,.?\d]/g, '').toLowerCase());
 
     await speakCharactor({
       text: selectedRepeatPractice.steps[0],
       viewerModel: viewer.model,
       language,
     });
-  }, [setChatLog, viewer.model, language, speakCharactor])
+  }, [
+    setChatLog,
+    viewer.model,
+    language,
+    firstGreetingDone,
+    speakCharactor
+  ])
 
   const sendMessage = useCallback(async (message: string) => {
       if (!viewer.model || !repeatPractice || !message.trim() || !steps) return;
@@ -157,13 +175,21 @@ export const useRepeatPractice = () => {
     setIsCharactorSpeaking,
   ]);
 
+  const stopSpeaking = useCallback(() => {
+    setFirstGreetingDone(true);
+    viewer.model?.stopSpeak();
+  }, [viewer.model]);
+
   return {
     repeatPractice,
     repeatPracticeList,
     roleOfAi,
     roleOfUser,
+    firstGreetingDone,
+    firstConversation,
+    isRepeatPracticeEnded,
     startRepeatPractice,
     sendMessage,
-    isRepeatPracticeEnded,
+    stopSpeaking,
   }
 };
