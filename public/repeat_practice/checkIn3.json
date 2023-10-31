@@ -31,5 +31,9 @@
     "We value your satisfaction and hope to make your stay enjoyable",
     "Have a pleasant day",
     "Goodbye, Mr. Smith. Take care and have a wonderful day!"
-  ]
+  ],
+  "firstConversation": {
+    "description":  "「チェックイン3」のリピートプラクティスを始めます。 あなたはスタッフ役です。",
+    "descriptionEn": "You begin the 'check-in' situation talk. You are playing the role of a staff member."
+  }
 }

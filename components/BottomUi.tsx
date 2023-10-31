@@ -128,7 +128,9 @@ const BottomUi = ({ sendChat, roleOfAi, roleOfUser, toggleHint }: Props) => {
               bg-white/20 rounded-[7rem]
             "
               >
-                <ButtonHelp onClick={toggleHint} disabled={!toggleHint} />
+                {toggleHint != null && (
+                  <ButtonHelp onClick={toggleHint} disabled={!toggleHint} />
+                )}
                 <div className="relative flex justify-center items-center transform -translate-y-5">
                   {isMicRecording && (
                     <span className="absolute w-[65%] h-[65%] bg-white rounded-full animate-ping"></span>

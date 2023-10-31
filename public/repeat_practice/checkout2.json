@@ -24,5 +24,9 @@
     "We value your feedback and hope to have the chance to serve you better in the future",
     "Have a safe journey home, Mr. Smith",
     "Goodbye, Mr. Smith. Take care and have a wonderful day!"
-  ]
+  ],
+  "firstConversation": {
+    "description":  "「チェックイン2」のリピートプラクティスを始めます。 あなたはスタッフ役です。",
+    "descriptionEn": "You begin the 'check-out' situation talk. You are playing the role of a staff member."
+  }
 }
