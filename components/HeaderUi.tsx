@@ -20,8 +20,8 @@ export const HeaderUi: React.FC<HeaderUiProps> = ({
   return (
     <>
       <div className="z-1 fixed top-5 w-full flex justify-between items-center my-2 px-2 ">
-        {/* 機能未実装のため */}
-        <TranslateToggleSwitch isSituationSelection={isSituationSelection} />
+        {/* 機能未実装のためコメントアウト */}
+        {/* <TranslateToggleSwitch isSituationSelection={isSituationSelection} /> */}
         <div className="self-end ml-auto flex items-center gap-2">
           {onClickEndTalk ? (
             <EndTalkButton onClick={onClickEndTalk} isSituationSelection={isSituationSelection}  />
