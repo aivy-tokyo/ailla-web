@@ -25,5 +25,9 @@
     "We wish you a safe journey home!",
     "Thank you, Mr. Smith",
     "Take care and have a wonderful day!"
-  ]
+  ],
+  "firstConversation": {
+    "description":  "「チェックアウト1」のリピートプラクティスを始めます。 あなたはスタッフ役です。",
+    "descriptionEn": "You begin the 'check-out' situation talk. You are playing the role of a staff member."
+  }
 }

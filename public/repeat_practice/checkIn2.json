@@ -21,5 +21,9 @@
     "Breakfast is served from 7 am to 10 am in the hotel restaurant, and the Wi-Fi password is 'guest123'",
     "If you have any questions or need assistance during your stay, please don't hesitate to contact our front desk",
     "Enjoy your stay with us!"
-  ]
+  ],
+  "firstConversation": {
+    "description":  "「チェックイン2」のリピートプラクティスを始めます。 あなたはスタッフ役です。",
+    "descriptionEn": "You begin the 'check-in' situation talk. You are playing the role of a staff member."
+  }
 }
