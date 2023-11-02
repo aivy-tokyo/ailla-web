@@ -2,7 +2,7 @@ import { Avatar, BackgroundImage, Prefecture } from "./types";
 
 export const TableNames = {
   users: "AILLA_USER",
-  clients: "AILLA_CLIENT_CONFIG",
+  clients: "AILLA_CLIENT",
   languages: "AILLA_LANGUAGE",
   userLogs: "UserLogs",
   clientLogs: "ClientLogs",

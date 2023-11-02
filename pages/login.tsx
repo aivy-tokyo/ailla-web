@@ -46,7 +46,7 @@ export default function LoginPage() {
     "
       >
         <h1 className="text-4xl font-bold text-center">
-          <Image width={215} height={132} src="/AILLA_logo_b.png" alt="AILLA" className="mx-auto" />
+          <Image width={215} height={132} src="/AILLA_logo_b.svg" alt="AILLA" className="mx-auto" />
         </h1>
         <p className="mt-7 p-3 mx-auto text-center text-[#47556d]">
           AI英会話サービス「AILLA」へようこそ！

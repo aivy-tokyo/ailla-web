@@ -1,4 +1,6 @@
 export interface ClientInfo {
+  // クライアントコード
+  code: string;
   // 省略言語
   language: "cn" | "en" | "ja";
   // 正式言語
