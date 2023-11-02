@@ -3,23 +3,7 @@ import { useUserInfo } from "@/hooks/useUserInfo";
 import * as Sentry from "@sentry/nextjs";
 import { Prefecture, UserGenderType } from "@/utils/types";
 import { prefectures } from "@/utils/constants";
-import { HeaderLabel } from "./HeaderLabel";
-
-type InputFieldProps = {
-  label: string;
-  children: React.ReactNode;
-};
-
-const InputField: React.FC<InputFieldProps> = ({ label, children }) => {
-  return (
-    <div className="flex flex-col my-6">
-      <label className="my-2">
-        <HeaderLabel>{label}</HeaderLabel>
-      </label>
-      {children}
-    </div>
-  );
-};
+import { InputField } from "./InputField";
 
 type UserInfoEditProps = {
   setIsEditMode: (item: boolean) => void;
@@ -155,7 +139,7 @@ export const UserInfoEdit: React.FC<UserInfoEditProps> = ({
           <option value="選択しない">選択しない</option>
         </select>
       </InputField>
-      <div className="flex justify-left mb-2">
+      <div className="flex justify-left mb-6">
         <button
           className="
                 border-[1px] border-solid border-[#47556D]

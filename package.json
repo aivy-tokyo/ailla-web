@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "dev:build": "NEXT_PUBLIC_ENV=dev next build",
+    "stg:build": "NEXT_PUBLIC_ENV=staging next build",
+    "build": "NEXT_PUBLIC_ENV=prod next build",
     "start": "next start -H 0.0.0.0",
     "start:local": "next start",
     "lint": "next lint"

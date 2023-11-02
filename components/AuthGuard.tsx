@@ -13,7 +13,6 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
   const session = useSession();
   const [userId, setUserId] = useAtom(userIdAtom);
   const setUserInfo = useSetAtom(userInfoAtom);
-  const setClientInfo = useSetAtom(clientInfoAtom);
   const [canShowContents, setCanShowContents] = useState<boolean>(false);
 
   useEffect(() => {
@@ -61,38 +60,6 @@ export const AuthGuard: React.FC<PropsWithChildren> = ({ children }) => {
         };
         setUserInfo(userInfo);
 
-        const client = await axios.get(`/api/client`);
-
-        if (!client.data) {
-          console.log("クライアント情報がないので登録画面に遷移します");
-          router.push("/register");
-          return;
-        }
-
-        const clientLanguage = await axios.get(
-          `/api/language?language=${client.data.language.S}`,
-        );
-
-        if (!clientLanguage.data) {
-          console.log("クライアントの言語情報がないので登録画面に遷移します");
-          router.push("/register");
-          return;
-        }
-
-        const clientInfo = {
-          language: client.data.language.S,
-          formalLanguage: clientLanguage.data.formalLanguage.S,
-          speakLanguage: clientLanguage.data.speakLanguage.S,
-          learningLanguage: clientLanguage.data.learningLanguage.S,
-          situationList: client.data.situations.SS,
-          introduction: clientLanguage.data.introduction.S,
-          topics: clientLanguage.data.topics.M,
-          comeBackGreetings: clientLanguage.data.comeBackGreetings.SS,
-          speechApiKey: "",
-          speechEndpoint: "",
-        };
-
-        setClientInfo(clientInfo);
       } catch (error) {
         Sentry.captureException(error);
       }

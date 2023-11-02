@@ -7,7 +7,7 @@ const client = new DynamoDBClient({});
 /*
 AILLA_CLIENT Table
 {
-  code: { S: "localhost:3000" },
+  code: { S: "AILLA" },
   language: { S: "ja" },
   name: { S: "Ailla" },
   situations: { L: [{ S: "1" }, { S: "2" }] },
@@ -18,9 +18,6 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   try {
-    const code = process.env.CLIENT_CODE || req.headers.host as string;
-    console.log(code);
-  
     if (req.method === "PUT" || req.method === "POST") {
       const Item = {
         code: { S: req.body.code },
@@ -39,6 +36,9 @@ export default async function handler(
     }
 
     if (req.method === "GET") {
+      const code = req.query.code;
+      console.log("Code is", code);
+  
       const { Item } = await client.send(
         new GetItemCommand({
           TableName: TableNames.clients,

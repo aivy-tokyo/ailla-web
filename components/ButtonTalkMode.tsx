@@ -45,9 +45,9 @@ export const ButtonTalkMode = ({ item }: { item: ButtonTalkModeProps }) => {
             <path
               d="M10 17L15 12L10 7"
               stroke="white"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </div>
