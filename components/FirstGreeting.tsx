@@ -25,7 +25,7 @@ export const FirstGreeting: React.FC<PropsWithChildren> = ({ children }) => {
       <>
         <div className="absolute top-[2rem] left-[1.5rem] z-10">
           <Image
-            src="/AILLA_logo_c.png"
+            src="/AILLA_logo_c.svg"
             alt="AILLA Logo"
             width={140}
             height={25}

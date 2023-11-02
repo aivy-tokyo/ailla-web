@@ -6,27 +6,19 @@ import { SessionProvider } from "next-auth/react";
 import * as Sentry from "@sentry/nextjs";
 import { useEffect } from "react";
 
+// sentry.init
+Sentry.init({
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || "",
+  environment: process.env.NEXT_PUBLIC_ENV || "", // prod, staging, dev
+  release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || "no name",
+  debug: process.env.NEXT_PUBLIC_ENV !== "prod",
+});
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const backgroundImagePath = useAtomValue(backgroundImagePathAtom);
-  const setClientInfo = useSetAtom(clientInfoAtom);
-
-  // sentry.init
-  const environment = {
-    env: process.env.NEXT_PUBLIC_ENV || "dev",
-    sentry: {
-      dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || "",
-    },
-  };
-
-  Sentry.init({
-    dsn: environment.env !== "dev" ? environment.sentry.dsn : "",
-    environment: environment.env, // prod, staging, dev
-    release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || "no name",
-    debug: environment.env !== "prod",
-  });
 
   // Sentry.setUserにユーザー情報を追加する
   useEffect(() => {

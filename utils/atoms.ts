@@ -18,9 +18,6 @@ export const userIdAtom = atom<string>("");
 // ユーザー情報のアトム
 export const userInfoAtom = atom<UserInfo | null>(null);
 
-// Client情報のアトム
-export const clientInfoAtom = atom<ClientInfo | null>(null);
-
 // Client言語情報のアトム
 export const clientLanguageAtom = atom<string>("");
 
@@ -34,6 +31,9 @@ export const isVoiceInputAllowedAtom = atom<boolean>(false);
 /* 
   Web Storageに保存するアトム
 */
+// Client情報のアトム
+export const clientInfoAtom = atomWithStorage<ClientInfo | null>("clientInfo", null);
+
 // 表示するアバターのパスのアトム
 export const avatarPathAtom = atomWithStorage<string>(
   "avatar",

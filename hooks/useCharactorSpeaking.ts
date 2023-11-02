@@ -75,7 +75,7 @@ export const useCharactorSpeaking = () => {
         }, 500);
       }
     },
-    [currentAvatar, clientInfo, setIsCharactorSpeaking],
+    [setIsCharactorSpeaking, formalLanguage, currentAvatar],
   );
 
   return {
